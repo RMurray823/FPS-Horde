@@ -13,6 +13,10 @@ public class Bullet : MonoBehaviour {
         Destroy(gameObject, 3);
     }
 
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag != "Player" && collision.gameObject.tag != "Bullet")
+            Destroy(gameObject);
+    }
     private void OnTriggerEnter(Collider other) {
         if (other.tag != "Player" && other.tag != "Bullet")
             Destroy(gameObject);
