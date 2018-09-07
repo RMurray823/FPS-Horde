@@ -5,14 +5,15 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     private float movementSpeed = 5.0f;
+
     private float rotationX = 0f;
-    private float rotationY = 0f;
 
     private Rigidbody body;
 
     private Vector3 keyboardInputs = Vector3.zero;
     private Vector3 mouseInput = Vector3.zero;
 
+    private Quaternion localRotation;
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
@@ -23,7 +24,6 @@ public class PlayerController : MonoBehaviour {
         HandleInput();
     }
 
-    //TODO: Character slows down when looking up and down. Need to stop this from happening
     private void HandleInput() {
         if (Input.GetKey(KeyCode.Escape)) {
             if (Cursor.lockState != CursorLockMode.Locked)
@@ -36,21 +36,17 @@ public class PlayerController : MonoBehaviour {
         keyboardInputs.x = Input.GetAxis("Horizontal");
         keyboardInputs.z = Input.GetAxis("Vertical");
 
-        //This needs to be changed up to fix movement inconsistencies
-        keyboardInputs = Camera.main.transform.TransformDirection(keyboardInputs);
+        keyboardInputs = transform.TransformDirection(keyboardInputs);
 
         mouseInput = Vector3.zero;
         mouseInput.x = Input.GetAxis("Mouse X");
+        rotationX += mouseInput.x * 100f * Time.fixedDeltaTime;
 
-        rotationX += mouseInput.x * 100f * Time.deltaTime;
-
-        Quaternion localRotation = Quaternion.Euler(0, rotationX, 0);
-        transform.rotation = localRotation;
+        localRotation = Quaternion.Euler(0, rotationX, 0);
     }
 
     private void FixedUpdate() {
-        //Temporary fix to stop the character from trying to move up and down the Y-Axis when camera is facing up/down
-        keyboardInputs.y = 0;
+        body.MoveRotation(localRotation);
         body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
     }
 }
