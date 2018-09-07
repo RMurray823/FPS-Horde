@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour {
     private Vector3 keyboardInputs = Vector3.zero;
     private Vector3 mouseInput = Vector3.zero;
 
-    private Quaternion localRotation;
+    private Quaternion localRotation = Quaternion.identity;
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
