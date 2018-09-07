@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour {
     private Vector3 mouseInput = Vector3.zero;
 
     private Quaternion localRotation = Quaternion.identity;
+
+    public GameObject bullet;
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
@@ -32,6 +34,9 @@ public class PlayerController : MonoBehaviour {
                 Cursor.lockState = CursorLockMode.None;
         }
 
+        if(Input.GetKeyUp(KeyCode.Space)) {
+            fireBullet();
+        }
         keyboardInputs = Vector3.zero;
         keyboardInputs.x = Input.GetAxis("Horizontal");
         keyboardInputs.z = Input.GetAxis("Vertical");
@@ -45,7 +50,12 @@ public class PlayerController : MonoBehaviour {
         localRotation = Quaternion.Euler(0, rotationX, 0);
     }
 
-    private void FixedUpdate() {
+    public void fireBullet() {
+        Vector3 localPos = transform.forward;
+        Instantiate(bullet, Camera.main.transform.position + localPos, Camera.main.transform.rotation);
+    } 
+
+    void FixedUpdate() {
         body.MoveRotation(localRotation);
         body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
     }
