@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+		
     }
 
     // Update is called once per frame
@@ -22,6 +23,8 @@ public class CameraController : MonoBehaviour {
         mouseInput.y = -Input.GetAxis("Mouse Y");
 
         rotationY += mouseInput.y * 100f * Time.deltaTime;
+
+		rotationY = Mathf.Clamp (rotationY, -90, 90);
         Quaternion localRotation = Quaternion.Euler(rotationY, 0, 0);
 
         transform.localRotation = localRotation;
