@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
                 Cursor.lockState = CursorLockMode.None;
         }
 
-        if(Input.GetKeyUp(KeyCode.Space)) {
+        if(Input.GetKeyUp(KeyCode.Mouse0)) {
             fireBullet();
         }
         keyboardInputs = Vector3.zero;
