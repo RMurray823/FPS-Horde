@@ -27,14 +27,14 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void HandleInput() {
-        if (Input.GetKey(KeyCode.Escape)) {
+        if (Input.GetKeyUp(KeyCode.Escape)) {
             if (Cursor.lockState != CursorLockMode.Locked)
                 Cursor.lockState = CursorLockMode.Locked;
             else
                 Cursor.lockState = CursorLockMode.None;
         }
 
-        if(Input.GetKeyUp(KeyCode.Mouse0)) {
+        if(Input.GetKey(KeyCode.Mouse0)) {
             fireBullet();
         }
         keyboardInputs = Vector3.zero;
@@ -51,13 +51,17 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void fireBullet() {
-        Vector3 localPos = transform.forward;
+		Vector3 cameraDir = Camera.main.transform.forward;
+		Vector3 cameraPos = Camera.main.transform.position;
 		RaycastHit results;
 
-		if (Physics.Raycast (body.position, localPos, out results)) {
+		if (Physics.Raycast (cameraPos, cameraDir, out results)) {
 			Collider collider = results.collider;
 			collider.BroadcastMessage ("Shot");
+
 		}
+
+		Debug.DrawRay (cameraPos, cameraDir);
 		//Instantiate(bullet, Camera.main.transform.position + localPos, Camera.main.transform.rotation);
     } 
 
