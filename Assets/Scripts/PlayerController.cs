@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-
-    private float movementSpeed = 5.0f;
-
-    private float rotationX = 0f;
-
     private Rigidbody body;
 
     private Vector3 keyboardInputs = Vector3.zero;
@@ -16,6 +11,15 @@ public class PlayerController : MonoBehaviour {
     private Quaternion localRotation = Quaternion.identity;
 
     public GameObject bullet;
+
+    //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
+    private float movementSpeed = 5.0f;
+    private float rotationX = 0f;
+
+    //Delay in seconds
+    public float shootDelay = .2f;
+    private float shotTime = 0f;
+
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
@@ -24,6 +28,12 @@ public class PlayerController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         HandleInput();
+    }
+
+    // Called in fixed timesteps
+    void FixedUpdate() {
+        body.MoveRotation(localRotation);
+        body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
     }
 
     private void HandleInput() {
@@ -51,21 +61,20 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void fireBullet() {
-		Vector3 cameraDir = Camera.main.transform.forward;
-		Vector3 cameraPos = Camera.main.transform.position;
-		RaycastHit results;
+        if(Time.time - shotTime >= shootDelay) {
+            shotTime = Time.time;
 
-		if (Physics.Raycast (cameraPos, cameraDir, out results)) {
-			Collider collider = results.collider;
-			collider.BroadcastMessage ("Shot");
-		}
+            Vector3 cameraDir = Camera.main.transform.forward;
+            Vector3 cameraPos = Camera.main.transform.position;
+            RaycastHit results;
 
-		Debug.DrawRay (cameraPos, cameraDir);
-		//Instantiate(bullet, Camera.main.transform.position + localPos, Camera.main.transform.rotation);
+            if (Physics.Raycast(cameraPos, cameraDir, out results)) {
+                if(results.collider.tag == "Enemy") {
+                    results.collider.BroadcastMessage("Shot");
+                }
+            }
+        }	
     } 
 
-    void FixedUpdate() {
-        body.MoveRotation(localRotation);
-        body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
-    }
+
 }
