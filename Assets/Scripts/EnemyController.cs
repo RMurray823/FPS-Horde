@@ -14,6 +14,9 @@ public class EnemyController : MonoBehaviour {
 		
 	}
 
+	void Shot() {
+		Destroy (gameObject);
+	}
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == "Bullet") {
             Destroy(gameObject);

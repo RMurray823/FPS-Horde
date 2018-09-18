@@ -52,7 +52,13 @@ public class PlayerController : MonoBehaviour {
 
     public void fireBullet() {
         Vector3 localPos = transform.forward;
-        Instantiate(bullet, Camera.main.transform.position + localPos, Camera.main.transform.rotation);
+		RaycastHit results;
+
+		if (Physics.Raycast (body.position, localPos, out results)) {
+			Collider collider = results.collider;
+			collider.BroadcastMessage ("Shot");
+		}
+		//Instantiate(bullet, Camera.main.transform.position + localPos, Camera.main.transform.rotation);
     } 
 
     void FixedUpdate() {
