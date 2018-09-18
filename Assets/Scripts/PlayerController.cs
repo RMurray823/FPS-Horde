@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour {
 		if (Physics.Raycast (cameraPos, cameraDir, out results)) {
 			Collider collider = results.collider;
 			collider.BroadcastMessage ("Shot");
-
 		}
 
 		Debug.DrawRay (cameraPos, cameraDir);
