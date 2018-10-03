@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-
-    private float movementSpeed = 5.0f;
-
-    private float rotationX = 0f;
-
     private Rigidbody body;
 
     private Vector3 keyboardInputs = Vector3.zero;
@@ -16,6 +11,15 @@ public class PlayerController : MonoBehaviour {
     private Quaternion localRotation = Quaternion.identity;
 
     public GameObject bullet;
+
+    //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
+    private float movementSpeed = 5.0f;
+    private float rotationX = 0f;
+
+    //Delay in seconds
+    public float shootDelay = .2f;
+    private float shotTime = 0f;
+
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
@@ -26,15 +30,21 @@ public class PlayerController : MonoBehaviour {
         HandleInput();
     }
 
+    // Called in fixed timesteps
+    void FixedUpdate() {
+        body.MoveRotation(localRotation);
+        body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
+    }
+
     private void HandleInput() {
-        if (Input.GetKey(KeyCode.Escape)) {
+        if (Input.GetKeyUp(KeyCode.Escape)) {
             if (Cursor.lockState != CursorLockMode.Locked)
                 Cursor.lockState = CursorLockMode.Locked;
             else
                 Cursor.lockState = CursorLockMode.None;
         }
 
-        if(Input.GetKeyUp(KeyCode.Mouse0)) {
+        if(Input.GetKey(KeyCode.Mouse0)) {
             fireBullet();
         }
         keyboardInputs = Vector3.zero;
@@ -51,12 +61,20 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void fireBullet() {
-        Vector3 localPos = transform.forward;
-        Instantiate(bullet, Camera.main.transform.position + localPos, Camera.main.transform.rotation);
+        if(Time.time - shotTime >= shootDelay) {
+            shotTime = Time.time;
+
+            Vector3 cameraDir = Camera.main.transform.forward;
+            Vector3 cameraPos = Camera.main.transform.position;
+            RaycastHit results;
+
+            if (Physics.Raycast(cameraPos, cameraDir, out results)) {
+                if(results.collider.tag == "Enemy") {
+                    results.collider.BroadcastMessage("Shot");
+                }
+            }
+        }	
     } 
 
-    void FixedUpdate() {
-        body.MoveRotation(localRotation);
-        body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
-    }
+
 }

@@ -5,13 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     private float rotationY = 0f;
-
     private Vector3 mouseInput = Vector3.zero;
-
-    // Use this for initialization
-    void Start() {
-		
-    }
 
     // Update is called once per frame
     void Update() {
@@ -28,8 +22,5 @@ public class CameraController : MonoBehaviour {
         Quaternion localRotation = Quaternion.Euler(rotationY, 0, 0);
 
         transform.localRotation = localRotation;
-    }
-
-    private void FixedUpdate() {
     }
 }
