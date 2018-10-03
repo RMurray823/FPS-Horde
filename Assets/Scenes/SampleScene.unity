@@ -870,6 +870,7 @@ GameObject:
   - component: {fileID: 2037165598}
   - component: {fileID: 2037165594}
   - component: {fileID: 2037165595}
+  - component: {fileID: 2037165596}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -904,6 +905,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 1305268952808524, guid: 5ad656ac484859440b7d00081608a724, type: 2}
+--- !u!81 &2037165596
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2037165593}
+  m_Enabled: 1
 --- !u!136 &2037165598
 CapsuleCollider:
   m_ObjectHideFlags: 0
