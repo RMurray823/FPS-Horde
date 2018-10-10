@@ -239,52 +239,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ecf4dac0534aed4182e5b249a47a1a0, type: 3}
   m_IsPrefabAsset: 0
---- !u!1001 &875670804
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 157.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1.0071411
-      objectReference: {fileID: 0}
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 261.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 420660, guid: d198960c824712f47910b26db9da2156, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d198960c824712f47910b26db9da2156, type: 2}
-  m_IsPrefabAsset: 0
 --- !u!1 &979066809
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,7 +303,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 33.6, y: -120, z: 0}
 --- !u!1001 &1035081483
 Prefab:
@@ -361,7 +315,7 @@ Prefab:
     - target: {fileID: 224637023496913734, guid: 40290887f4daf2c4a9ff2064fc4154d6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 224637023496913734, guid: 40290887f4daf2c4a9ff2064fc4154d6,
         type: 2}
@@ -401,7 +355,7 @@ Prefab:
     - target: {fileID: 224637023496913734, guid: 40290887f4daf2c4a9ff2064fc4154d6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 224637023496913734, guid: 40290887f4daf2c4a9ff2064fc4154d6,
         type: 2}
@@ -588,7 +542,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4231912184570518, guid: 282c6bf37ad5d4dff8dda6ae31938313, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.3333094
+      value: 3.73
       objectReference: {fileID: 0}
     - target: {fileID: 4231912184570518, guid: 282c6bf37ad5d4dff8dda6ae31938313, type: 2}
       propertyPath: m_LocalPosition.z
@@ -776,10 +730,10 @@ Transform:
   m_GameObject: {fileID: 1658177639}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!154 &1658177641
 TerrainCollider:
@@ -800,11 +754,11 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 3
   m_TerrainData: {fileID: 15600000, guid: e5706bd62e966134092e278a3b23cfcb, type: 2}
-  m_TreeDistance: 5000
+  m_TreeDistance: 2000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 80
+  m_DetailObjectDistance: 153
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
