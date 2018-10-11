@@ -203,6 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 0}
+  movementSpeed: 25
   shootDelay: 0.2
 --- !u!136 &136331655701871874
 CapsuleCollider:
