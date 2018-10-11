@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject bullet;
 
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
-    private float movementSpeed = 5.0f;
+    public float movementSpeed = 5.0f;
     private float rotationX = 0f;
 
     //Delay in seconds
