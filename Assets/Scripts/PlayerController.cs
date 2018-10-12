@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour {
 
     private Quaternion localRotation = Quaternion.identity;
 
-    public GameObject bullet;
-
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
     public float movementSpeed = 5.0f;
     private float rotationX = 0f;
@@ -20,9 +18,11 @@ public class PlayerController : MonoBehaviour {
     public float shootDelay = .2f;
     private float shotTime = 0f;
 
+    private Health health;
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
+        health = GetComponent<Health>();
     }
 	
     // Update is called once per frame
@@ -34,6 +34,12 @@ public class PlayerController : MonoBehaviour {
     void FixedUpdate() {
         body.MoveRotation(localRotation);
         body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
+    }
+
+    public void hit(int damage) {
+        if(health.takeDamage(damage) <= 0) {
+            Debug.Log("dead");
+        }
     }
 
     private void HandleInput() {
@@ -75,6 +81,4 @@ public class PlayerController : MonoBehaviour {
             }
         }	
     } 
-
-
 }

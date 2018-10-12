@@ -7,11 +7,13 @@ public class EnemyBehavior : MonoBehaviour
 {
     private NavMeshAgent _nav;
     private Transform _player;
+    private Health health;
 	// Use this for initialization
 	void Start ()
     {
         _nav = GetComponent<NavMeshAgent>();
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+        health = GetComponent<Health>();
     }
 	
 	// Update is called once per frame
@@ -21,6 +23,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void Shot()
     {
-        Destroy (gameObject);
+        if(health.takeDamage(50) <= 0)
+            Destroy (gameObject);
     }
 }

@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 136331655701871874}
   - component: {fileID: 54494305639933976}
   - component: {fileID: 114287720683325472}
+  - component: {fileID: 114314546621787286}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -55,8 +56,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1517661890115936}
-  m_LocalRotation: {x: 0, y: -0.44931927, z: 0, w: 0.8933712}
-  m_LocalPosition: {x: 145.48636, y: 2.1007707, z: 253.46506}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4, z: -18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4508540803278850}
@@ -70,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1712611728913324}
   m_LocalRotation: {x: -0.23669627, y: 0, z: 0, w: 0.9715837}
-  m_LocalPosition: {x: 0, y: 3.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0.7, z: 0}
   m_LocalScale: {x: 1, y: 1.05, z: 1}
   m_Children: []
   m_Father: {fileID: 4231912184570518}
@@ -202,9 +203,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131302acea92a394daa05a8c70356dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 0}
   movementSpeed: 25
   shootDelay: 0.2
+--- !u!114 &114314546621787286
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1517661890115936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a327acd36444947b4df98884dabbbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  maxHealth: 100
 --- !u!136 &136331655701871874
 CapsuleCollider:
   m_ObjectHideFlags: 1
