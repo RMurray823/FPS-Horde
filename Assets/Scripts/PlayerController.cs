@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour {
         health = GetComponent<Health>();
 
         health.maxHealth = 100;
-        health.health = 100;
-        uiHealth.text = health.health.ToString();
+        health.currentHealth = 100;
+        uiHealth.text = health.currentHealth.ToString();
     }
 	
     // Update is called once per frame
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("dead");
         }
 
-        uiHealth.text = health.health.ToString();
+        uiHealth.text = health.currentHealth.ToString();
 
     }
 

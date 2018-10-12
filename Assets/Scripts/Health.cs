@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class Health : MonoBehaviour{
 
-    public int health { get; set; }
+    public int currentHealth { get; set; }
     public int maxHealth { get; set; }
 
+    public RectTransform healthBar;
     private void Start() {
-        health = 100;
+        currentHealth = 100;
         maxHealth = 100;
     }
 
     //Apply the amount of damage defined and return the new health value
     public int takeDamage(int damage) {
-        health -= damage;
+        currentHealth -= damage;
 
         //Check for negative damage applied
-        if (health > maxHealth)
-            health = maxHealth;
-        return health;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+
+        if (healthBar != null) {
+            healthBar.sizeDelta = new Vector2((float) currentHealth / (float) maxHealth, healthBar.sizeDelta.y);
+        }
+        return currentHealth;
     }
 
     //Add the amount of health to restore and return the result
     public int heal(int heal) {
-        health++;
+        currentHealth++;
         
-        if (health > maxHealth)
-            health = maxHealth;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
 
-        return health;
+        return currentHealth;
     }
 }
