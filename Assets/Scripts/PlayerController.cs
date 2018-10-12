@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
     private Rigidbody body;
 
@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
 
     private Quaternion localRotation = Quaternion.identity;
 
+    public Text uiHealth;
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
     public float movementSpeed = 5.0f;
     private float rotationX = 0f;
@@ -23,6 +24,10 @@ public class PlayerController : MonoBehaviour {
     void Start () {
         body = GetComponent<Rigidbody>();
         health = GetComponent<Health>();
+
+        health.maxHealth = 100;
+        health.health = 100;
+        uiHealth.text = health.health.ToString();
     }
 	
     // Update is called once per frame
@@ -37,9 +42,13 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void hit(int damage) {
+
         if(health.takeDamage(damage) <= 0) {
             Debug.Log("dead");
         }
+
+        uiHealth.text = health.health.ToString();
+
     }
 
     private void HandleInput() {

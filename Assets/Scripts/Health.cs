@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Health : MonoBehaviour{
 
-    public int health = 100;
-    public int maxHealth = 100;
+    public int health { get; set; }
+    public int maxHealth { get; set; }
+
+    private void Start() {
+        health = 100;
+        maxHealth = 100;
+    }
 
     //Apply the amount of damage defined and return the new health value
     public int takeDamage(int damage) {
