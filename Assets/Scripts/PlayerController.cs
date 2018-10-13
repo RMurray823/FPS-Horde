@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour {
     private float shotTime = 0f;
 
     private Health health;
+
+
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
@@ -63,6 +65,7 @@ public class PlayerController : MonoBehaviour {
             health.healArmor(pack.getArmorAmount());
         }
     }
+
     private void HandleInput() {
         if (Input.GetKeyUp(KeyCode.Escape)) {
             if (Cursor.lockState != CursorLockMode.Locked)
@@ -71,9 +74,6 @@ public class PlayerController : MonoBehaviour {
                 Cursor.lockState = CursorLockMode.None;
         }
 
-        if(Input.GetKey(KeyCode.Mouse0)) {
-            fireBullet();
-        }
         keyboardInputs = Vector3.zero;
         keyboardInputs.x = Input.GetAxis("Horizontal");
         keyboardInputs.z = Input.GetAxis("Vertical");
@@ -86,20 +86,4 @@ public class PlayerController : MonoBehaviour {
 
         localRotation = Quaternion.Euler(0, rotationX, 0);
     }
-
-    public void fireBullet() {
-        if(Time.time - shotTime >= shootDelay) {
-            shotTime = Time.time;
-
-            Vector3 cameraDir = Camera.main.transform.forward;
-            Vector3 cameraPos = Camera.main.transform.position;
-            RaycastHit results;
-
-            if (Physics.Raycast(cameraPos, cameraDir, out results)) {
-                if(results.collider.tag == "Enemy") {
-                    results.collider.BroadcastMessage("Shot");
-                }
-            }
-        }	
-    } 
 }
