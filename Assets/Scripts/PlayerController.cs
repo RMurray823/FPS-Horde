@@ -27,8 +27,6 @@ public class PlayerController : MonoBehaviour {
         body = GetComponent<Rigidbody>();
         health = GetComponent<Health>();
 
-        health.maxHealth = 100;
-        health.currentHealth = 45;
         uiHealth.text = health.currentHealth.ToString();
     }
 	
