@@ -18,24 +18,27 @@ public class EnemyBehavior : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform; //find a player.
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
-        //check to update the animation method every half second.
-        InvokeRepeating("Animation", 0.5f, 0.5f);
     }
 	
 	// Update is called once per frame
-	void Update () {
-        nav.SetDestination(player.position); //move to player's position.
-
-	}
-
-    void Animation()
+	void Update ()
     {
+        nav.SetDestination(player.position); //move to player's position.
+        Debug.Log(this.anim.GetCurrentAnimatorClipInfo(0));
+        //control movement
         if (Vector3.Distance(this.transform.position, player.transform.position) > nav.stoppingDistance)
             anim.SetBool("isMoving", true);
         else
+        {
             anim.SetTrigger("attack");
-        player.BroadcastMessage("hit", damage);
+            //only hit once per second
             anim.SetBool("isMoving", false);
+        }
+    }
+
+    void Attack()
+    {
+        player.BroadcastMessage("hit", damage);
     }
 
     private void OnTriggerEnter(Collider other) {
