@@ -57,6 +57,11 @@ public class PlayerController : MonoBehaviour {
             HealthPack pack = other.GetComponent<HealthPack>();
             health.heal(pack.getHealAmount());
         }
+
+        if (other.tag == "ArmorPack") {
+            HealthPack pack = other.GetComponent<HealthPack>();
+            health.healArmor(pack.getArmorAmount());
+        }
     }
     private void HandleInput() {
         if (Input.GetKeyUp(KeyCode.Escape)) {

@@ -21,6 +21,17 @@ public class EnemyBehavior : MonoBehaviour
         _nav.SetDestination(_player.position);
 	}
 
+    private void OnTriggerEnter(Collider other) {
+        if (other.tag == "HealthPack") {
+            HealthPack pack = other.GetComponent<HealthPack>();
+            health.heal(pack.getHealAmount());
+        }
+
+        if(other.tag == "ArmorPack") {
+            HealthPack pack = other.GetComponent<HealthPack>();
+            health.healArmor(pack.getArmorAmount());
+        }
+    }
     void Shot()
     {
         if(health.takeDamage(50) <= 0)

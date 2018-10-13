@@ -16,7 +16,7 @@ public class HealthPack : MonoBehaviour {
     }
     private void OnTriggerEnter(Collider collision) {
         Debug.Log("Colliding");
-        if (collision.tag == "Player")
+        if (collision.tag == "Player" || collision.tag == "Enemy")
             Destroy(gameObject);
     }
 }
