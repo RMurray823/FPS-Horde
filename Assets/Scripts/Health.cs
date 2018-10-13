@@ -4,22 +4,14 @@ using UnityEngine;
 
 public class Health : MonoBehaviour{
 
-    public int currentHealth { get; set; }
-    public int maxHealth { get; set; }
+    public int currentHealth;
+    public int maxHealth;
 
-    public int currentArmor { get; set; }
-    public int maxArmor { get; set; }
+    public int currentArmor;
+    public int maxArmor;
 
     public RectTransform healthBar;
     public RectTransform armorBar;
-
-    private void Start() {
-        currentHealth = 100;
-        maxHealth = 100;
-
-        currentArmor = 50;
-        maxArmor = 50;
-    }
 
     //Apply the amount of damage defined and return the new health value
     public int takeDamage(int damage) {
