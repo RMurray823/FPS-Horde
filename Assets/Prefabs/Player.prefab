@@ -480,6 +480,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a327acd36444947b4df98884dabbbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHealth: 50
+  maxHealth: 100
+  currentArmor: 50
+  maxArmor: 50
   healthBar: {fileID: 0}
   armorBar: {fileID: 0}
 --- !u!114 &114524456284964148
