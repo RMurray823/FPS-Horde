@@ -21,19 +21,24 @@ public class Health : MonoBehaviour{
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
 
-        if (healthBar != null) {
-            healthBar.sizeDelta = new Vector2((float) currentHealth / (float) maxHealth, healthBar.sizeDelta.y);
-        }
+        updateBar();
         return currentHealth;
     }
 
     //Add the amount of health to restore and return the result
     public int heal(int heal) {
-        currentHealth++;
+        currentHealth+= heal;
         
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
 
+        updateBar();
         return currentHealth;
+    }
+
+    private void updateBar() {
+        if (healthBar != null) {
+            healthBar.sizeDelta = new Vector2((float)currentHealth / (float)maxHealth, healthBar.sizeDelta.y);
+        }
     }
 }

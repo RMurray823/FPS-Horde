@@ -7,6 +7,8 @@ TagManager:
   - Bullet
   - Enemy
   - HealthUI
+  - HealthPack
+  - ArmorPack
   layers:
   - Default
   - TransparentFX

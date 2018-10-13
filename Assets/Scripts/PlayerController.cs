@@ -26,13 +26,14 @@ public class PlayerController : MonoBehaviour {
         health = GetComponent<Health>();
 
         health.maxHealth = 100;
-        health.currentHealth = 100;
+        health.currentHealth = 45;
         uiHealth.text = health.currentHealth.ToString();
     }
 	
     // Update is called once per frame
     void Update () {
         HandleInput();
+        uiHealth.text = health.currentHealth.ToString();
     }
 
     // Called in fixed timesteps
@@ -51,6 +52,12 @@ public class PlayerController : MonoBehaviour {
 
     }
 
+    private void OnTriggerEnter(Collider other) {
+        if(other.tag=="HealthPack") {
+            HealthPack pack = other.GetComponent<HealthPack>();
+            health.heal(pack.getHealAmount());
+        }
+    }
     private void HandleInput() {
         if (Input.GetKeyUp(KeyCode.Escape)) {
             if (Cursor.lockState != CursorLockMode.Locked)
