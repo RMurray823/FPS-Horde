@@ -36,7 +36,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    void Attack()
+    private void Attack()
     {
         player.BroadcastMessage("hit", damage);
     }
@@ -54,7 +54,11 @@ public class EnemyBehavior : MonoBehaviour
     }
     void Shot()
     {
-        if(health.takeDamage(50) <= 0)
-            Destroy (gameObject);
+        if (health.takeDamage(50) <= 0)
+            anim.SetTrigger("isDead");
+    }
+    private void Destroy()
+    {
+        Destroy(gameObject);
     }
 }
