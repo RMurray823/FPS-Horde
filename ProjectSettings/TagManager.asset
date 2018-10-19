@@ -9,6 +9,7 @@ TagManager:
   - HealthUI
   - HealthPack
   - ArmorPack
+  - WeakPoint
   layers:
   - Default
   - TransparentFX

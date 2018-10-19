@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    //public playerHealth;
+
+    private Transform player;
     public GameObject enemy;
     public float spawnTime = 3f;
+    public float spawnRadius = 100f;
     public Transform[] spawnPoints; //used to hold multiple locations for enemies to spawn from.
 
 	// Use this for initialization

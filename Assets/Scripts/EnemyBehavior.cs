@@ -52,9 +52,14 @@ public class EnemyBehavior : MonoBehaviour
             health.healArmor(pack.getArmorAmount());
         }
     }
-    void Shot()
+    void Shot(int damage)
     {
-        if (health.takeDamage(50) <= 0)
+        if (health.takeDamage(damage) <= 0)
+            anim.SetTrigger("isDead");
+    }
+    void CriticalHit(int damage)
+    {
+        if (health.takeDamage(damage * 2) <= 0)
             anim.SetTrigger("isDead");
     }
     private void Destroy()
