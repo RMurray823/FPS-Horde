@@ -145,9 +145,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4639753295002576}
   - component: {fileID: 137402160637028088}
+  - component: {fileID: 135408360257039746}
   m_Layer: 0
   m_Name: ' Head'
-  m_TagString: Untagged
+  m_TagString: WeakPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -775,7 +776,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1596632398661518}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.5784655, y: -1.0600411e-17, z: 4.774001}
+  m_LocalPosition: {x: -5.907266, y: 0.001, z: 13.23}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4639753295002576}
@@ -1110,7 +1111,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1149954677004158}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4016517349315078}
@@ -1596,6 +1597,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc3365aa97da9347a06dfba01dc4d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &135408360257039746
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1149954677004158}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.14
+  m_Center: {x: -0.0000010965546, y: -0.015505895, z: 1.6402467}
 --- !u!136 &136850782400520068
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1605,10 +1618,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 2
+  m_Radius: 0.33373013
+  m_Height: 1.6714292
   m_Direction: 1
-  m_Center: {x: 0, y: 0.8, z: 0}
+  m_Center: {x: 0, y: 0.725225, z: 0.03373012}
 --- !u!137 &137004777814333422
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
