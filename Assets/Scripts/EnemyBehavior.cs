@@ -26,7 +26,7 @@ public class EnemyBehavior : MonoBehaviour
         nav.SetDestination(player.position); //move to player's position.
         Debug.Log(this.anim.GetCurrentAnimatorClipInfo(0));
         //control movement
-        if (Vector3.Distance(this.transform.position, player.transform.position) > nav.stoppingDistance)
+        if (Vector3.Distance(transform.position, player.transform.position) > nav.stoppingDistance)
             anim.SetBool("isMoving", true);
         else
         {
