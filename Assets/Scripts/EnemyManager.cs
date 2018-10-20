@@ -6,6 +6,7 @@ public class EnemyManager : MonoBehaviour
 {
 
     private Transform player;
+    private Health health;
     public GameObject enemy;
     public float spawnTime = 3f;
     public float spawnRadius;
@@ -15,6 +16,7 @@ public class EnemyManager : MonoBehaviour
 	void Start ()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        health = GetComponent<Health>();
         InvokeRepeating("Spawn", spawnTime, spawnTime); //causes this script to run once for each interval spawnTime.
 	}
 
@@ -26,6 +28,11 @@ public class EnemyManager : MonoBehaviour
             Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
     }
 	
+    void Shot(int damage)
+    {
+        if (health.takeDamage(damage) <= 0)
+            Destroy(gameObject);
+    }
 	/* Update is called once per frame (unneeded in this implementation)
 	void Update ()
     {
