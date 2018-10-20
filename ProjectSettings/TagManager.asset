@@ -10,6 +10,7 @@ TagManager:
   - HealthPack
   - ArmorPack
   - WeakPoint
+  - Ally
   layers:
   - Default
   - TransparentFX
