@@ -37,7 +37,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Attack()
     {
-        target.BroadcastMessage("hit", damage);
+        target.BroadcastMessage("Hit", damage);
     }
 
     private void OnTriggerEnter(Collider other) {

@@ -6,12 +6,22 @@ public class Health : MonoBehaviour{
 
     public int currentHealth;
     public int maxHealth;
+    public int startingHealthMin;
+    public int startingHealthMax;
 
     public int currentArmor;
     public int maxArmor;
+    public int startingArmorMin;
+    public int startingArmorMax;
 
     public RectTransform healthBar;
     public RectTransform armorBar;
+
+    void Start ()
+    {
+        currentHealth = Random.Range(startingHealthMin, startingHealthMax);
+        currentArmor = Random.Range(startingArmorMin, startingArmorMax);
+    }
 
     //Apply the amount of damage defined and return the new health value
     public int takeDamage(int damage) {

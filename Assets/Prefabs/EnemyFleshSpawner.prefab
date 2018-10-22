@@ -400,8 +400,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 500
   maxHealth: 500
+  startingHealthMin: 500
+  startingHealthMax: 500
   currentArmor: 200
   maxArmor: 200
+  startingArmorMin: 200
+  startingArmorMax: 200
   healthBar: {fileID: 224786517376867048}
   armorBar: {fileID: 224220333920689698}
 --- !u!114 &114920503351198464

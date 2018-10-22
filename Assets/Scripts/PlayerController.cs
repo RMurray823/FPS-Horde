@@ -42,14 +42,12 @@ public class PlayerController : MonoBehaviour {
         body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
     }
 
-    public void hit(int damage) {
-
+    public void Hit(int damage)
+    {
         if(health.takeDamage(damage) <= 0) {
             Debug.Log("dead");
         }
-
         uiHealth.text = health.currentHealth.ToString();
-
     }
 
     private void OnTriggerEnter(Collider other) {
