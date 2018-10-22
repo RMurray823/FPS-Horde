@@ -1743,12 +1743,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 20
   maxHealth: 20
-  startingHealthMin: 0
-  startingHealthMax: 0
+  startingHealthMin: 20
+  startingHealthMax: 20
   currentArmor: 100
   maxArmor: 100
-  startingArmorMin: 0
-  startingArmorMax: 0
+  startingArmorMin: 100
+  startingArmorMax: 100
   healthBar: {fileID: 224611176556520194}
   armorBar: {fileID: 224317920892284176}
 --- !u!114 &114264709323224752
