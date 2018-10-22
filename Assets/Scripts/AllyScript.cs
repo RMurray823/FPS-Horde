@@ -11,47 +11,78 @@ public class AllyScript : MonoBehaviour
     private GameObject[] enemies;
     private Health health;
     private Animator anim;
-    private float range = 50f;
 
-	// Use this for initialization
-	void Start ()
+    private float shotTime;
+
+    public int damage = 10;
+    public float fireRate = 1f;
+    public float range = 50f;
+
+    // Use this for initialization
+    void Start ()
     {
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        //movement management
-        if(Vector3.Distance(transform.position, player.transform.position) <= nav.stoppingDistance * 2)
-            nav.SetDestination(player.transform.position);
-        anim.SetFloat("Speed", nav.velocity.magnitude);
-        //combat management
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         target = GetClosestEnemy(enemies);
-        if (Vector3.Distance(transform.position, target.transform.position) < range)
+        //movement management
+        if (Vector3.Distance(transform.position, player.transform.position) > nav.stoppingDistance * 2)
         {
-            anim.SetBool("Aiming", true);
+            anim.SetBool("Aiming", false);
+            nav.SetDestination(player.transform.position);
         }
-
+        //check for target
+        else if (target != null)
+        {
+            //if a target exists and is within range, shoot at it
+            if (Vector3.Distance(transform.position, target.transform.position) < range)
+            {
+                anim.SetBool("Aiming", true);
+                var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
+                if (Time.time >= shotTime + fireRate)
+                {
+                    Shoot(target);
+                }
+            }
+        }
+        anim.SetFloat("Speed", nav.velocity.magnitude);
     }
 
-    void Hit(int damage)
+    void Hit (int damage)
     {
         if (health.takeDamage(damage) <= 0)
-            Debug.Log("Dead.");
+        {
+            Debug.Log("dead");
+        }
     }
 
-    void Shoot(GameObject target)
+    void Shoot (GameObject target)
     {
-        anim.SetTrigger("Attacl");
+        anim.SetTrigger("Attack");
+        shotTime = Time.time;
+        Vector3 dir = transform.forward;
+        Vector3 pos = transform.position;
+        RaycastHit result;
+
+        if (Physics.Raycast(pos, dir, out result))
+        {
+            if (result.collider.tag == "WeakPoint")
+                result.rigidbody.BroadcastMessage("CriticalHit", damage);
+
+            else if (result.collider.tag == "Enemy")
+                result.collider.BroadcastMessage("Shot", damage);
+        }
     }
 
-    private GameObject GetClosestEnemy(GameObject[] enemies)
+    private GameObject GetClosestEnemy (GameObject[] enemies)
     {
         Vector3 position = transform.position;
         GameObject closest = null;

@@ -1419,6 +1419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8620760d06f474abefca9f62da93e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 5
 --- !u!114 &114172527843582016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1432,8 +1433,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 100
   maxHealth: 100
+  startingHealthMin: 50
+  startingHealthMax: 100
   currentArmor: 0
   maxArmor: 0
+  startingArmorMin: 0
+  startingArmorMax: 50
   healthBar: {fileID: 224652245188567526}
   armorBar: {fileID: 224455023597611804}
 --- !u!114 &114205123401200472
