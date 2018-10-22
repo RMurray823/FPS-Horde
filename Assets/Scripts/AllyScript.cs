@@ -22,9 +22,10 @@ public class AllyScript : MonoBehaviour
     void Start ()
     {
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
-        player = GameObject.FindGameObjectWithTag("Player"); //find a player.
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player"); //find a player.
+
     }
 	
 	// Update is called once per frame
@@ -33,7 +34,7 @@ public class AllyScript : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         target = GetClosestEnemy(enemies);
         //movement management
-        if (Vector3.Distance(transform.position, player.transform.position) > nav.stoppingDistance * 2)
+        if (Vector3.Distance(transform.position, player.transform.position) >= nav.stoppingDistance)
         {
             anim.SetBool("Aiming", false);
             nav.SetDestination(player.transform.position);
@@ -75,10 +76,10 @@ public class AllyScript : MonoBehaviour
         if (Physics.Raycast(pos, dir, out result))
         {
             if (result.collider.tag == "WeakPoint")
-                result.rigidbody.BroadcastMessage("CriticalHit", damage);
+                result.rigidbody.SendMessage("CriticalHit", damage);
 
             else if (result.collider.tag == "Enemy")
-                result.collider.BroadcastMessage("Shot", damage);
+                result.collider.SendMessage("Shot", damage);
         }
     }
 

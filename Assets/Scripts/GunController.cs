@@ -34,10 +34,10 @@ public class GunController : MonoBehaviour {
             gunNoise.Play();
             if (Physics.Raycast(cameraPos, cameraDir, out results)) {
                 if (results.collider.tag == "WeakPoint")
-                    results.rigidbody.BroadcastMessage("CriticalHit", damage);
+                    results.rigidbody.SendMessage("CriticalHit", damage);
 
                 else if (results.collider.tag == "Enemy")
-                    results.collider.BroadcastMessage("Shot", damage);
+                    results.collider.SendMessage("Shot", damage);
             }
         }
     }

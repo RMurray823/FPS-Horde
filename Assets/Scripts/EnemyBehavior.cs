@@ -11,33 +11,46 @@ public class EnemyBehavior : MonoBehaviour
     private GameObject[] allies;
     private Health health;
     private Animator anim;
+
+    private float attackTime;
+
     public int damage = 5;
+    public int attackSpeed = 1;
+    public int minSpeed = 3;
+    public int maxSpeed = 5;
 
 	// Use this for initialization
 	void Start ()
     {
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
-        player = GameObject.FindGameObjectWithTag("Player"); //find a player.
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
-        allies = GameObject.FindGameObjectsWithTag("Ally");
+        player = GameObject.FindGameObjectWithTag("Player"); //find a player
+        allies = GameObject.FindGameObjectsWithTag("Ally"); //make an array of all ally NPC's
+        nav.speed = Random.Range(minSpeed, maxSpeed);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
         target = GetClosestEnemy(allies);
-        nav.SetDestination(target.transform.position); //move to target's position.
-        //control movement amimations.
         anim.SetFloat("Speed", nav.velocity.magnitude);
-        if (Vector3.Distance(transform.position, target.transform.position) <= nav.stoppingDistance)
+        //control movement amimations.
+        if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
+            nav.SetDestination(target.transform.position); //move to target's position.
+
+        else if (Vector3.Distance(transform.position, target.transform.position) <= nav.stoppingDistance)
+        {
+            if(Time.time >= attackTime + attackSpeed)
             anim.SetTrigger("attack");
+        }
 
     }
 
     private void Attack()
     {
-        target.BroadcastMessage("Hit", damage);
+        attackTime = Time.time;
+        target.SendMessage("Hit", damage);
     }
 
     private void OnTriggerEnter(Collider other) {

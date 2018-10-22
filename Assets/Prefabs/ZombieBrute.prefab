@@ -2868,6 +2868,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 20
+  attackSpeed: 2
+  minSpeed: 2
+  maxSpeed: 4
 --- !u!114 &114892578673503866
 MonoBehaviour:
   m_ObjectHideFlags: 1
