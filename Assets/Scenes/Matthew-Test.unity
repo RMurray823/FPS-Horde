@@ -745,6 +745,26 @@ Prefab:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114314546621787286, guid: 282c6bf37ad5d4dff8dda6ae31938313,
+        type: 2}
+      propertyPath: startingHealthMin
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114314546621787286, guid: 282c6bf37ad5d4dff8dda6ae31938313,
+        type: 2}
+      propertyPath: startingHealthMax
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114314546621787286, guid: 282c6bf37ad5d4dff8dda6ae31938313,
+        type: 2}
+      propertyPath: startingArmorMin
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114314546621787286, guid: 282c6bf37ad5d4dff8dda6ae31938313,
+        type: 2}
+      propertyPath: startingArmorMax
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 282c6bf37ad5d4dff8dda6ae31938313, type: 2}
   m_IsPrefabAsset: 0
@@ -789,11 +809,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4794917594543740, guid: cf55c1037a7de314bb2f9ce309ac4902, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4794917594543740, guid: cf55c1037a7de314bb2f9ce309ac4902, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4794917594543740, guid: cf55c1037a7de314bb2f9ce309ac4902, type: 2}
       propertyPath: m_LocalPosition.z
@@ -818,6 +838,10 @@ Prefab:
     - target: {fileID: 4794917594543740, guid: cf55c1037a7de314bb2f9ce309ac4902, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436526436090138, guid: cf55c1037a7de314bb2f9ce309ac4902, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf55c1037a7de314bb2f9ce309ac4902, type: 2}
