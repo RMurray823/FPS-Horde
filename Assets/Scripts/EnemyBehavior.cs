@@ -23,6 +23,7 @@ public class EnemyBehavior : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        //Debug.Log("Player", gameObject);
         nav.SetDestination(player.position); //move to player's position.
         Debug.Log(this.anim.GetCurrentAnimatorClipInfo(0));
         //control movement
