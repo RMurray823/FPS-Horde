@@ -11,39 +11,58 @@ public class PlayerController : MonoBehaviour {
     private Quaternion localRotation = Quaternion.identity;
 
     public Text uiHealth;
+    public Text uiArmor;
+
+    //Remaining ammo not loaded
+    public Text uiRemainingAmmo;
+    //Currently loaded
+    public Text uiClipAmmo;
+
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
     public float movementSpeed = 5.0f;
     private float rotationX = 0f;
 
-    //Delay in seconds
-    public float shootDelay = .2f;
-    private float shotTime = 0f;
-
     private Health health;
 
+    //Currently held gun info
+    public GameObject heldGun;
+    private GunController gunController;
 
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
         health = GetComponent<Health>();
 
+        gunController = heldGun.GetComponent<GunController>();
+
+        //Initialize text UI components
         uiHealth.text = health.currentHealth.ToString();
+        uiArmor.text = health.currentArmor.ToString();
+        uiClipAmmo.text = gunController.getAmmoInClip().ToString();
+        uiRemainingAmmo.text = gunController.getAmmoNotInClip().ToString();
+
     }
 	
     // Update is called once per frame
     void Update () {
         HandleInput();
-        uiHealth.text = health.currentHealth.ToString();
+        UpdateUI();
     }
 
-    // Called in fixed timesteps
+    private void UpdateUI() {
+        uiHealth.text = health.currentHealth.ToString();
+        uiArmor.text = health.currentArmor.ToString();
+
+        uiClipAmmo.text = gunController.getAmmoInClip().ToString();
+        uiRemainingAmmo.text = gunController.getAmmoNotInClip().ToString();
+    }
+
     void FixedUpdate() {
         body.MoveRotation(localRotation);
         body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
     }
 
-    public void Hit(int damage)
-    {
+    public void Hit(int damage) {
         if(health.takeDamage(damage) <= 0) {
             Debug.Log("dead");
         }

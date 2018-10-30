@@ -11,6 +11,10 @@ TagManager:
   - ArmorPack
   - WeakPoint
   - Ally
+  - ArmorUI
+  - RemainingAmmoUI
+  - AmmoClipUI
+  - Player_HeldGun
   layers:
   - Default
   - TransparentFX
