@@ -18,10 +18,15 @@ public class HealthPack : MonoBehaviour {
     private void OnTriggerEnter(Collider collision) {
         sound = GetComponent<AudioSource>();
         Debug.Log("Colliding");
+        sound = GetComponent<AudioSource>();    
         if (collision.tag == "Player" || collision.tag == "Enemy")
         {
             sound.Play();
+<<<<<<< HEAD
             Destroy(gameObject, .5f);
+=======
+            Destroy(gameObject, 2.0f);
+>>>>>>> Development
         }
     }
 }
