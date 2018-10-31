@@ -16,7 +16,7 @@ public class HealthPack : MonoBehaviour {
         return armorAmount;
     }
     private void OnTriggerEnter(Collider collision) {
-        sound = GetComponent<AudioSource>();
+
         Debug.Log("Colliding");
         sound = GetComponent<AudioSource>();    
         if (collision.tag == "Player" || collision.tag == "Enemy")
