@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 54494305639933976}
   - component: {fileID: 114287720683325472}
   - component: {fileID: 114314546621787286}
+  - component: {fileID: 114141477572626742}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -510,6 +511,23 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114141477572626742
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1517661890115936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da52c09d129d59747b794ea6e4676b68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guns:
+  - {fileID: 1542272147480146}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114245184504685676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -559,7 +577,6 @@ MonoBehaviour:
   uiRemainingAmmo: {fileID: 114957913977290378}
   uiClipAmmo: {fileID: 114584941812699276}
   movementSpeed: 25
-  heldGun: {fileID: 1542272147480146}
 --- !u!114 &114314546621787286
 MonoBehaviour:
   m_ObjectHideFlags: 1
