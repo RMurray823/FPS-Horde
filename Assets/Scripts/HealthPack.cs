@@ -22,11 +22,7 @@ public class HealthPack : MonoBehaviour {
         if (collision.tag == "Player" || collision.tag == "Enemy")
         {
             sound.Play();
-<<<<<<< HEAD
             Destroy(gameObject, .5f);
-=======
-            Destroy(gameObject, 2.0f);
->>>>>>> Development
         }
     }
 }
