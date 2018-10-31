@@ -19,6 +19,7 @@ public class GunController : MonoBehaviour {
 	void Update () {
         if (Input.GetKey(KeyCode.Mouse0)) {
             fireBullet();
+            
         }
     }
 
@@ -29,8 +30,9 @@ public class GunController : MonoBehaviour {
             Vector3 cameraDir = mainCamera.transform.forward;
             Vector3 cameraPos = mainCamera.transform.position;
             RaycastHit results;
-
             gunNoise.Play();
+
+
             if (Physics.Raycast(cameraPos, cameraDir, out results)) {
                 if (results.collider.tag == "Enemy") {
                     results.collider.BroadcastMessage("Shot");
