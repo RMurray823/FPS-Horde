@@ -6,6 +6,7 @@ public class HealthPack : MonoBehaviour {
 
     public int healAmount;
     public int armorAmount;
+    private AudioSource sound;
 
     public int getHealAmount() {
         return healAmount;
@@ -16,7 +17,11 @@ public class HealthPack : MonoBehaviour {
     }
     private void OnTriggerEnter(Collider collision) {
         Debug.Log("Colliding");
+        sound = GetComponent<AudioSource>();    
         if (collision.tag == "Player" || collision.tag == "Enemy")
-            Destroy(gameObject);
+        {
+            sound.Play();
+            Destroy(gameObject, 2.0f);
+        }
     }
 }
