@@ -33,6 +33,7 @@ public class EnemyBehavior : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+
         target = GetClosestEnemy(allies);
         anim.SetFloat("Speed", nav.velocity.magnitude);
         //control movement amimations.
@@ -40,6 +41,7 @@ public class EnemyBehavior : MonoBehaviour
             nav.SetDestination(target.transform.position); //move to target's position.
 
         else if (Vector3.Distance(transform.position, target.transform.position) <= nav.stoppingDistance)
+
         {
             if(Time.time >= attackTime + attackSpeed)
             anim.SetTrigger("attack");

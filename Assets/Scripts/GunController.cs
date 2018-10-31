@@ -33,10 +33,12 @@ public class GunController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         if (reloading) {
             if (Time.time - reloadStart <= reloadTime) {
                 reloading = false;
             }
+
         }
     }
 
@@ -73,6 +75,7 @@ public class GunController : MonoBehaviour {
             if (Time.time - shotTime >= shootDelay) {
                 shotTime = Time.time;
 
+
                 Vector3 cameraDir = mainCamera.transform.forward;
                 Vector3 cameraPos = mainCamera.transform.position;
                 RaycastHit results;
@@ -84,6 +87,7 @@ public class GunController : MonoBehaviour {
 
                     else if (results.collider.tag == "Enemy")
                         results.collider.SendMessage("Shot", damage);
+
                 }
 
                 loadedAmmo--;
