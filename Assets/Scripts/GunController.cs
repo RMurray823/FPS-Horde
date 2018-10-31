@@ -33,10 +33,6 @@ public class GunController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyCode.Mouse0)) {
-            fireBullet();
-        }
-
         if (reloading) {
             if (Time.time - reloadStart <= reloadTime) {
                 reloading = false;

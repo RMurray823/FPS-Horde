@@ -25,14 +25,17 @@ public class PlayerController : MonoBehaviour {
     private Health health;
 
     //Currently held gun info
-    public GameObject heldGun;
+    private GameObject heldGun;
     private GunController gunController;
+    private PlayerInventory playerInventory;
 
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
         health = GetComponent<Health>();
+        playerInventory = GetComponent<PlayerInventory>();
 
+        heldGun = playerInventory.getHeldGun();
         gunController = heldGun.GetComponent<GunController>();
 
         //Initialize text UI components
@@ -87,6 +90,14 @@ public class PlayerController : MonoBehaviour {
                 Cursor.lockState = CursorLockMode.Locked;
             else
                 Cursor.lockState = CursorLockMode.None;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            heldGun = playerInventory.swapGun();
+            gunController = heldGun.GetComponent<GunController>();
+        }
+        if(Input.GetKey(KeyCode.Mouse0)) {
+            gunController.fireBullet();
         }
 
         keyboardInputs = Vector3.zero;
