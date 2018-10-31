@@ -6,40 +6,53 @@ using UnityEngine.AI;
 public class EnemyBehavior : MonoBehaviour
 {
     private NavMeshAgent nav;
-    private Transform player;
+    private GameObject player;
+    private GameObject target;
+    private GameObject[] allies;
     private Health health;
     private Animator anim;
-    private int damage = 5;
+
+    private float attackTime;
+
+    public int damage = 5;
+    public int attackSpeed = 1;
+    public int minSpeed = 3;
+    public int maxSpeed = 5;
 
 	// Use this for initialization
 	void Start ()
     {
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
-        player = GameObject.FindGameObjectWithTag("Player").transform; //find a player.
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player"); //find a player
+        allies = GameObject.FindGameObjectsWithTag("Ally"); //make an array of all ally NPC's
+        nav.speed = Random.Range(minSpeed, maxSpeed);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        //Debug.Log("Player", gameObject);
-        nav.SetDestination(player.position); //move to player's position.
-        Debug.Log(this.anim.GetCurrentAnimatorClipInfo(0));
-        //control movement
-        if (Vector3.Distance(this.transform.position, player.transform.position) > nav.stoppingDistance)
-            anim.SetBool("isMoving", true);
-        else
+
+        target = GetClosestEnemy(allies);
+        anim.SetFloat("Speed", nav.velocity.magnitude);
+        //control movement amimations.
+        if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
+            nav.SetDestination(target.transform.position); //move to target's position.
+
+        else if (Vector3.Distance(transform.position, target.transform.position) <= nav.stoppingDistance)
+
         {
+            if(Time.time >= attackTime + attackSpeed)
             anim.SetTrigger("attack");
-            //only hit once per second
-            anim.SetBool("isMoving", false);
         }
+
     }
 
     private void Attack()
     {
-        player.BroadcastMessage("hit", damage);
+        attackTime = Time.time;
+        target.SendMessage("Hit", damage);
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -53,13 +66,41 @@ public class EnemyBehavior : MonoBehaviour
             health.healArmor(pack.getArmorAmount());
         }
     }
-    void Shot()
+
+    void Shot(int damage)
     {
-        if (health.takeDamage(50) <= 0)
+        if (health.takeDamage(damage) <= 0)
             anim.SetTrigger("isDead");
     }
+
+    void CriticalHit(int damage)
+    {
+        if (health.takeDamage(damage * 2) <= 0)
+            anim.SetTrigger("isDead");
+    }
+
     private void Destroy()
     {
         Destroy(gameObject);
+    }
+
+    private GameObject GetClosestEnemy(GameObject[] enemies)
+    {
+        Vector3 position = transform.position; //get invoking obj position.
+        //calculate difference between player and obj pos.
+        Vector3 playerDiff = player.transform.position - position;
+        GameObject closest = player; //default to player.
+        float distance = playerDiff.sqrMagnitude;
+        foreach (GameObject go in enemies)
+        {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
     }
 }

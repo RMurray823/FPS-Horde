@@ -9,6 +9,12 @@ TagManager:
   - HealthUI
   - HealthPack
   - ArmorPack
+  - WeakPoint
+  - Ally
+  - ArmorUI
+  - RemainingAmmoUI
+  - AmmoClipUI
+  - Player_HeldGun
   layers:
   - Default
   - TransparentFX

@@ -145,9 +145,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4639753295002576}
   - component: {fileID: 137402160637028088}
+  - component: {fileID: 135408360257039746}
   m_Layer: 0
   m_Name: ' Head'
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -255,9 +256,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4535612838807698}
+  - component: {fileID: 136282469173077356}
   m_Layer: 0
   m_Name: Bip01 Head
-  m_TagString: Untagged
+  m_TagString: WeakPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -776,7 +778,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1596632398661518}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.5784655, y: -1.0600411e-17, z: 4.774001}
+  m_LocalPosition: {x: -0.31522292, y: -8.394649e-18, z: 3.780614}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4639753295002576}
@@ -1111,7 +1113,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1149954677004158}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4016517349315078}
@@ -1513,6 +1515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8620760d06f474abefca9f62da93e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 5
 --- !u!114 &114172527843582016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1526,8 +1529,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 100
   maxHealth: 100
+  startingHealthMin: 50
+  startingHealthMax: 100
   currentArmor: 0
   maxArmor: 0
+  startingArmorMin: 0
+  startingArmorMax: 50
   healthBar: {fileID: 224652245188567526}
   armorBar: {fileID: 224455023597611804}
 --- !u!114 &114205123401200472
@@ -1692,6 +1699,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc3365aa97da9347a06dfba01dc4d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &135408360257039746
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1149954677004158}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.14
+  m_Center: {x: -0.0000010965546, y: -0.015505895, z: 1.6402467}
+--- !u!136 &136282469173077356
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1233663927572630}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.08
+  m_Height: 0.25
+  m_Direction: 0
+  m_Center: {x: -0.09, y: 0, z: 0}
 --- !u!136 &136850782400520068
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1701,10 +1733,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 2
+  m_Radius: 0.33373013
+  m_Height: 1.6714292
   m_Direction: 1
-  m_Center: {x: 0, y: 0.8, z: 0}
+  m_Center: {x: 0, y: 0.725225, z: 0.03373012}
 --- !u!137 &137004777814333422
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -1971,7 +2003,7 @@ SkinnedMeshRenderer:
   - {fileID: 4365344315561984}
   - {fileID: 4571190261952178}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 4453461654379906}
+  m_RootBone: {fileID: 4535612838807698}
   m_AABB:
     m_Center: {x: -0.40291405, y: 0.10811783, z: 0.00000026077032}
     m_Extent: {x: 0.16522883, y: 0.13977434, z: 0.08768336}
