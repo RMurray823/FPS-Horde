@@ -30,7 +30,7 @@ public class GunController : MonoBehaviour {
 	void Start () {
         mainCamera = Camera.main;
         var audio = GetComponents<AudioSource>();
-        gunNoise = audio[0];
+        gunNoise    = audio[0];
         reloadNoise = audio[1];
 
 	}
