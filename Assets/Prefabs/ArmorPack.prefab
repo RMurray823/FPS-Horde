@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65414533920552670}
   - component: {fileID: 222658006164164240}
   - component: {fileID: 114443377370707178}
-  - component: {fileID: 82885629907735706}
+  - component: {fileID: 82903987983376964}
   m_Layer: 0
   m_Name: ArmorPack
   m_TagString: ArmorPack
@@ -86,7 +86,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!82 &82885629907735706
+--- !u!82 &82903987983376964
 AudioSource:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,7 +95,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 95025b5dae69cd64e8895cbbf5e77727, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b6ff5e8c37c1a90418a23d0950cc6710, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

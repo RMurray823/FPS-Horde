@@ -16,12 +16,13 @@ public class HealthPack : MonoBehaviour {
         return armorAmount;
     }
     private void OnTriggerEnter(Collider collision) {
+
         Debug.Log("Colliding");
         sound = GetComponent<AudioSource>();    
         if (collision.tag == "Player" || collision.tag == "Enemy")
         {
             sound.Play();
-            Destroy(gameObject, 2.0f);
+            Destroy(gameObject, .5f);
         }
     }
 }

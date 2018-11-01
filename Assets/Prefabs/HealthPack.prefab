@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65538065147236150}
   - component: {fileID: 222064954713394608}
   - component: {fileID: 114645451149262714}
-  - component: {fileID: 82994607120263378}
+  - component: {fileID: 82670549852975496}
   m_Layer: 0
   m_Name: HealthPack
   m_TagString: HealthPack
@@ -86,7 +86,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!82 &82994607120263378
+--- !u!82 &82670549852975496
 AudioSource:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,8 +95,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2f060c7741dfbc4428bed36dbcb217ae, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: d07acc9e6be2178448b50fe11cf1f666, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
