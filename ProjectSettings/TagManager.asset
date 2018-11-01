@@ -6,6 +6,15 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - HealthUI
+  - HealthPack
+  - ArmorPack
+  - WeakPoint
+  - Ally
+  - ArmorUI
+  - RemainingAmmoUI
+  - AmmoClipUI
+  - Player_HeldGun
   layers:
   - Default
   - TransparentFX

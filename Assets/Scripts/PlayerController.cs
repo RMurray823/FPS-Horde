@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
     private Rigidbody body;
 
@@ -10,30 +10,78 @@ public class PlayerController : MonoBehaviour {
 
     private Quaternion localRotation = Quaternion.identity;
 
-    public GameObject bullet;
+    public Text uiHealth;
+    public Text uiArmor;
+
+    //Remaining ammo not loaded
+    public Text uiRemainingAmmo;
+    //Currently loaded
+    public Text uiClipAmmo;
 
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
-    private float movementSpeed = 5.0f;
+    public float movementSpeed = 5.0f;
     private float rotationX = 0f;
 
-    //Delay in seconds
-    public float shootDelay = .2f;
-    private float shotTime = 0f;
+    private Health health;
+
+    //Currently held gun info
+    private GameObject heldGun;
+    private GunController gunController;
+    private PlayerInventory playerInventory;
 
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody>();
+        health = GetComponent<Health>();
+        playerInventory = GetComponent<PlayerInventory>();
+
+        heldGun = playerInventory.getHeldGun();
+        gunController = heldGun.GetComponent<GunController>();
+
+        //Initialize text UI components
+        uiHealth.text = health.currentHealth.ToString();
+        uiArmor.text = health.currentArmor.ToString();
+        uiClipAmmo.text = gunController.getAmmoInClip().ToString();
+        uiRemainingAmmo.text = gunController.getAmmoNotInClip().ToString();
+
     }
 	
     // Update is called once per frame
     void Update () {
         HandleInput();
+        UpdateUI();
     }
 
-    // Called in fixed timesteps
+    private void UpdateUI() {
+        uiHealth.text = health.currentHealth.ToString();
+        uiArmor.text = health.currentArmor.ToString();
+
+        uiClipAmmo.text = gunController.getAmmoInClip().ToString();
+        uiRemainingAmmo.text = gunController.getAmmoNotInClip().ToString();
+    }
+
     void FixedUpdate() {
         body.MoveRotation(localRotation);
         body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
+    }
+
+    public void Hit(int damage) {
+        if(health.takeDamage(damage) <= 0) {
+            Debug.Log("dead");
+        }
+        uiHealth.text = health.currentHealth.ToString();
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.tag=="HealthPack") {
+            HealthPack pack = other.GetComponent<HealthPack>();
+            health.heal(pack.getHealAmount());
+        }
+
+        if (other.tag == "ArmorPack") {
+            HealthPack pack = other.GetComponent<HealthPack>();
+            health.healArmor(pack.getArmorAmount());
+        }
     }
 
     private void HandleInput() {
@@ -44,9 +92,14 @@ public class PlayerController : MonoBehaviour {
                 Cursor.lockState = CursorLockMode.None;
         }
 
-        if(Input.GetKey(KeyCode.Mouse0)) {
-            fireBullet();
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            heldGun = playerInventory.swapGun();
+            gunController = heldGun.GetComponent<GunController>();
         }
+        if(Input.GetKey(KeyCode.Mouse0)) {
+            gunController.fireBullet();
+        }
+
         keyboardInputs = Vector3.zero;
         keyboardInputs.x = Input.GetAxis("Horizontal");
         keyboardInputs.z = Input.GetAxis("Vertical");
@@ -59,22 +112,4 @@ public class PlayerController : MonoBehaviour {
 
         localRotation = Quaternion.Euler(0, rotationX, 0);
     }
-
-    public void fireBullet() {
-        if(Time.time - shotTime >= shootDelay) {
-            shotTime = Time.time;
-
-            Vector3 cameraDir = Camera.main.transform.forward;
-            Vector3 cameraPos = Camera.main.transform.position;
-            RaycastHit results;
-
-            if (Physics.Raycast(cameraPos, cameraDir, out results)) {
-                if(results.collider.tag == "Enemy") {
-                    results.collider.BroadcastMessage("Shot");
-                }
-            }
-        }	
-    } 
-
-
 }
