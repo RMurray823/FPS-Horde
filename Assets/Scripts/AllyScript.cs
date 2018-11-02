@@ -53,6 +53,7 @@ public class AllyScript : MonoBehaviour
                 if (Time.time >= shotTime + fireRate)
                 {
                     Shoot(target);
+                    gunShot.Play();
                 }
             }
         }
