@@ -7,6 +7,7 @@ public class GunController : MonoBehaviour {
 
     private Camera mainCamera;
     private AudioSource gunNoise;
+    private AudioSource reloadNoise;
 
     private float shotTime;
     public float shootDelay;
@@ -28,7 +29,10 @@ public class GunController : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         mainCamera = Camera.main;
-        gunNoise = GetComponent<AudioSource>();
+        var audio = GetComponents<AudioSource>();
+        gunNoise    = audio[0];
+        reloadNoise = audio[1];
+
 	}
 	
 	// Update is called once per frame
@@ -93,6 +97,7 @@ public class GunController : MonoBehaviour {
                 loadedAmmo--;
             }
         } else {
+            reloadNoise.Play();
             reload();
         }
     }
