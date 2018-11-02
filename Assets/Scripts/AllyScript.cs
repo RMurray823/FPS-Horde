@@ -11,6 +11,7 @@ public class AllyScript : MonoBehaviour
     private GameObject[] enemies;
     private Health health;
     private Animator anim;
+    private AudioSource gunShot;
 
     private float shotTime;
 
@@ -21,6 +22,7 @@ public class AllyScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        gunShot = GetComponent<AudioSource>();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
