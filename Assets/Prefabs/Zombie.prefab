@@ -1516,6 +1516,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
+  attackSpeed: 1
+  minSpeed: 3
+  maxSpeed: 10
 --- !u!114 &114172527843582016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1528,11 +1531,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 100
+  currentArmor: 0
   maxHealth: 100
+  maxArmor: 0
   startingHealthMin: 50
   startingHealthMax: 100
-  currentArmor: 0
-  maxArmor: 0
   startingArmorMin: 0
   startingArmorMax: 50
   healthBar: {fileID: 224652245188567526}

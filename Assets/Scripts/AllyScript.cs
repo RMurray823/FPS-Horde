@@ -61,7 +61,8 @@ public class AllyScript : MonoBehaviour
     {
         if (health.takeDamage(damage) <= 0)
         {
-            Debug.Log("dead");
+            anim.SetTrigger("Dead");
+            health.currentArmor = 0;
         }
     }
 
@@ -80,7 +81,13 @@ public class AllyScript : MonoBehaviour
 
             else if (result.collider.tag == "Enemy")
                 result.collider.SendMessage("Shot", damage);
+            Debug.Log(result);
         }
+    }
+
+    private void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     private GameObject GetClosestEnemy (GameObject[] enemies)
