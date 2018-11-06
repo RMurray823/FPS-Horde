@@ -33,20 +33,20 @@ public class EnemyBehavior : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        allies = GameObject.FindGameObjectsWithTag("Ally");
 
         target = GetClosestEnemy(allies);
         anim.SetFloat("Speed", nav.velocity.magnitude);
         //control movement amimations.
+    
         if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
             nav.SetDestination(target.transform.position); //move to target's position.
 
-        else if (Vector3.Distance(transform.position, target.transform.position) <= nav.stoppingDistance)
-
+        else if (target != null)
         {
             if(Time.time >= attackTime + attackSpeed)
             anim.SetTrigger("attack");
         }
-
     }
 
     private void Attack()
@@ -87,11 +87,11 @@ public class EnemyBehavior : MonoBehaviour
     private GameObject GetClosestEnemy(GameObject[] enemies)
     {
         Vector3 position = transform.position; //get invoking obj position.
+        GameObject closest = player; //default to player.
         //calculate difference between player and obj pos.
         Vector3 playerDiff = player.transform.position - position;
-        GameObject closest = player; //default to player.
         float distance = playerDiff.sqrMagnitude;
-        foreach (GameObject go in enemies)
+        foreach (GameObject go in allies)
         {
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;

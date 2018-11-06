@@ -17,6 +17,7 @@ public class AllyScript : MonoBehaviour
     public int damage = 10;
     public float fireRate = 1f;
     public float range = 50f;
+    public float accuracy = .8f;
 
     // Use this for initialization
     void Start ()
@@ -61,7 +62,7 @@ public class AllyScript : MonoBehaviour
     {
         if (health.takeDamage(damage) <= 0)
         {
-            Debug.Log("dead");
+            anim.SetTrigger("Dead");
         }
     }
 
@@ -69,7 +70,15 @@ public class AllyScript : MonoBehaviour
     {
         anim.SetTrigger("Attack");
         shotTime = Time.time;
+
+        float randomOffset = UnityEngine.Random.Range(-(1 - accuracy), 1 - accuracy);
+
         Vector3 dir = transform.forward;
+
+        dir.x += randomOffset;
+        dir.y += randomOffset;
+        dir.z += randomOffset;
+
         Vector3 pos = transform.position;
         RaycastHit result;
 
@@ -80,7 +89,13 @@ public class AllyScript : MonoBehaviour
 
             else if (result.collider.tag == "Enemy")
                 result.collider.SendMessage("Shot", damage);
+            Debug.Log(result);
         }
+    }
+
+    private void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     private GameObject GetClosestEnemy (GameObject[] enemies)
