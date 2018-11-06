@@ -92,8 +92,8 @@ public class GunController : MonoBehaviour {
                     else if (results.collider.tag == "Enemy")
                         results.collider.SendMessage("Shot", damage);
 
-                }
 
+                }
                 loadedAmmo--;
             }
         } else {

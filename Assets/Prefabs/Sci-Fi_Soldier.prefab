@@ -1878,6 +1878,7 @@ MonoBehaviour:
   damage: 50
   fireRate: 1
   range: 50
+  accuracy: 0.8
 --- !u!114 &114720850974509080
 MonoBehaviour:
   m_ObjectHideFlags: 1
