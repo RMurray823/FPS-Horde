@@ -11,7 +11,6 @@ public class PlayerController : BaseAllyCharacter {
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
     private float rotationX = 0f;
 
-
     // Use this for initialization
     void Start () {
         base.Init();
@@ -20,7 +19,6 @@ public class PlayerController : BaseAllyCharacter {
     // Update is called once per frame
     void Update () {
         HandleInput();
-
     }
 
     void FixedUpdate() {
