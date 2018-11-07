@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4810326597351102}
   - component: {fileID: 33141492236690864}
   - component: {fileID: 23478973931468238}
-  - component: {fileID: 82679284856767714}
   - component: {fileID: 82406264505303066}
+  - component: {fileID: 82679284856767714}
   - component: {fileID: 114389031075284232}
   m_Layer: 0
   m_Name: SciFiRifle
