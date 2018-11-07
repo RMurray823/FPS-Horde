@@ -620,7 +620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guns:
   - {fileID: 1542272147480146}
-  - {fileID: 0}
+  - {fileID: 100000, guid: fddeeac0ebed86c4cab4320764b5c227, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

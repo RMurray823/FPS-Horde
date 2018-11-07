@@ -6,18 +6,28 @@ using UnityEngine.AI;
 public class AllyScript : MonoBehaviour
 {
     private NavMeshAgent nav;
+
+    //objects on the map for the NPC to interact with.
     private GameObject player;
     private GameObject target;
     private GameObject[] enemies;
+
     private Health health;
     private Animator anim;
     private AudioSource gunShot;
 
+    //information on NPC inventory
+    private GameObject heldGun;
+    private PlayerInventory playerInventory;
+    private GunController gunController;
+
+    //TODO: Get GunController working then remove this data.
     private float shotTime;
 
     public int damage = 10;
     public float fireRate = 1f;
     public float range = 50f;
+    public float accuracy = .8f;
 
     // Use this for initialization
     void Start ()
@@ -27,7 +37,10 @@ public class AllyScript : MonoBehaviour
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
-
+        //Components for NPC weapon.
+        playerInventory = GetComponent<PlayerInventory>();
+        heldGun = playerInventory.getHeldGun();
+        gunController = heldGun.GetComponent<GunController>();
     }
 	
 	// Update is called once per frame
@@ -52,8 +65,11 @@ public class AllyScript : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
                 if (Time.time >= shotTime + fireRate)
                 {
-                    Shoot(target);
+
                     gunShot.Play();
+                    anim.SetTrigger("Attack");
+                    shotTime = Time.time;
+                    gunController.fireBullet();
                 }
             }
         }
@@ -64,26 +80,13 @@ public class AllyScript : MonoBehaviour
     {
         if (health.takeDamage(damage) <= 0)
         {
-            Debug.Log("dead");
+            anim.SetTrigger("Dead");
         }
     }
 
-    void Shoot (GameObject target)
+    private void Destroy()
     {
-        anim.SetTrigger("Attack");
-        shotTime = Time.time;
-        Vector3 dir = transform.forward;
-        Vector3 pos = transform.position;
-        RaycastHit result;
-
-        if (Physics.Raycast(pos, dir, out result))
-        {
-            if (result.collider.tag == "WeakPoint")
-                result.rigidbody.SendMessage("CriticalHit", damage);
-
-            else if (result.collider.tag == "Enemy")
-                result.collider.SendMessage("Shot", damage);
-        }
+        Destroy(gameObject);
     }
 
     private GameObject GetClosestEnemy (GameObject[] enemies)
