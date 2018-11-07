@@ -6,12 +6,21 @@ using UnityEngine.AI;
 public class AllyScript : MonoBehaviour
 {
     private NavMeshAgent nav;
+
+    //objects on the map for the NPC to interact with.
     private GameObject player;
     private GameObject target;
     private GameObject[] enemies;
+
     private Health health;
     private Animator anim;
 
+    //information on NPC inventory
+    private GameObject heldGun;
+    private PlayerInventory playerInventory;
+    private GunController gunController;
+
+    //TODO: Get GunController working then remove this data.
     private float shotTime;
 
     public int damage = 10;
@@ -26,7 +35,8 @@ public class AllyScript : MonoBehaviour
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
-
+        heldGun = playerInventory.getHeldGun();
+        gunController = heldGun.GetComponent<GunController>();
     }
 	
 	// Update is called once per frame
@@ -51,7 +61,7 @@ public class AllyScript : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
                 if (Time.time >= shotTime + fireRate)
                 {
-                    Shoot(target);
+                    gunController.fireBullet();
                 }
             }
         }
@@ -75,9 +85,9 @@ public class AllyScript : MonoBehaviour
 
         Vector3 dir = transform.forward;
 
-        dir.x += randomOffset;
-        dir.y += randomOffset;
-        dir.z += randomOffset;
+        dir.x += randomOffset * 0.3f;
+        dir.y += randomOffset * 1.6f;
+        dir.z += randomOffset * 0.3f;
 
         Vector3 pos = transform.position;
         RaycastHit result;
