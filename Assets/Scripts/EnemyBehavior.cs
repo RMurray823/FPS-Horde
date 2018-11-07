@@ -3,36 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyBehavior : MonoBehaviour
+public class EnemyBehavior : BaseEnemyCharacter
 {
     private NavMeshAgent nav;
-    private GameObject player;
-    private GameObject target;
-    private GameObject[] allies;
-    private Health health;
+
     private Animator anim;
 
-    private float attackTime;
-
-    public int damage = 5;
-    public int attackSpeed = 1;
     public int minSpeed = 3;
     public int maxSpeed = 5;
 
 	// Use this for initialization
 	void Start ()
     {
+
+        base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
-        health = GetComponent<Health>();
         anim = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player"); //find a player
-        allies = GameObject.FindGameObjectsWithTag("Ally"); //make an array of all ally NPC's
+
         nav.speed = Random.Range(minSpeed, maxSpeed);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
+
+        if (health.currentHealth <= 0)
+            anim.SetTrigger("isDead");
+
         allies = GameObject.FindGameObjectsWithTag("Ally");
 
         target = GetClosestEnemy(allies);
@@ -49,12 +46,6 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    private void Attack()
-    {
-        attackTime = Time.time;
-        target.SendMessage("Hit", damage);
-    }
-
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "HealthPack") {
             HealthPack pack = other.GetComponent<HealthPack>();
@@ -67,17 +58,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    void Shot(int damage)
-    {
-        if (health.takeDamage(damage) <= 0)
-            anim.SetTrigger("isDead");
-    }
 
-    void CriticalHit(int damage)
-    {
-        if (health.takeDamage(damage * 2) <= 0)
-            anim.SetTrigger("isDead");
-    }
 
     private void Destroy()
     {
