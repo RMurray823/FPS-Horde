@@ -14,6 +14,7 @@ public class AllyScript : MonoBehaviour
 
     private Health health;
     private Animator anim;
+    private AudioSource gunShot;
 
     //information on NPC inventory
     private GameObject heldGun;
@@ -31,6 +32,7 @@ public class AllyScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        gunShot = GetComponent<AudioSource>();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
@@ -63,6 +65,8 @@ public class AllyScript : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
                 if (Time.time >= shotTime + fireRate)
                 {
+
+                    gunShot.Play();
                     anim.SetTrigger("Attack");
                     shotTime = Time.time;
                     gunController.fireBullet();
