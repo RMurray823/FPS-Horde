@@ -63,6 +63,8 @@ public class AllyScript : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
                 if (Time.time >= shotTime + fireRate)
                 {
+                    anim.SetTrigger("Attack");
+                    shotTime = Time.time;
                     gunController.fireBullet();
                 }
             }
@@ -75,31 +77,6 @@ public class AllyScript : MonoBehaviour
         if (health.takeDamage(damage) <= 0)
         {
             anim.SetTrigger("Dead");
-        }
-    }
-
-    void Shoot (GameObject target)
-    {
-        anim.SetTrigger("Attack");
-        shotTime = Time.time;
-
-        Vector3 dir = transform.forward;
-
-        dir.x *= UnityEngine.Random.Range(-accuracy, accuracy);
-        dir.y *= UnityEngine.Random.Range(-accuracy, accuracy);
-        dir.z *= UnityEngine.Random.Range(-accuracy, accuracy);
-
-        Vector3 pos = transform.position;
-        RaycastHit result;
-
-        if (Physics.Raycast(pos, dir, out result))
-        {
-            if (result.collider.tag == "WeakPoint")
-                result.rigidbody.SendMessage("CriticalHit", damage);
-
-            else if (result.collider.tag == "Enemy")
-                result.collider.SendMessage("Shot", damage);
-            Debug.Log(result);
         }
     }
 
