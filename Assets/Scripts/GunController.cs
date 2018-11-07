@@ -37,7 +37,6 @@ public class GunController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         if (reloading) {
             if (Time.time - reloadStart <= reloadTime) {
                 reloading = false;

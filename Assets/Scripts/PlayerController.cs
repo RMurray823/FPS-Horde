@@ -10,19 +10,12 @@ public class PlayerController : MonoBehaviour {
 
     private Quaternion localRotation = Quaternion.identity;
 
-    public Text uiHealth;
-    public Text uiArmor;
-
-    //Remaining ammo not loaded
-    public Text uiRemainingAmmo;
-    //Currently loaded
-    public Text uiClipAmmo;
-
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
     public float movementSpeed = 5.0f;
     private float rotationX = 0f;
 
     private Health health;
+
 
     //Currently held gun info
     private GameObject heldGun;
@@ -38,26 +31,21 @@ public class PlayerController : MonoBehaviour {
         heldGun = playerInventory.getHeldGun();
         gunController = heldGun.GetComponent<GunController>();
 
-        //Initialize text UI components
-        uiHealth.text = health.currentHealth.ToString();
-        uiArmor.text = health.currentArmor.ToString();
-        uiClipAmmo.text = gunController.getAmmoInClip().ToString();
-        uiRemainingAmmo.text = gunController.getAmmoNotInClip().ToString();
-
     }
 	
     // Update is called once per frame
     void Update () {
         HandleInput();
-        UpdateUI();
+
     }
 
-    private void UpdateUI() {
-        uiHealth.text = health.currentHealth.ToString();
-        uiArmor.text = health.currentArmor.ToString();
 
-        uiClipAmmo.text = gunController.getAmmoInClip().ToString();
-        uiRemainingAmmo.text = gunController.getAmmoNotInClip().ToString();
+    public Health getHealth() {
+        return health;
+    }
+
+    public GameObject getHeldGun() {
+        return heldGun;
     }
 
     void FixedUpdate() {
@@ -69,7 +57,6 @@ public class PlayerController : MonoBehaviour {
         if(health.takeDamage(damage) <= 0) {
             Debug.Log("dead");
         }
-        uiHealth.text = health.currentHealth.ToString();
     }
 
     private void OnTriggerEnter(Collider other) {
