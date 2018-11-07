@@ -35,6 +35,8 @@ public class AllyScript : MonoBehaviour
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
+        //Components for NPC weapon.
+        playerInventory = GetComponent<PlayerInventory>();
         heldGun = playerInventory.getHeldGun();
         gunController = heldGun.GetComponent<GunController>();
     }
@@ -81,13 +83,11 @@ public class AllyScript : MonoBehaviour
         anim.SetTrigger("Attack");
         shotTime = Time.time;
 
-        float randomOffset = UnityEngine.Random.Range(-(1 - accuracy), 1 - accuracy);
-
         Vector3 dir = transform.forward;
 
-        dir.x += randomOffset * 0.3f;
-        dir.y += randomOffset * 1.6f;
-        dir.z += randomOffset * 0.3f;
+        dir.x *= UnityEngine.Random.Range(-accuracy, accuracy);
+        dir.y *= UnityEngine.Random.Range(-accuracy, accuracy);
+        dir.z *= UnityEngine.Random.Range(-accuracy, accuracy);
 
         Vector3 pos = transform.position;
         RaycastHit result;
