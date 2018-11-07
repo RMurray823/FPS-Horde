@@ -14,7 +14,6 @@ public class AllyScript : MonoBehaviour
 
     private Health health;
     private Animator anim;
-    private AudioSource gunShot;
 
     //information on NPC inventory
     private GameObject heldGun;
@@ -32,7 +31,6 @@ public class AllyScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        gunShot = GetComponent<AudioSource>();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         health = GetComponent<Health>();
         anim = GetComponent<Animator>();
@@ -66,10 +64,10 @@ public class AllyScript : MonoBehaviour
                 if (Time.time >= shotTime + fireRate)
                 {
 
-                    gunShot.Play();
                     anim.SetTrigger("Attack");
                     shotTime = Time.time;
-                    gunController.fireBullet();
+                    Shoot();
+                    //gunController.fireBullet();
                 }
             }
         }
@@ -81,6 +79,24 @@ public class AllyScript : MonoBehaviour
         if (health.takeDamage(damage) <= 0)
         {
             anim.SetTrigger("Dead");
+        }
+    }
+
+    private void Shoot()
+    {
+        Vector3 dir = transform.forward;
+        Vector3 pos = transform.position;
+        RaycastHit results;
+
+        if (Physics.Raycast(pos, dir, out results))
+        {
+            if (results.collider.tag == "WeakPoint")
+                results.rigidbody.SendMessage("CriticalHit", damage);
+
+            else if (results.collider.tag == "Enemy")
+                results.collider.SendMessage("Shot", damage);
+
+
         }
     }
 

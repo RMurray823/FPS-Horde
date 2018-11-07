@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 223288075508732696}
   - component: {fileID: 114541889560034904}
   - component: {fileID: 114283908388342376}
+  - component: {fileID: 114392927586611962}
   m_Layer: 5
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -229,14 +230,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1468245307556762}
-  m_LocalRotation: {x: -0.23669627, y: 0, z: 0, w: 0.9715837}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.7, z: 0}
   m_LocalScale: {x: 1, y: 1.05, z: 1}
   m_Children:
   - {fileID: 4629385086629654}
   m_Father: {fileID: 4795103789188544}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -27.383001, y: 0.07, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4629385086629654
 Transform:
   m_ObjectHideFlags: 1
@@ -244,7 +245,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1535745252962796}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.25, y: -0.35, z: 0.4}
+  m_LocalPosition: {x: 0.27, y: -0.3, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4948512948590810}
@@ -793,10 +794,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131302acea92a394daa05a8c70356dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiHealth: {fileID: 114382041499257058}
-  uiArmor: {fileID: 114286337211747812}
-  uiRemainingAmmo: {fileID: 114262176028333310}
-  uiClipAmmo: {fileID: 114119733880831310}
   movementSpeed: 25
 --- !u!114 &114183514077352860
 MonoBehaviour:
@@ -968,6 +965,22 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Health
+--- !u!114 &114392927586611962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858272537436680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e31743c8b899d8f4cbdc34c0a0797ea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1946229575274800}
+  uiHealth: {fileID: 114382041499257058}
+  uiArmor: {fileID: 114286337211747812}
+  uiRemainingAmmo: {fileID: 114262176028333310}
+  uiClipAmmo: {fileID: 114119733880831310}
 --- !u!114 &114541889560034904
 MonoBehaviour:
   m_ObjectHideFlags: 1

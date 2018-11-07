@@ -21,6 +21,7 @@ public class EnemyBehavior : BaseEnemyCharacter
         anim = GetComponent<Animator>();
 
         nav.speed = Random.Range(minSpeed, maxSpeed);
+        InvokeRepeating("GetClosestEnemy", .25f, .25f);
     }
 	
 	// Update is called once per frame
@@ -30,9 +31,7 @@ public class EnemyBehavior : BaseEnemyCharacter
         if (health.currentHealth <= 0)
             anim.SetTrigger("isDead");
 
-        allies = GameObject.FindGameObjectsWithTag("Ally");
-
-        target = GetClosestEnemy(allies);
+        //target = GetClosestEnemy(allies);
         anim.SetFloat("Speed", nav.velocity.magnitude);
         //control movement amimations.
     
@@ -67,6 +66,7 @@ public class EnemyBehavior : BaseEnemyCharacter
 
     private GameObject GetClosestEnemy(GameObject[] enemies)
     {
+        allies = GameObject.FindGameObjectsWithTag("Ally");
         Vector3 position = transform.position; //get invoking obj position.
         GameObject closest = player; //default to player.
         //calculate difference between player and obj pos.
@@ -82,6 +82,7 @@ public class EnemyBehavior : BaseEnemyCharacter
                 distance = curDistance;
             }
         }
+        target = closest;
         return closest;
     }
 }
