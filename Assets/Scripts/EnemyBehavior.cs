@@ -11,6 +11,7 @@ public class EnemyBehavior : BaseEnemyCharacter
 
     public int minSpeed = 3;
     public int maxSpeed = 5;
+    public GameObject loot;
 
 	// Use this for initialization
 	void Start ()
@@ -65,6 +66,11 @@ public class EnemyBehavior : BaseEnemyCharacter
 
     private void Destroy()
     {
+        if(Random.Range(0, 10) == 0)
+        {
+            Instantiate(loot, transform.position, transform.rotation);
+        }
+
         Destroy(gameObject);
     }
 

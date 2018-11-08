@@ -3059,10 +3059,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8620760d06f474abefca9f62da93e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementSpeed: 5
   damage: 20
   attackSpeed: 2
   minSpeed: 2
   maxSpeed: 5
+  loot: {fileID: 1275096893054290, guid: 0d5bd098e12e4074d974a4145b04878a, type: 2}
 --- !u!114 &114892578673503866
 MonoBehaviour:
   m_ObjectHideFlags: 1

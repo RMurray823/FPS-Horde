@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AllyScript : MonoBehaviour
+public class AllyScript : BaseAllyCharacter
 {
     private NavMeshAgent nav;
 
@@ -12,13 +12,9 @@ public class AllyScript : MonoBehaviour
     private GameObject target;
     private GameObject[] enemies;
 
-    private Health health;
     private Animator anim;
 
-    //information on NPC inventory
-    private GameObject heldGun;
-    private PlayerInventory playerInventory;
-    private GunController gunController;
+
 
     //TODO: Get GunController working then remove this data.
     private float shotTime;
@@ -31,14 +27,11 @@ public class AllyScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
-        health = GetComponent<Health>();
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
-        //Components for NPC weapon.
-        playerInventory = GetComponent<PlayerInventory>();
-        heldGun = playerInventory.getHeldGun();
-        gunController = heldGun.GetComponent<GunController>();
+
     }
 	
 	// Update is called once per frame
@@ -63,11 +56,9 @@ public class AllyScript : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
                 if (Time.time >= shotTime + fireRate)
                 {
-
-                    anim.SetTrigger("Attack");
-                    shotTime = Time.time;
-                    Shoot();
-                    //gunController.fireBullet();
+                    //shotTime = Time.time;
+                    //Shoot();
+                    gunController.fireBullet();
                 }
             }
         }

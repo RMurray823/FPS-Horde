@@ -6,6 +6,7 @@ public class SurvivalEvent : MonoBehaviour
 {
     public GameObject[] enemyTypes;
     public Transform[] spawnPoints;
+    public float spawnRate;
 
     private SphereCollider spawnArea;
     private Transform player;
@@ -16,15 +17,14 @@ public class SurvivalEvent : MonoBehaviour
     {
         spawnArea = GetComponent<SphereCollider>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        InvokeRepeating("Spawn", 0f, 3f);
     }
 
-    void OnTriggerEvent(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             Debug.Log("FPlayer within area.");
-            InvokeRepeating("Spawn", 0f, 3f);
+            InvokeRepeating("Spawn", 0f, spawnRate);
         }
     }
     void Spawn()
