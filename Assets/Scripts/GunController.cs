@@ -78,9 +78,18 @@ public class GunController : MonoBehaviour {
             if (Time.time - shotTime >= shootDelay) {
                 shotTime = Time.time;
 
-
-                Vector3 cameraDir = mainCamera.transform.forward;
-                Vector3 cameraPos = mainCamera.transform.position;
+                Vector3 cameraDir;
+                Vector3 cameraPos;
+                if(GetComponentInParent<Rigidbody>().tag == "Player")
+                {
+                    cameraDir = mainCamera.transform.forward;
+                    cameraPos = mainCamera.transform.position;
+                }
+                else
+                {
+                    cameraDir = transform.forward;
+                    cameraPos = transform.position;
+                }
                 RaycastHit results;
 
                 gunNoise.Play();

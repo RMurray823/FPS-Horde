@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AllyScript : MonoBehaviour
+public class AllyScript : BaseAllyCharacter
 {
     private NavMeshAgent nav;
 
@@ -12,14 +12,9 @@ public class AllyScript : MonoBehaviour
     private GameObject target;
     private GameObject[] enemies;
 
-    private Health health;
     private Animator anim;
-    private AudioSource gunShot;
 
-    //information on NPC inventory
-    private GameObject heldGun;
-    private PlayerInventory playerInventory;
-    private GunController gunController;
+
 
     //TODO: Get GunController working then remove this data.
     private float shotTime;
@@ -32,15 +27,11 @@ public class AllyScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        gunShot = GetComponent<AudioSource>();
+        base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
-        health = GetComponent<Health>();
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
-        //Components for NPC weapon.
-        playerInventory = GetComponent<PlayerInventory>();
-        heldGun = playerInventory.getHeldGun();
-        gunController = heldGun.GetComponent<GunController>();
+
     }
 	
 	// Update is called once per frame
@@ -65,10 +56,8 @@ public class AllyScript : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
                 if (Time.time >= shotTime + fireRate)
                 {
-
-                    gunShot.Play();
-                    anim.SetTrigger("Attack");
-                    shotTime = Time.time;
+                    //shotTime = Time.time;
+                    //Shoot();
                     gunController.fireBullet();
                 }
             }
@@ -81,6 +70,24 @@ public class AllyScript : MonoBehaviour
         if (health.takeDamage(damage) <= 0)
         {
             anim.SetTrigger("Dead");
+        }
+    }
+
+    private void Shoot()
+    {
+        Vector3 dir = transform.forward;
+        Vector3 pos = transform.position;
+        RaycastHit results;
+
+        if (Physics.Raycast(pos, dir, out results))
+        {
+            if (results.collider.tag == "WeakPoint")
+                results.rigidbody.SendMessage("CriticalHit", damage);
+
+            else if (results.collider.tag == "Enemy")
+                results.collider.SendMessage("Shot", damage);
+
+
         }
     }
 

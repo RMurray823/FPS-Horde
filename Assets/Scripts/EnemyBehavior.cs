@@ -11,6 +11,7 @@ public class EnemyBehavior : BaseEnemyCharacter
 
     public int minSpeed = 3;
     public int maxSpeed = 5;
+    public GameObject loot;
 
 	// Use this for initialization
 	void Start ()
@@ -21,6 +22,8 @@ public class EnemyBehavior : BaseEnemyCharacter
         anim = GetComponent<Animator>();
 
         nav.speed = Random.Range(minSpeed, maxSpeed);
+        target = GetClosestEnemy(allies);
+        InvokeRepeating("GetClosestEnemy", 0, .25f);
     }
 	
 	// Update is called once per frame
@@ -31,8 +34,9 @@ public class EnemyBehavior : BaseEnemyCharacter
             anim.SetTrigger("isDead");
 
         allies = GameObject.FindGameObjectsWithTag("Ally");
-
         target = GetClosestEnemy(allies);
+
+
         anim.SetFloat("Speed", nav.velocity.magnitude);
         //control movement amimations.
     
@@ -62,6 +66,11 @@ public class EnemyBehavior : BaseEnemyCharacter
 
     private void Destroy()
     {
+        if(Random.Range(0, 10) == 0)
+        {
+            Instantiate(loot, transform.position, transform.rotation);
+        }
+
         Destroy(gameObject);
     }
 
