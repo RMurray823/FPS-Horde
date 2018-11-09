@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyHealthBillboard : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
 	void Update () {
         transform.LookAt(Camera.main.transform);
 	}
