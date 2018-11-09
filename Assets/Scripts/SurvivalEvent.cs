@@ -5,17 +5,16 @@ using UnityEngine;
 public class SurvivalEvent : MonoBehaviour
 {
     public GameObject[] enemyTypes;
-    public Transform[] spawnPoints;
+    public Transform spawnCenter;
     public float spawnRate;
 
-    private SphereCollider spawnArea;
     private Transform player;
-
+    private float spawnRadius;
 
     // Use this for initialization
     void Start()
     {
-        spawnArea = GetComponent<SphereCollider>();
+        spawnRadius = GetComponent<SphereCollider>().radius;
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
@@ -29,10 +28,8 @@ public class SurvivalEvent : MonoBehaviour
     }
     void Spawn()
     {
-
         int temp = Random.Range(0, enemyTypes.Length);
-        int spot = Random.Range(0, spawnPoints.Length);
 
-        Instantiate(enemyTypes[temp], spawnPoints[spot].position, spawnPoints[spot].rotation);
+        Instantiate(enemyTypes[temp], spawnCenter.position + (Random.insideUnitSphere * spawnRadius), spawnCenter.rotation);
     }
 }
