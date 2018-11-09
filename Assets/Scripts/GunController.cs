@@ -80,7 +80,7 @@ public class GunController : MonoBehaviour {
 
                 Vector3 cameraDir;
                 Vector3 cameraPos;
-                if(GetComponentInParent<Rigidbody>().tag == "Player")
+                if(transform.root.tag == "Player")
                 {
                     cameraDir = mainCamera.transform.forward;
                     cameraPos = mainCamera.transform.position;
