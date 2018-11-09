@@ -66,6 +66,11 @@ public class GunController : MonoBehaviour {
         reloadStart = Time.time;
     }
 
+    public void addAmmo()
+    {
+        unloadedAmmo += maxLoadedAmmo;
+    }
+
     public int getAmmoInClip() {
         return loadedAmmo;
     }
