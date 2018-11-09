@@ -2,74 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class PlayerController : MonoBehaviour {
-    private Rigidbody body;
-
+public class PlayerController : BaseAllyCharacter {
     private Vector3 keyboardInputs = Vector3.zero;
     private Vector3 mouseInput = Vector3.zero;
 
     private Quaternion localRotation = Quaternion.identity;
 
-    public Text uiHealth;
-    public Text uiArmor;
-
-    //Remaining ammo not loaded
-    public Text uiRemainingAmmo;
-    //Currently loaded
-    public Text uiClipAmmo;
-
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
-    public float movementSpeed = 5.0f;
     private float rotationX = 0f;
-
-    private Health health;
-
-    //Currently held gun info
-    private GameObject heldGun;
-    private GunController gunController;
-    private PlayerInventory playerInventory;
 
     // Use this for initialization
     void Start () {
-        body = GetComponent<Rigidbody>();
-        health = GetComponent<Health>();
-        playerInventory = GetComponent<PlayerInventory>();
-
-        heldGun = playerInventory.getHeldGun();
-        gunController = heldGun.GetComponent<GunController>();
-
-        //Initialize text UI components
-        uiHealth.text = health.currentHealth.ToString();
-        uiArmor.text = health.currentArmor.ToString();
-        uiClipAmmo.text = gunController.getAmmoInClip().ToString();
-        uiRemainingAmmo.text = gunController.getAmmoNotInClip().ToString();
-
+        base.Init();
     }
 	
     // Update is called once per frame
     void Update () {
         HandleInput();
-        UpdateUI();
-    }
-
-    private void UpdateUI() {
-        uiHealth.text = health.currentHealth.ToString();
-        uiArmor.text = health.currentArmor.ToString();
-
-        uiClipAmmo.text = gunController.getAmmoInClip().ToString();
-        uiRemainingAmmo.text = gunController.getAmmoNotInClip().ToString();
     }
 
     void FixedUpdate() {
         body.MoveRotation(localRotation);
         body.MovePosition(body.position + keyboardInputs * movementSpeed * Time.fixedDeltaTime);
-    }
-
-    public void Hit(int damage) {
-        if(health.takeDamage(damage) <= 0) {
-            Debug.Log("dead");
-        }
-        uiHealth.text = health.currentHealth.ToString();
     }
 
     private void OnTriggerEnter(Collider other) {

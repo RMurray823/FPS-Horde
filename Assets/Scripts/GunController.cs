@@ -7,6 +7,7 @@ public class GunController : MonoBehaviour {
 
     private Camera mainCamera;
     private AudioSource gunNoise;
+    private AudioSource reloadNoise;
 
     private float shotTime;
     public float shootDelay;
@@ -28,12 +29,14 @@ public class GunController : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         mainCamera = Camera.main;
-        gunNoise = GetComponent<AudioSource>();
+        var audio = GetComponents<AudioSource>();
+        gunNoise    = audio[0];
+        reloadNoise = audio[1];
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
         if (reloading) {
             if (Time.time - reloadStart <= reloadTime) {
                 reloading = false;
@@ -75,9 +78,18 @@ public class GunController : MonoBehaviour {
             if (Time.time - shotTime >= shootDelay) {
                 shotTime = Time.time;
 
-
-                Vector3 cameraDir = mainCamera.transform.forward;
-                Vector3 cameraPos = mainCamera.transform.position;
+                Vector3 cameraDir;
+                Vector3 cameraPos;
+                if(GetComponentInParent<Rigidbody>().tag == "Player")
+                {
+                    cameraDir = mainCamera.transform.forward;
+                    cameraPos = mainCamera.transform.position;
+                }
+                else
+                {
+                    cameraDir = transform.forward;
+                    cameraPos = transform.position;
+                }
                 RaycastHit results;
 
                 gunNoise.Play();
@@ -88,11 +100,12 @@ public class GunController : MonoBehaviour {
                     else if (results.collider.tag == "Enemy")
                         results.collider.SendMessage("Shot", damage);
 
-                }
 
+                }
                 loadedAmmo--;
             }
         } else {
+            reloadNoise.Play();
             reload();
         }
     }

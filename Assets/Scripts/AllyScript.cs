@@ -3,26 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AllyScript : MonoBehaviour
+public class AllyScript : BaseAllyCharacter
 {
     private NavMeshAgent nav;
+
+    //objects on the map for the NPC to interact with.
     private GameObject player;
     private GameObject target;
     private GameObject[] enemies;
-    private Health health;
+
     private Animator anim;
 
+
+
+    //TODO: Get GunController working then remove this data.
     private float shotTime;
 
     public int damage = 10;
     public float fireRate = 1f;
     public float range = 50f;
+    public float accuracy = .8f;
 
     // Use this for initialization
     void Start ()
     {
+        base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
-        health = GetComponent<Health>();
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
 
@@ -50,7 +56,9 @@ public class AllyScript : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
                 if (Time.time >= shotTime + fireRate)
                 {
-                    Shoot(target);
+                    //shotTime = Time.time;
+                    //Shoot();
+                    gunController.fireBullet();
                 }
             }
         }
@@ -61,26 +69,31 @@ public class AllyScript : MonoBehaviour
     {
         if (health.takeDamage(damage) <= 0)
         {
-            Debug.Log("dead");
+            anim.SetTrigger("Dead");
         }
     }
 
-    void Shoot (GameObject target)
+    private void Shoot()
     {
-        anim.SetTrigger("Attack");
-        shotTime = Time.time;
         Vector3 dir = transform.forward;
         Vector3 pos = transform.position;
-        RaycastHit result;
+        RaycastHit results;
 
-        if (Physics.Raycast(pos, dir, out result))
+        if (Physics.Raycast(pos, dir, out results))
         {
-            if (result.collider.tag == "WeakPoint")
-                result.rigidbody.SendMessage("CriticalHit", damage);
+            if (results.collider.tag == "WeakPoint")
+                results.rigidbody.SendMessage("CriticalHit", damage);
 
-            else if (result.collider.tag == "Enemy")
-                result.collider.SendMessage("Shot", damage);
+            else if (results.collider.tag == "Enemy")
+                results.collider.SendMessage("Shot", damage);
+
+
         }
+    }
+
+    private void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     private GameObject GetClosestEnemy (GameObject[] enemies)

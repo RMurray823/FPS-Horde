@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemySpawner : MonoBehaviour
 {
 
     private Transform player;
@@ -12,13 +12,13 @@ public class EnemyManager : MonoBehaviour
     public float spawnRadius;
     public Transform[] spawnPoints; //used to hold multiple locations for enemies to spawn from.
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         health = GetComponent<Health>();
         InvokeRepeating("Spawn", spawnTime, spawnTime); //causes this script to run once for each interval spawnTime.
-	}
+    }
 
     void Spawn()
     {
@@ -31,15 +31,10 @@ public class EnemyManager : MonoBehaviour
             Instantiate(enemyTypes[temp], spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
         }
     }
-	
+
     void Shot(int damage)
     {
         if (health.takeDamage(damage) <= 0)
             Destroy(gameObject);
     }
-	/* Update is called once per frame (unneeded in this implementation)
-	void Update ()
-    {
-		
-	}*/
 }
