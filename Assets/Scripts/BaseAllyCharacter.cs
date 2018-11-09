@@ -25,6 +25,7 @@ public class BaseAllyCharacter : BaseCharacter {
         return heldGun;
     }
 
+    virtual
     public void Hit(int damage) {
         if (health.takeDamage(damage) <= 0) {
             Debug.Log("dead");

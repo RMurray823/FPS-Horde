@@ -14,11 +14,6 @@ public class AllyScript : BaseAllyCharacter
 
     private Animator anim;
 
-
-
-    //TODO: Get GunController working then remove this data.
-    private float shotTime;
-
     public int damage = 10;
     public float fireRate = 1f;
     public float range = 50f;
@@ -54,18 +49,14 @@ public class AllyScript : BaseAllyCharacter
                 anim.SetBool("Aiming", true);
                 var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
-                if (Time.time >= shotTime + fireRate)
-                {
-                    //shotTime = Time.time;
-                    //Shoot();
-                    gunController.fireBullet();
-                }
+                gunController.fireBullet();
             }
         }
         anim.SetFloat("Speed", nav.velocity.magnitude);
     }
 
-    void Hit (int damage)
+    override
+    public void Hit (int damage)
     {
         if (health.takeDamage(damage) <= 0)
         {
