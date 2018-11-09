@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 public class PlayerController : BaseAllyCharacter {
     private Vector3 keyboardInputs = Vector3.zero;
     private Vector3 mouseInput = Vector3.zero;
@@ -66,4 +68,14 @@ public class PlayerController : BaseAllyCharacter {
 
         localRotation = Quaternion.Euler(0, rotationX, 0);
     }
+
+    override
+    public void Hit(int damage) {
+        if (health.takeDamage(damage) <= 0) {
+            Scene current = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(current.name);
+        }    
+    }
+
 }
+
