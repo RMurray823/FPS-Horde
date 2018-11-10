@@ -66,6 +66,11 @@ public class GunController : MonoBehaviour {
         reloadStart = Time.time;
     }
 
+    public void addAmmo()
+    {
+        unloadedAmmo += maxLoadedAmmo;
+    }
+
     public int getAmmoInClip() {
         return loadedAmmo;
     }
@@ -80,7 +85,7 @@ public class GunController : MonoBehaviour {
 
                 Vector3 cameraDir;
                 Vector3 cameraPos;
-                if(GetComponentInParent<Rigidbody>().tag == "Player")
+                if(transform.root.tag == "Player")
                 {
                     cameraDir = mainCamera.transform.forward;
                     cameraPos = mainCamera.transform.position;

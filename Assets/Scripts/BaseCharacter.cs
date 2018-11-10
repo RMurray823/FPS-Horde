@@ -13,4 +13,19 @@ public class BaseCharacter : MonoBehaviour {
         body = GetComponent<Rigidbody>();
         health = GetComponent<Health>(); 
     }
+
+    public Rigidbody GetRigidbody() {
+        return body;
+    }
+
+    public Health getHealth() {
+        return health;
+    }
+
+    virtual
+    public void Hit(int damage) {
+        if (health.takeDamage(damage) <= 0) {
+            Debug.Log("dead");
+        }
+    }
 }

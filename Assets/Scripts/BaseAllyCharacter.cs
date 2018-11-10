@@ -17,17 +17,7 @@ public class BaseAllyCharacter : BaseCharacter {
         gunController = heldGun.GetComponent<GunController>();
     }
 
-    public Health getHealth() {
-        return health;
-    }
-
     public GameObject getHeldGun() {
         return heldGun;
-    }
-
-    public void Hit(int damage) {
-        if (health.takeDamage(damage) <= 0) {
-            Debug.Log("dead");
-        }
     }
 }
