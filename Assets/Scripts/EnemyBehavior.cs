@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class EnemyBehavior : BaseEnemyCharacter
 {
     private NavMeshAgent nav;
-
     private Animator anim;
 
     public int minSpeed = 3;
@@ -16,26 +15,22 @@ public class EnemyBehavior : BaseEnemyCharacter
 	// Use this for initialization
 	void Start ()
     {
-
         base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         anim = GetComponent<Animator>();
 
+        isPanicked = false;
         nav.speed = Random.Range(minSpeed, maxSpeed);
-        target = GetClosestEnemy(allies);
         InvokeRepeating("GetClosestEnemy", 0, .25f);
+        target = player;
+        targets = GameObject.FindGameObjectsWithTag("Ally");
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-
         if (health.currentHealth <= 0)
             anim.SetTrigger("isDead");
-
-        allies = GameObject.FindGameObjectsWithTag("Ally");
-        target = GetClosestEnemy(allies);
-
 
         anim.SetFloat("Speed", nav.velocity.magnitude);
         //control movement amimations.
@@ -70,18 +65,27 @@ public class EnemyBehavior : BaseEnemyCharacter
         {
             Instantiate(loot, transform.position, transform.rotation);
         }
-
         Destroy(gameObject);
     }
 
-    private GameObject GetClosestEnemy(GameObject[] enemies)
+    private GameObject GetClosestEnemy()
     {
+        GameObject closest = player;
         Vector3 position = transform.position; //get invoking obj position.
-        GameObject closest = player; //default to player.
         //calculate difference between player and obj pos.
         Vector3 playerDiff = player.transform.position - position;
+        if (!isPanicked)
+        {
+            targets = GameObject.FindGameObjectsWithTag("Ally");
+        }
+        else
+        {
+            closest = null;
+            targets = GameObject.FindGameObjectsWithTag("Enemy");
+        }
+
         float distance = playerDiff.sqrMagnitude;
-        foreach (GameObject go in allies)
+        foreach (GameObject go in targets)
         {
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;
@@ -91,6 +95,7 @@ public class EnemyBehavior : BaseEnemyCharacter
                 distance = curDistance;
             }
         }
+        target = closest;
         return closest;
     }
 }

@@ -45,7 +45,7 @@ public class GunController : MonoBehaviour {
         }
     }
 
-    //Reloading isn't delaying like I want it too can fix this later
+    //TODO:Reloading isn't delaying like I want it too can fix this later
     public void reload() {
 
         int neededShots = maxLoadedAmmo - loadedAmmo;
