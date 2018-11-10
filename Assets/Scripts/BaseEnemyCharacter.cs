@@ -10,20 +10,31 @@ public class BaseEnemyCharacter : BaseCharacter {
 
     protected GameObject player;
     protected GameObject target;
-    protected GameObject[] allies;
+    protected GameObject[] targets;
+    protected bool isPanicked;
      
     override
     public void Init() {
         base.Init();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player
-        allies = GameObject.FindGameObjectsWithTag("Ally"); //make an array of all ally NPC's
+        targets = GameObject.FindGameObjectsWithTag("Ally"); //make an array of all ally NPC's
     }
     protected void Attack() {
         attackTime = Time.time;
         target.SendMessage("Hit", damage);
     }
-
+    //TODO:Stop enemy attacking itself
     protected void Shot(int damage) {
+        health.takeDamage(damage);
+        if (health.currentHealth <= health.maxHealth)
+        {
+            gameObject.tag = "Ally";
+            isPanicked = true;
+        }
+    }
+    override
+    public void Hit(int damage)
+    {
         health.takeDamage(damage);
     }
 
