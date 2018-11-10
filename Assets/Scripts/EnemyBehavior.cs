@@ -21,7 +21,7 @@ public class EnemyBehavior : BaseEnemyCharacter
 
         isPanicked = false;
         nav.speed = Random.Range(minSpeed, maxSpeed);
-        InvokeRepeating("GetClosestEnemy", 0, .25f);
+        InvokeRepeating("TargetClosestEnemy", 0, .25f);
         target = player;
         targets = GameObject.FindGameObjectsWithTag("Ally");
     }
@@ -33,15 +33,29 @@ public class EnemyBehavior : BaseEnemyCharacter
             anim.SetTrigger("isDead");
 
         anim.SetFloat("Speed", nav.velocity.magnitude);
-        //control movement amimations.
-    
-        if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
-            nav.SetDestination(target.transform.position); //move to target's position.
 
-        else if (target != null)
+        if(target != null)
         {
-            if(Time.time >= attackTime + attackSpeed)
-            anim.SetTrigger("attack");
+            if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
+                nav.SetDestination(target.transform.position); //move to target's position.
+            else
+            {
+                if (Time.time >= attackTime + attackSpeed)
+                    anim.SetTrigger("attack");
+            }
+        }
+    }
+
+    override
+    protected void Shot(int damage)
+    {
+        health.takeDamage(damage);
+        //if currentHealth is below panic threshold.
+        if (health.currentHealth <= health.maxHealth)
+        {
+            gameObject.tag = "Ally";
+            isPanicked = true;
+            target = null;
         }
     }
 
@@ -57,8 +71,6 @@ public class EnemyBehavior : BaseEnemyCharacter
         }
     }
 
-
-
     private void Destroy()
     {
         if(Random.Range(0, 10) == 0)
@@ -68,23 +80,26 @@ public class EnemyBehavior : BaseEnemyCharacter
         Destroy(gameObject);
     }
 
-    private GameObject GetClosestEnemy()
+    private void TargetClosestEnemy()
     {
-        GameObject closest = player;
+        GameObject closest;
+        float distance;
         Vector3 position = transform.position; //get invoking obj position.
         //calculate difference between player and obj pos.
         Vector3 playerDiff = player.transform.position - position;
         if (!isPanicked)
         {
+            closest = player;
+            distance = playerDiff.sqrMagnitude;
             targets = GameObject.FindGameObjectsWithTag("Ally");
         }
         else
         {
             closest = null;
+            distance = Mathf.Infinity;
             targets = GameObject.FindGameObjectsWithTag("Enemy");
         }
 
-        float distance = playerDiff.sqrMagnitude;
         foreach (GameObject go in targets)
         {
             Vector3 diff = go.transform.position - position;
@@ -96,6 +111,5 @@ public class EnemyBehavior : BaseEnemyCharacter
             }
         }
         target = closest;
-        return closest;
     }
 }

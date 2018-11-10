@@ -23,15 +23,12 @@ public class BaseEnemyCharacter : BaseCharacter {
         attackTime = Time.time;
         target.SendMessage("Hit", damage);
     }
-    //TODO:Stop enemy attacking itself
+
+    virtual
     protected void Shot(int damage) {
         health.takeDamage(damage);
-        if (health.currentHealth <= health.maxHealth)
-        {
-            gameObject.tag = "Ally";
-            isPanicked = true;
-        }
     }
+
     override
     public void Hit(int damage)
     {
