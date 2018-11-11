@@ -1059,6 +1059,11 @@ Prefab:
       propertyPath: m_Name
       value: Zombie (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 114101007696278748, guid: f1b0d5d65a94a974bbc90a7ea5cec98c,
+        type: 2}
+      propertyPath: threatRadius
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1b0d5d65a94a974bbc90a7ea5cec98c, type: 2}
   m_IsPrefabAsset: 0
