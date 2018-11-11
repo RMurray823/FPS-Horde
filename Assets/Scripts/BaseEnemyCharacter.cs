@@ -11,7 +11,6 @@ public class BaseEnemyCharacter : BaseCharacter {
     protected GameObject player;
     protected GameObject target;
     protected GameObject[] targets;
-    protected bool isPanicked;
      
     override
     public void Init() {
