@@ -27,12 +27,12 @@ public class GunController : MonoBehaviour {
 
 
     // Use this for initialization
-	void Start () {
+	void Start ()
+    {
         mainCamera = Camera.main;
         var audio = GetComponents<AudioSource>();
         gunNoise    = audio[0];
         reloadNoise = audio[1];
-
 	}
 	
 	// Update is called once per frame
