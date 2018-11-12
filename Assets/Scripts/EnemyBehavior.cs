@@ -23,7 +23,7 @@ public class EnemyBehavior : BaseEnemyCharacter
 
         panicked = false;
         nav.speed = Random.Range(minSpeed, maxSpeed);
-        InvokeRepeating("TargetClosestEnemy", 0, .25f);
+        InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
         target = player;
     }
 	
@@ -90,6 +90,7 @@ public class EnemyBehavior : BaseEnemyCharacter
 
     private void TargetClosestEnemy()
     {
+        target = null;
         //get a list of all colliders in radius
         Collider[] objectsInRange = Physics.OverlapSphere(transform.position, threatRadius);
         Vector3 position = transform.position; //position of invoking obj.
