@@ -9,10 +9,11 @@ public class EnemyBehavior : BaseEnemyCharacter
     private Animator anim;
     private bool panicked;
 
+    public GameObject[] loot;
+
     public int minSpeed = 3;
     public int maxSpeed = 5;
     public float threatRadius = 10f;
-    public GameObject loot;
 
 	// Use this for initialization
 	void Start ()
@@ -58,7 +59,7 @@ public class EnemyBehavior : BaseEnemyCharacter
         //if currentHealth is below panic threshold.
         if (health.currentHealth <= health.maxHealth / 5)
         {
-            if(Random.Range(0, 5) == 0)
+            if(Random.Range(0, 10) == 0)
             {
                 gameObject.tag = "Ally";
                 panicked = true;
@@ -81,11 +82,47 @@ public class EnemyBehavior : BaseEnemyCharacter
 
     private void Destroy()
     {
-        if(Random.Range(0, 10) == 0)
-        {
-            Instantiate(loot, transform.position, transform.rotation);
-        }
+        dropLoot();
         Destroy(gameObject);
+    }
+
+    private void dropLoot()
+    {
+        int i = Random.Range(1, 50);
+        Vector3 dropPosition = transform.position;
+        dropPosition.y = transform.position.y + 0.5f;
+        Quaternion dropRotation = transform.rotation;
+
+        switch (i)
+        {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                Instantiate(loot[0], dropPosition, dropRotation);
+                break;
+            case 5:
+                Instantiate(loot[0], dropPosition, dropRotation);
+                dropLoot();
+                break;
+            case 6:
+            case 7:
+                Instantiate(loot[1], dropPosition, dropRotation);
+                break;
+            case 8:
+                Instantiate(loot[1], dropPosition, dropRotation);
+                dropLoot();
+                break;
+            case 9:
+                Instantiate(loot[2], dropPosition, dropRotation);
+                break;
+            case 10:
+                Instantiate(loot[2], dropPosition, dropRotation);
+                dropLoot();
+                break;
+            default:
+                break;
+        }
     }
 
     private void TargetClosestEnemy()
@@ -111,9 +148,9 @@ public class EnemyBehavior : BaseEnemyCharacter
                     }
                 }
             }
-            else //else if panicked, target enemies.
+            else //else if panicked, target anything.
             {
-                if (col.tag == "Enemy")
+                if (col.tag == "Enemy" || col.tag == "Player" || col.tag == "Ally")
                 {
                     Vector3 diff = col.transform.position - position;
                     float curDistance = diff.sqrMagnitude;
