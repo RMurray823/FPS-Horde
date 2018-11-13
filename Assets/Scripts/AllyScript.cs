@@ -10,8 +10,8 @@ public class AllyScript : BaseAllyCharacter
     //objects on the map for the NPC to interact with.
     private GameObject player;
     private GameObject target;
-
     private Animator anim;
+
     public float range = 50f;
     public float accuracy = .8f;
     // Use this for initialization

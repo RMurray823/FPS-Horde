@@ -10,7 +10,6 @@ public class EnemySpawner : MonoBehaviour
     public GameObject[] enemyTypes;
     public float spawnTime = 3f;
     public float spawnRadius;
-    public Transform[] spawnPoints; //used to hold multiple locations for enemies to spawn from.
 
     // Use this for initialization
     void Start()
@@ -22,13 +21,11 @@ public class EnemySpawner : MonoBehaviour
 
     void Spawn()
     {
-
-        int spawnPointIndex = Random.Range(0, spawnPoints.Length);
         int temp = Random.Range(0, enemyTypes.Length);
 
         if (Vector3.Distance(this.transform.position, player.transform.position) < spawnRadius)
         {
-            Instantiate(enemyTypes[temp], spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+            Instantiate(enemyTypes[temp], transform.position, transform.rotation);
         }
     }
 
