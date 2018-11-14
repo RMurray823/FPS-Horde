@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : BaseCharacter
+public class EnemySpawner : BaseEnemyCharacter
 {
-
-    private Transform player;
-    private Health health;
     public GameObject[] enemyTypes;
     public float spawnTime = 3f;
     public float spawnRadius;
@@ -14,8 +11,7 @@ public class EnemySpawner : BaseCharacter
     // Use this for initialization
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        health = GetComponent<Health>();
+        base.Init();
         InvokeRepeating("Spawn", spawnTime, spawnTime); //causes this script to run once for each interval spawnTime.
     }
 
