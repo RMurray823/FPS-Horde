@@ -3064,6 +3064,7 @@ MonoBehaviour:
   attackSpeed: 2
   minSpeed: 2
   maxSpeed: 5
+  threatRadius: 50
   loot: {fileID: 1275096893054290, guid: 0d5bd098e12e4074d974a4145b04878a, type: 2}
 --- !u!114 &114892578673503866
 MonoBehaviour:

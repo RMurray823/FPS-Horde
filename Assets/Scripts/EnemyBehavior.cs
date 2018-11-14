@@ -7,9 +7,11 @@ public class EnemyBehavior : BaseEnemyCharacter
 {
     private NavMeshAgent nav;
     private Animator anim;
+    private bool panicked;
 
     public int minSpeed = 3;
     public int maxSpeed = 5;
+    public float threatRadius = 10f;
     public GameObject loot;
 
 	// Use this for initialization
@@ -19,11 +21,10 @@ public class EnemyBehavior : BaseEnemyCharacter
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         anim = GetComponent<Animator>();
 
-        isPanicked = false;
+        panicked = false;
         nav.speed = Random.Range(minSpeed, maxSpeed);
-        InvokeRepeating("TargetClosestEnemy", 0, .25f);
+        InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
         target = player;
-        targets = GameObject.FindGameObjectsWithTag("Ally");
     }
 	
 	// Update is called once per frame
@@ -43,7 +44,11 @@ public class EnemyBehavior : BaseEnemyCharacter
                 if (Time.time >= attackTime + attackSpeed)
                     anim.SetTrigger("attack");
             }
+            //set rotation to face target.
+            var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
         }
+
     }
 
     override
@@ -51,11 +56,14 @@ public class EnemyBehavior : BaseEnemyCharacter
     {
         health.takeDamage(damage);
         //if currentHealth is below panic threshold.
-        if (health.currentHealth <= health.maxHealth)
+        if (health.currentHealth <= health.maxHealth / 5)
         {
-            gameObject.tag = "Ally";
-            isPanicked = true;
-            target = null;
+            if(Random.Range(0, 5) == 0)
+            {
+                gameObject.tag = "Ally";
+                panicked = true;
+                target = null;
+            }
         }
     }
 
@@ -82,32 +90,39 @@ public class EnemyBehavior : BaseEnemyCharacter
 
     private void TargetClosestEnemy()
     {
-        GameObject closest;
-        float distance;
-        Vector3 position = transform.position; //get invoking obj position.
-        //calculate difference between player and obj pos.
-        Vector3 playerDiff = player.transform.position - position;
-        if (!isPanicked)
+        target = null;
+        //get a list of all colliders in radius
+        Collider[] objectsInRange = Physics.OverlapSphere(transform.position, threatRadius);
+        Vector3 position = transform.position; //position of invoking obj.
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        foreach (Collider col in objectsInRange)
         {
-            closest = player;
-            distance = playerDiff.sqrMagnitude;
-            targets = GameObject.FindGameObjectsWithTag("Ally");
-        }
-        else
-        {
-            closest = null;
-            distance = Mathf.Infinity;
-            targets = GameObject.FindGameObjectsWithTag("Enemy");
-        }
-
-        foreach (GameObject go in targets)
-        {
-            Vector3 diff = go.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
+            if (!panicked) //if not panicked, attack player or allies.
             {
-                closest = go;
-                distance = curDistance;
+                if (col.tag == "Player" || col.tag == "Ally")
+                {
+                    Vector3 diff = col.transform.position - position;
+                    float curDistance = diff.sqrMagnitude;
+                    if (curDistance < distance)
+                    {
+                        closest = col.gameObject;
+                        distance = curDistance;
+                    }
+                }
+            }
+            else //else if panicked, target enemies.
+            {
+                if (col.tag == "Enemy")
+                {
+                    Vector3 diff = col.transform.position - position;
+                    float curDistance = diff.sqrMagnitude;
+                    if (curDistance < distance)
+                    {
+                        closest = col.gameObject;
+                        distance = curDistance;
+                    }
+                }
             }
         }
         target = closest;

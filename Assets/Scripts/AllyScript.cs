@@ -10,15 +10,10 @@ public class AllyScript : BaseAllyCharacter
     //objects on the map for the NPC to interact with.
     private GameObject player;
     private GameObject target;
-    private GameObject[] enemies;
 
     private Animator anim;
-
-    public int damage = 10;
-    public float fireRate = 1f;
     public float range = 50f;
     public float accuracy = .8f;
-
     // Use this for initialization
     void Start ()
     {
@@ -26,22 +21,20 @@ public class AllyScript : BaseAllyCharacter
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
-
+        InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        target = GetClosestEnemy(enemies);
-        //movement management
+        anim.SetFloat("Speed", nav.velocity.magnitude);
         if (Vector3.Distance(transform.position, player.transform.position) >= nav.stoppingDistance)
         {
             anim.SetBool("Aiming", false);
             nav.SetDestination(player.transform.position);
         }
-        //check for target
-        else if (target != null)
+        //movement management
+        if (target != null)
         {
             //if a target exists and is within range, shoot at it
             if (Vector3.Distance(transform.position, target.transform.position) < range)
@@ -52,7 +45,6 @@ public class AllyScript : BaseAllyCharacter
                 gunController.fireBullet();
             }
         }
-        anim.SetFloat("Speed", nav.velocity.magnitude);
     }
 
     override
@@ -64,44 +56,32 @@ public class AllyScript : BaseAllyCharacter
         }
     }
 
-    private void Shoot()
-    {
-        Vector3 dir = transform.forward;
-        Vector3 pos = transform.position;
-        RaycastHit results;
-
-        if (Physics.Raycast(pos, dir, out results))
-        {
-            if (results.collider.tag == "WeakPoint")
-                results.rigidbody.SendMessage("CriticalHit", damage);
-
-            else if (results.collider.tag == "Enemy")
-                results.collider.SendMessage("Shot", damage);
-
-
-        }
-    }
-
     private void Destroy()
     {
         Destroy(gameObject);
     }
 
-    private GameObject GetClosestEnemy (GameObject[] enemies)
+    private void TargetClosestEnemy()
     {
-        Vector3 position = transform.position;
+        target = null;
+        //get a list of all colliders in radius
+        Collider[] objectsInRange = Physics.OverlapSphere(transform.position, range);
+        Vector3 position = transform.position; //position of invoking obj.
         GameObject closest = null;
         float distance = Mathf.Infinity;
-        foreach (GameObject go in enemies)
+        foreach (Collider col in objectsInRange)
         {
-            Vector3 diff = go.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
+            if (col.tag == "Enemy")
             {
-                closest = go;
-                distance = curDistance;
+                Vector3 diff = col.transform.position - position;
+                float curDistance = diff.sqrMagnitude;
+                if (curDistance < distance)
+                {
+                    closest = col.gameObject;
+                    distance = curDistance;
+                }
             }
         }
-        return closest;
+        target = closest;
     }
 }
