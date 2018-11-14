@@ -119,11 +119,12 @@ public class GunController : MonoBehaviour {
         RaycastHit results;
         //TODO: this shouldn't be handled here. It should be handled in the enemy class
         if (Physics.Raycast(cameraPos, cameraDir, out results)) {
-            if (results.collider.tag == "WeakPoint")
-                results.rigidbody.SendMessage("Shot", damage * 2);
+            ShotInformation info = new ShotInformation();
+            info.damage = damage;
+            info.tag = results.collider.tag;
 
-            else if (results.collider.tag == "Enemy")
-                results.collider.SendMessage("Shot", damage);
+            //We send the shot to the root of the collider we shot. This might not be ideal if we want gun shots to appear where the "bullet" hits
+            results.collider.transform.root.SendMessage("Shot", info);
         }
 
         gunNoise.Play();

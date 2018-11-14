@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : BaseCharacter
 {
 
     private Transform player;
@@ -29,9 +29,10 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void Shot(int damage)
+    override
+    protected void Shot(ShotInformation info)
     {
-        if (health.takeDamage(damage) <= 0)
+        if (health.takeDamage(info.damage) <= 0)
             Destroy(gameObject);
     }
 }

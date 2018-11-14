@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public struct ShotInformation {
+    public int damage;
+    public string tag;
+}
+
 public class BaseCharacter : MonoBehaviour {
 
     protected Rigidbody body;
@@ -21,6 +27,9 @@ public class BaseCharacter : MonoBehaviour {
     public Health getHealth() {
         return health;
     }
+
+    virtual
+    protected void Shot(ShotInformation info) { }
 
     virtual
     public void Hit(int damage) {

@@ -23,8 +23,8 @@ public class BaseEnemyCharacter : BaseCharacter {
         target.SendMessage("Hit", damage);
     }
 
-    virtual
-    protected void Shot(int damage) {
+    override
+    protected void Shot(ShotInformation info) {
         health.takeDamage(damage);
     }
 

@@ -53,9 +53,15 @@ public class EnemyBehavior : BaseEnemyCharacter
     }
 
     override
-    protected void Shot(int damage)
+    protected void Shot(ShotInformation info)
     {
-        health.takeDamage(damage);
+
+        if(info.tag == "WeakPoint") {
+            health.takeDamage(info.damage*2);
+        } else {
+            health.takeDamage(info.damage);
+        }
+        
         //if currentHealth is below panic threshold.
         if (health.currentHealth <= health.maxHealth /5)
         {
