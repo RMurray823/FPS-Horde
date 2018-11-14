@@ -33,8 +33,4 @@ public class BaseEnemyCharacter : BaseCharacter {
     {
         health.takeDamage(damage);
     }
-
-    protected void CriticalHit(int damage) {
-        health.takeDamage(damage * 2);
-    }
 }

@@ -105,7 +105,7 @@ public class GunController : MonoBehaviour {
                 gunNoise.Play();
                 if (Physics.Raycast(cameraPos, cameraDir, out results)) {
                     if (results.collider.tag == "WeakPoint")
-                        results.rigidbody.SendMessage("CriticalHit", damage);
+                        results.rigidbody.SendMessage("Shot", damage * 2);
 
                     else if (results.collider.tag == "Enemy")
                         results.collider.SendMessage("Shot", damage);

@@ -57,15 +57,21 @@ public class EnemyBehavior : BaseEnemyCharacter
     {
         health.takeDamage(damage);
         //if currentHealth is below panic threshold.
-        if (health.currentHealth <= health.maxHealth / 5)
+        if (health.currentHealth <= health.maxHealth /5)
         {
-            if(Random.Range(0, 10) == 0)
+            if(Random.Range(1, 10) == 1)
             {
-                gameObject.tag = "Ally";
                 panicked = true;
                 target = null;
             }
+            InvokeRepeating("Decay", 0f, 0.5f);
         }
+    }
+
+    //Used to kill a panicking enemy.
+    private void Decay()
+    {
+        health.takeDamage(1);
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -150,11 +156,11 @@ public class EnemyBehavior : BaseEnemyCharacter
             }
             else //else if panicked, target anything.
             {
-                if (col.tag == "Enemy" || col.tag == "Player" || col.tag == "Ally")
+                if (col.tag == "Enemy" || col.tag == "Player"|| col.tag == "Ally")
                 {
                     Vector3 diff = col.transform.position - position;
                     float curDistance = diff.sqrMagnitude;
-                    if (curDistance < distance)
+                    if (curDistance < distance && curDistance != 0)
                     {
                         closest = col.gameObject;
                         distance = curDistance;
