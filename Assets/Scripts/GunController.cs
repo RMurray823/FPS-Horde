@@ -124,12 +124,13 @@ public class GunController : MonoBehaviour {
 
         gunNoise.Play();
 
-        if(--loadedAmmo == 0) {
+        if (--loadedAmmo == 0) {
             CancelInvoke("FireBullet");
         }
     }
 
-    public void Shoot() {
+    //Returns true if we actually shot or not.
+    public bool Shoot() {
         if (loadedAmmo > 0 && !reloading) {
             if (Time.time - shotTime >= shootDelay) {
                 shotTime = Time.time;
@@ -139,26 +140,25 @@ public class GunController : MonoBehaviour {
                         FireBullet();
                         break;
                     case FireType.Burst:
-                        if (!triggerHeld) {
-                            burstCount = 0;
-                            InvokeRepeating("FireBullet", 0, burstDelay);
-                        } else
-                            return;
+                        burstCount = 0;
+                        InvokeRepeating("FireBullet", 0, burstDelay);
                         break;
                     case FireType.Semi:
                         if (triggerHeld)
-                            return;
+                            return false;
                         else
                             FireBullet();
                         break;
                 }
             }
             triggerHeld = true;
+            return true;
 
         } else {
             reloadNoise.Play();
             reload();
-        }      
+            return false;
+        }
     }
 
     public void SetShooting(bool flag) {
