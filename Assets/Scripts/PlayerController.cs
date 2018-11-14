@@ -38,6 +38,11 @@ public class PlayerController : BaseAllyCharacter {
             HealthPack pack = other.GetComponent<HealthPack>();
             health.healArmor(pack.getArmorAmount());
         }
+
+        if (other.name == "AmmoPack")
+        {
+            gunController.addAmmo();
+        }
     }
 
     private void HandleInput() {
