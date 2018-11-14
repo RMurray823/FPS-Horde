@@ -11,7 +11,7 @@ public class GunController : MonoBehaviour {
         Burst
     }
 
-    public bool triggerHeld = false;
+    private bool triggerHeld = false;
 
     public FireType gunFireType;
     private Camera mainCamera;
@@ -26,8 +26,8 @@ public class GunController : MonoBehaviour {
     public int maxAmmo = 90;
     public int maxLoadedAmmo = 30;
 
-    protected int loadedAmmo = 30;
-    protected int unloadedAmmo = 90;
+    public int loadedAmmo = 30;
+    public int unloadedAmmo = 90;
 
     private float reloadStart = 0.0f;
     //1 second reload time by default
@@ -70,9 +70,11 @@ public class GunController : MonoBehaviour {
                 loadedAmmo += unloadedAmmo;
                 unloadedAmmo = 0;
             } else {
+
                 return;
             }
         }
+        reloadNoise.Play();
 
         reloading = true;
         reloadStart = Time.time;
@@ -155,7 +157,7 @@ public class GunController : MonoBehaviour {
             return true;
 
         } else {
-            reloadNoise.Play();
+            //reloadNoise.Play();
             reload();
             return false;
         }

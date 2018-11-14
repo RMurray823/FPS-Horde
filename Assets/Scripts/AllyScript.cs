@@ -40,10 +40,12 @@ public class AllyScript : BaseAllyCharacter
             //if a target exists and is within range, shoot at it
             if (Vector3.Distance(transform.position, target.transform.position) < range)
             {
-                anim.SetBool("Aiming", true);
-                var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
-                gunController.Shoot();
+                
+                if(gunController.Shoot()) {
+                    anim.SetBool("Aiming", true);
+                    var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
+                }
             }
         }
     }
