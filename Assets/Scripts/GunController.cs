@@ -124,7 +124,7 @@ public class GunController : MonoBehaviour {
             info.tag = results.collider.tag;
 
             //We send the shot to the root of the collider we shot. This might not be ideal if we want gun shots to appear where the "bullet" hits
-            results.collider.transform.root.SendMessage("Shot", info);
+            results.collider.transform.root.SendMessage("Shot", info, SendMessageOptions.DontRequireReceiver);
         }
 
         gunNoise.Play();
