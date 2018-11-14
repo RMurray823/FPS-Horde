@@ -43,7 +43,7 @@ public class AllyScript : BaseAllyCharacter
                 anim.SetBool("Aiming", true);
                 var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
-                gunController.fireBullet();
+                gunController.Shoot();
             }
         }
     }

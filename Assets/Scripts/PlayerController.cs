@@ -64,11 +64,11 @@ public class PlayerController : BaseAllyCharacter {
             gunController = heldGun.GetComponent<GunController>();
         }
         if(Input.GetKey(KeyCode.Mouse0)) {
-            gunController.fireBullet();
+            gunController.Shoot();
         }
 
         if(Input.GetKeyUp(KeyCode.Mouse0)) {
-            gunController.shooting = false;
+            gunController.SetShooting(false);
         }
 
         keyboardInputs = Vector3.zero;

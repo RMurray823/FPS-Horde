@@ -750,7 +750,22 @@ Prefab:
     - target: {fileID: 114389132483612470, guid: 4b36ae2ddcea3274e880b8f5bae72241,
         type: 2}
       propertyPath: gunFireType
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114389132483612470, guid: 4b36ae2ddcea3274e880b8f5bae72241,
+        type: 2}
+      propertyPath: burstDelay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114389132483612470, guid: 4b36ae2ddcea3274e880b8f5bae72241,
+        type: 2}
+      propertyPath: shootDelay
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114389132483612470, guid: 4b36ae2ddcea3274e880b8f5bae72241,
+        type: 2}
+      propertyPath: numOfBurstShots
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b36ae2ddcea3274e880b8f5bae72241, type: 2}

@@ -11,7 +11,7 @@ public class GunController : MonoBehaviour {
         Burst
     }
 
-    public bool shooting = false;
+    public bool triggerHeld = false;
 
     public FireType gunFireType;
     private Camera mainCamera;
@@ -34,17 +34,23 @@ public class GunController : MonoBehaviour {
     public float reloadTime = 1.0f;
     private bool reloading = false;
 
+
+    public int numOfBurstShots;
+
+    //Tracks when to stop invokerepeat
+    private int burstCount;
+
     // Use this for initialization
-	void Start ()
-    {
+    void Start() {
         mainCamera = Camera.main;
         var audio = GetComponents<AudioSource>();
-        gunNoise    = audio[0];
+        gunNoise = audio[0];
         reloadNoise = audio[1];
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        burstCount = 0;
+    }
+
+    // Update is called once per frame
+    void Update() {
         if (reloading) {
             if (Time.time - reloadStart <= reloadTime) {
                 reloading = false;
@@ -54,13 +60,12 @@ public class GunController : MonoBehaviour {
 
     //TODO:Reloading isn't delaying like I want it too can fix this later
     public void reload() {
-
         int neededShots = maxLoadedAmmo - loadedAmmo;
 
-        if(unloadedAmmo >= neededShots) {
+        if (unloadedAmmo >= neededShots) {
             loadedAmmo += neededShots;
             unloadedAmmo -= neededShots;
-        } else{
+        } else {
             if (unloadedAmmo > 0) {
                 loadedAmmo += unloadedAmmo;
                 unloadedAmmo = 0;
@@ -73,8 +78,7 @@ public class GunController : MonoBehaviour {
         reloadStart = Time.time;
     }
 
-    public void addAmmo()
-    {
+    public void addAmmo() {
         if (unloadedAmmo + maxLoadedAmmo >= maxAmmo)
             unloadedAmmo = maxAmmo;
         else
@@ -88,58 +92,77 @@ public class GunController : MonoBehaviour {
     public int getAmmoNotInClip() {
         return unloadedAmmo;
     }
-    public void fireBullet() {
-        if(loadedAmmo > 0 && !reloading) {
+
+    private void FireBullet() {
+
+        //Cancel the repeating invoke
+        if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
+
+        Vector3 cameraDir;
+        Vector3 cameraPos;
+
+        //TODO: I don't think we should have to do these checks. Maybe we should pass to the guncontroller where the bullet should exit
+        if (transform.root.tag == "Player") {
+            cameraDir = mainCamera.transform.forward;
+            cameraPos = mainCamera.transform.position;
+        } else {
+            cameraDir = transform.forward;
+            cameraPos = transform.position;
+            if (transform.root.tag == "Ally")
+                transform.root.SendMessage("ShootAnimation");
+        }
+
+        RaycastHit results;
+        //TODO: this shouldn't be handled here. It should be handled in the enemy class
+        if (Physics.Raycast(cameraPos, cameraDir, out results)) {
+            if (results.collider.tag == "WeakPoint")
+                results.rigidbody.SendMessage("Shot", damage * 2);
+
+            else if (results.collider.tag == "Enemy")
+                results.collider.SendMessage("Shot", damage);
+        }
+
+        gunNoise.Play();
+
+        if(--loadedAmmo == 0) {
+            CancelInvoke("FireBullet");
+        }
+    }
+
+    public void Shoot() {
+        if (loadedAmmo > 0 && !reloading) {
             if (Time.time - shotTime >= shootDelay) {
+                shotTime = Time.time;
 
                 switch (gunFireType) {
                     case FireType.Automatic:
+                        FireBullet();
                         break;
                     case FireType.Burst:
-                        break;
-                    case FireType.Semi:
-                        if (shooting)
+                        if (!triggerHeld) {
+                            burstCount = 0;
+                            InvokeRepeating("FireBullet", 0, burstDelay);
+                        } else
                             return;
                         break;
+                    case FireType.Semi:
+                        if (triggerHeld)
+                            return;
+                        else
+                            FireBullet();
+                        break;
                 }
-
-                shotTime = Time.time;
-
-                Vector3 cameraDir;
-                Vector3 cameraPos;
-
-
-                if(transform.root.tag == "Player")
-                {
-                    cameraDir = mainCamera.transform.forward;
-                    cameraPos = mainCamera.transform.position;
-                }
-                else
-                {
-                    cameraDir = transform.forward;
-                    cameraPos = transform.position;
-                    if(transform.root.tag == "Ally")
-                        transform.root.SendMessage("ShootAnimation");
-                }
-                RaycastHit results;
-
-                gunNoise.Play();
-                if (Physics.Raycast(cameraPos, cameraDir, out results)) {
-                    if (results.collider.tag == "WeakPoint")
-                        results.rigidbody.SendMessage("Shot", damage * 2);
-
-                    else if (results.collider.tag == "Enemy")
-                        results.collider.SendMessage("Shot", damage);
-
-
-                }
-                loadedAmmo--;
             }
+            triggerHeld = true;
+
         } else {
             reloadNoise.Play();
             reload();
-        }
+        }      
+    }
 
-        shooting = true;
+    public void SetShooting(bool flag) {
+        triggerHeld = flag;
     }
 }
+
