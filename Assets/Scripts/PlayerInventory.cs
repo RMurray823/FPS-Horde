@@ -10,8 +10,9 @@ public class PlayerInventory : MonoBehaviour {
 
     private void Start() {
         guns[0].SetActive(true);
-        for(int i = 1; i < guns.Length; i++) {
-            guns[i].SetActive(false);
+        for (int i = 1; i < guns.Length; i++) {
+            if(guns[i] != null)
+                guns[i].SetActive(false);
         }
     }
 
