@@ -245,17 +245,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1066243972068198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8372ffc38d7b084d9df651e2c3c453f, type: 3}
+  m_Script: {fileID: 11500000, guid: c8e406bcc03217f4c934020d11e09973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTypes:
-  - {fileID: 1596632398661518, guid: f1b0d5d65a94a974bbc90a7ea5cec98c, type: 2}
-  - {fileID: 1596632398661518, guid: f1b0d5d65a94a974bbc90a7ea5cec98c, type: 2}
-  - {fileID: 1972785281850204, guid: 96bc461b8edd5054c84eff7befbe778d, type: 2}
+  enemyTypes: []
   spawnTime: 3
-  spawnRadius: 50
-  spawnPoints:
-  - {fileID: 4335647665693284}
+  spawnRadius: 0
+  spawnPoints: []
 --- !u!114 &114289972326945464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -402,11 +398,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 500
+  currentArmor: 200
   maxHealth: 500
+  maxArmor: 200
   startingHealthMin: 500
   startingHealthMax: 500
-  currentArmor: 200
-  maxArmor: 200
   startingArmorMin: 200
   startingArmorMax: 200
   healthBar: {fileID: 224786517376867048}
