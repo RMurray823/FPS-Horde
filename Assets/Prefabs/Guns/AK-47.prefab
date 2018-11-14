@@ -39,9 +39,10 @@ GameObject:
   - component: {fileID: 114903255178730724}
   - component: {fileID: 82952338091125994}
   - component: {fileID: 82135987184490474}
+  - component: {fileID: 65995944218244062}
   m_Layer: 0
   m_Name: AK-47
-  m_TagString: Untagged
+  m_TagString: Gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,7 +114,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1175948584693170}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.27, y: -0.3, z: 0.4}
+  m_LocalPosition: {x: -15.457909, y: 0.17889975, z: 1.4094125}
   m_LocalScale: {x: 0.8, y: 0.52910054, z: 0.8}
   m_Children:
   - {fileID: 4503951016842330}
@@ -261,6 +262,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1077967113244740}
   m_Mesh: {fileID: 4300000, guid: cd8d56469cf64654eaa21e15c6ae7c18, type: 3}
+--- !u!65 &65995944218244062
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175948584693170}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.10448456, y: 0.4752886, z: 1.7860308}
+  m_Center: {x: -0.0007510185, y: 0.020908356, z: -0.04631847}
 --- !u!82 &82135987184490474
 AudioSource:
   m_ObjectHideFlags: 1
@@ -462,8 +475,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df14eb947f54b1a488b0d8aa051116ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  held: 0
+  gunFireType: 0
   shootDelay: 0.3
+  burstDelay: 0
+  damage: 50
   maxAmmo: 90
   maxLoadedAmmo: 30
-  damage: 50
+  loadedAmmo: 30
+  unloadedAmmo: 90
+  infiniteAmmo: 0
   reloadTime: 1
+  numOfBurstShots: 0

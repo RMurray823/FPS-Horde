@@ -71,6 +71,15 @@ public class PlayerController : BaseAllyCharacter {
             gunController.SetShooting(false);
         }
 
+        if(Input.GetKeyDown(KeyCode.E)) {
+            Camera temp = Camera.main;
+            RaycastHit results;
+            if(Physics.Raycast(temp.transform.position, temp.transform.forward, out results)) {
+                if (results.collider.gameObject.tag == "Gun")
+                    playerInventory.PickUpGun(results.collider.gameObject);
+            }
+        }
+
         keyboardInputs = Vector3.zero;
         keyboardInputs.x = Input.GetAxis("Horizontal");
         keyboardInputs.z = Input.GetAxis("Vertical");

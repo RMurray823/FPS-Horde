@@ -11,6 +11,7 @@ public class GunController : MonoBehaviour {
         Burst
     }
 
+    public bool held = false;
     private bool triggerHeld = false;
 
     public FireType gunFireType;
