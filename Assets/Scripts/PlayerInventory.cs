@@ -8,6 +8,7 @@ public class PlayerInventory: MonoBehaviour {
 
     private void Start() {
         guns[0].SetActive(true);
+        guns[0].GetComponent<GunController>().held = true;
         for (int i = 1; i < guns.Length; i++) {
             if (guns[i] != null) {
                 guns[i].SetActive(false);
