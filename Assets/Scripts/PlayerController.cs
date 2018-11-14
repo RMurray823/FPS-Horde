@@ -67,6 +67,10 @@ public class PlayerController : BaseAllyCharacter {
             gunController.fireBullet();
         }
 
+        if(Input.GetKeyUp(KeyCode.Mouse0)) {
+            gunController.shooting = false;
+        }
+
         keyboardInputs = Vector3.zero;
         keyboardInputs.x = Input.GetAxis("Horizontal");
         keyboardInputs.z = Input.GetAxis("Vertical");

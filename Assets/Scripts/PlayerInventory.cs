@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour {
-
     private const int gunListSize = 2;
     public GameObject[] guns;
     private int currentWeapon = 0;
