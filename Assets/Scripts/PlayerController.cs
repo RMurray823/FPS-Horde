@@ -54,7 +54,13 @@ public class PlayerController : BaseAllyCharacter {
         }
 
         if(Input.GetKeyDown(KeyCode.Space)) {
+
+            //This should swap out everything but it's not
+            heldGun.SetActive(false);
+
             heldGun = playerInventory.swapGun();
+            heldGun.SetActive(true);
+
             gunController = heldGun.GetComponent<GunController>();
         }
         if(Input.GetKey(KeyCode.Mouse0)) {

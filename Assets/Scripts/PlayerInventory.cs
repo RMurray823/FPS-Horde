@@ -8,10 +8,13 @@ public class PlayerInventory : MonoBehaviour {
     public GameObject[] guns;
     private int currentWeapon = 0;
 
-	void Start () {
-        
-	}
-	
+    private void Start() {
+        guns[0].SetActive(true);
+        for(int i = 1; i < guns.Length; i++) {
+            guns[i].SetActive(false);
+        }
+    }
+
     public GameObject getHeldGun() {
         return guns[currentWeapon];
     }
