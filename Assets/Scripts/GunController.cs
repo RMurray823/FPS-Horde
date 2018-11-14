@@ -29,6 +29,8 @@ public class GunController : MonoBehaviour {
     public int loadedAmmo = 30;
     public int unloadedAmmo = 90;
 
+    public bool infiniteAmmo = false;
+
     private float reloadStart = 0.0f;
     //1 second reload time by default
     public float reloadTime = 1.0f;
@@ -126,8 +128,10 @@ public class GunController : MonoBehaviour {
 
         gunNoise.Play();
 
-        if (--loadedAmmo == 0) {
-            CancelInvoke("FireBullet");
+        if (!infiniteAmmo) {
+            if (--loadedAmmo == 0) {
+                CancelInvoke("FireBullet");
+            }
         }
     }
 
@@ -157,7 +161,6 @@ public class GunController : MonoBehaviour {
             return true;
 
         } else {
-            //reloadNoise.Play();
             reload();
             return false;
         }
