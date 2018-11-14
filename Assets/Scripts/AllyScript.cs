@@ -20,6 +20,7 @@ public class AllyScript : BaseAllyCharacter
         base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         anim = GetComponent<Animator>();
+        
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
         InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
     }
@@ -83,5 +84,10 @@ public class AllyScript : BaseAllyCharacter
             }
         }
         target = closest;
+    }
+
+    private void ShootAnimation()
+    {
+        anim.SetTrigger("Attack");
     }
 }

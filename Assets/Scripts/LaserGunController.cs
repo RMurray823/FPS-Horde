@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GunController : MonoBehaviour {
+public class LaserGunController : MonoBehaviour {
 
     private Camera mainCamera;
     private AudioSource gunNoise;
@@ -12,11 +12,11 @@ public class GunController : MonoBehaviour {
     private float shotTime;
     public float shootDelay;
 
-    public int maxAmmo = 90;
-    public int maxLoadedAmmo = 30;
+    public int maxReserve;
+    public int maxClip;
 
-    protected int loadedAmmo = 30;
-    protected int unloadedAmmo = 90;
+    protected int clip = 30;
+    protected int reserve = 90;
 
     public int damage = 50;
 
@@ -48,15 +48,15 @@ public class GunController : MonoBehaviour {
     //TODO:Reloading isn't delaying like I want it too can fix this later
     public void reload() {
 
-        int neededShots = maxLoadedAmmo - loadedAmmo;
+        int neededShots = maxClip - clip;
 
-        if(unloadedAmmo >= neededShots) {
-            loadedAmmo += neededShots;
-            unloadedAmmo -= neededShots;
+        if(reserve >= neededShots) {
+            clip += neededShots;
+            reserve -= neededShots;
         } else{
-            if (unloadedAmmo > 0) {
-                loadedAmmo += unloadedAmmo;
-                unloadedAmmo = 0;
+            if (reserve > 0) {
+                clip += reserve;
+                reserve = 0;
             } else {
                 return;
             }
@@ -68,21 +68,18 @@ public class GunController : MonoBehaviour {
 
     public void addAmmo()
     {
-        if (unloadedAmmo + maxLoadedAmmo >= maxAmmo)
-            unloadedAmmo = maxAmmo;
-        else
-            unloadedAmmo += maxLoadedAmmo;
+        reserve += maxReserve;
     }
 
     public int getAmmoInClip() {
-        return loadedAmmo;
+        return clip;
     }
 
     public int getAmmoNotInClip() {
-        return unloadedAmmo;
+        return reserve;
     }
     public void fireBullet() {
-        if(loadedAmmo > 0 && !reloading) {
+        if(clip > 0 && !reloading) {
             if (Time.time - shotTime >= shootDelay) {
                 shotTime = Time.time;
 
@@ -97,8 +94,6 @@ public class GunController : MonoBehaviour {
                 {
                     cameraDir = transform.forward;
                     cameraPos = transform.position;
-                    if(transform.root.tag == "Ally")
-                        transform.root.SendMessage("ShootAnimation");
                 }
                 RaycastHit results;
 
@@ -112,7 +107,7 @@ public class GunController : MonoBehaviour {
 
 
                 }
-                loadedAmmo--;
+                clip--;
             }
         } else {
             reloadNoise.Play();
