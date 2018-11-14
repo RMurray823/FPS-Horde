@@ -9,6 +9,9 @@ public class EnemyBehavior : BaseEnemyCharacter
     private Animator anim;
     private bool panicked;
 
+    //sound
+    public AudioSource deathAudio;
+    public AudioClip deathClip;
     public GameObject[] loot;
 
     public int minSpeed = 3;
@@ -18,6 +21,7 @@ public class EnemyBehavior : BaseEnemyCharacter
 	// Use this for initialization
 	void Start ()
     {
+        
         base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         anim = GetComponent<Animator>();
@@ -31,9 +35,14 @@ public class EnemyBehavior : BaseEnemyCharacter
 	// Update is called once per frame
 	void Update ()
     {
+        
         if (health.currentHealth <= 0)
+        {
             anim.SetTrigger("isDead");
+ 
+            deathAudio.Play();
 
+        }
         anim.SetFloat("Speed", nav.velocity.magnitude);
 
         if(target != null)

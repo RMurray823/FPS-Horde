@@ -1450,7 +1450,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1201467066039756}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5139859, y: 2.0934828e-17, z: -9.428207}
+  m_LocalPosition: {x: 2.127132, y: -7.392151e-18, z: 9.987387}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 4523329357274914}
@@ -1652,7 +1652,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5741b293312d531499af1c8367018bf9, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1697,7 +1697,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1792,7 +1792,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -2052,11 +2052,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df14eb947f54b1a488b0d8aa051116ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunFireType: 0
   shootDelay: 1
+  burstDelay: 0
+  damage: 10
   maxAmmo: 5000
   maxLoadedAmmo: 30
-  damage: 10
+  loadedAmmo: 30
+  unloadedAmmo: 90
+  infiniteAmmo: 0
   reloadTime: 1
+  numOfBurstShots: 0
 --- !u!114 &114264709323224752
 MonoBehaviour:
   m_ObjectHideFlags: 1
