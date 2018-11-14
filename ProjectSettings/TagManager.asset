@@ -15,6 +15,7 @@ TagManager:
   - RemainingAmmoUI
   - AmmoClipUI
   - Player_HeldGun
+  - AmmoPack
   layers:
   - Default
   - TransparentFX

@@ -10,8 +10,8 @@ public class AllyScript : BaseAllyCharacter
     //objects on the map for the NPC to interact with.
     private GameObject player;
     private GameObject target;
-
     private Animator anim;
+
     public float range = 50f;
     public float accuracy = .8f;
     // Use this for initialization
@@ -20,6 +20,7 @@ public class AllyScript : BaseAllyCharacter
         base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         anim = GetComponent<Animator>();
+        
         player = GameObject.FindGameObjectWithTag("Player"); //find a player.
         InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
     }
@@ -39,10 +40,12 @@ public class AllyScript : BaseAllyCharacter
             //if a target exists and is within range, shoot at it
             if (Vector3.Distance(transform.position, target.transform.position) < range)
             {
-                anim.SetBool("Aiming", true);
-                var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
-                gunController.fireBullet();
+                
+                if(gunController.Shoot()) {
+                    anim.SetBool("Aiming", true);
+                    var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
+                }
             }
         }
     }
@@ -83,5 +86,10 @@ public class AllyScript : BaseAllyCharacter
             }
         }
         target = closest;
+    }
+
+    private void ShootAnimation()
+    {
+        anim.SetTrigger("Attack");
     }
 }

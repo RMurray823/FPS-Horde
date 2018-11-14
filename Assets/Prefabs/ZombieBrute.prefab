@@ -3062,10 +3062,13 @@ MonoBehaviour:
   movementSpeed: 5
   damage: 20
   attackSpeed: 2
+  loot:
+  - {fileID: 1275096893054290, guid: 0d5bd098e12e4074d974a4145b04878a, type: 2}
+  - {fileID: 1275096893054290, guid: 7fb69e1ce612c984ca4564ce7d2a83e9, type: 2}
+  - {fileID: 1422181936426420, guid: b95a7084f64423a4285dfb5b397bdf41, type: 2}
   minSpeed: 2
   maxSpeed: 5
   threatRadius: 50
-  loot: {fileID: 1275096893054290, guid: 0d5bd098e12e4074d974a4145b04878a, type: 2}
 --- !u!114 &114892578673503866
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour {
-
     private const int gunListSize = 2;
     public GameObject[] guns;
     private int currentWeapon = 0;
 
-	void Start () {
-        
-	}
-	
+    private void Start() {
+        guns[0].SetActive(true);
+        for (int i = 1; i < guns.Length; i++) {
+            if(guns[i] != null)
+                guns[i].SetActive(false);
+        }
+    }
+
     public GameObject getHeldGun() {
         return guns[currentWeapon];
     }

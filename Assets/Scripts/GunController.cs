@@ -5,20 +5,31 @@ using UnityEngine.UI;
 
 public class GunController : MonoBehaviour {
 
+    public enum FireType {
+        Automatic,
+        Semi,
+        Burst
+    }
+
+    private bool triggerHeld = false;
+
+    public FireType gunFireType;
     private Camera mainCamera;
     private AudioSource gunNoise;
     private AudioSource reloadNoise;
 
     private float shotTime;
     public float shootDelay;
+    public float burstDelay;
+    public int damage = 50;
 
     public int maxAmmo = 90;
     public int maxLoadedAmmo = 30;
 
-    protected int loadedAmmo = 30;
-    protected int unloadedAmmo = 90;
+    public int loadedAmmo = 30;
+    public int unloadedAmmo = 90;
 
-    public int damage = 50;
+    public bool infiniteAmmo = false;
 
     private float reloadStart = 0.0f;
     //1 second reload time by default
@@ -26,49 +37,56 @@ public class GunController : MonoBehaviour {
     private bool reloading = false;
 
 
+    public int numOfBurstShots;
+
+    //Tracks when to stop invokerepeat
+    private int burstCount;
+
     // Use this for initialization
-	void Start ()
-    {
+    void Start() {
         mainCamera = Camera.main;
         var audio = GetComponents<AudioSource>();
-        gunNoise    = audio[0];
+        gunNoise = audio[0];
         reloadNoise = audio[1];
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        burstCount = 0;
+    }
+
+    // Update is called once per frame
+    void Update() {
         if (reloading) {
             if (Time.time - reloadStart <= reloadTime) {
                 reloading = false;
             }
-
         }
     }
 
     //TODO:Reloading isn't delaying like I want it too can fix this later
     public void reload() {
-
         int neededShots = maxLoadedAmmo - loadedAmmo;
 
-        if(unloadedAmmo >= neededShots) {
+        if (unloadedAmmo >= neededShots) {
             loadedAmmo += neededShots;
             unloadedAmmo -= neededShots;
-        } else{
+        } else {
             if (unloadedAmmo > 0) {
                 loadedAmmo += unloadedAmmo;
                 unloadedAmmo = 0;
             } else {
+
                 return;
             }
         }
+        reloadNoise.Play();
 
         reloading = true;
         reloadStart = Time.time;
     }
 
-    public void addAmmo()
-    {
-        unloadedAmmo += maxLoadedAmmo;
+    public void addAmmo() {
+        if (unloadedAmmo + maxLoadedAmmo >= maxAmmo)
+            unloadedAmmo = maxAmmo;
+        else
+            unloadedAmmo += maxLoadedAmmo;
     }
 
     public int getAmmoInClip() {
@@ -78,40 +96,79 @@ public class GunController : MonoBehaviour {
     public int getAmmoNotInClip() {
         return unloadedAmmo;
     }
-    public void fireBullet() {
-        if(loadedAmmo > 0 && !reloading) {
+
+    private void FireBullet() {
+
+        //Cancel the repeating invoke
+        if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
+
+        Vector3 cameraDir;
+        Vector3 cameraPos;
+
+        //TODO: I don't think we should have to do these checks. Maybe we should pass to the guncontroller where the bullet should exit
+        if (transform.root.tag == "Player") {
+            cameraDir = mainCamera.transform.forward;
+            cameraPos = mainCamera.transform.position;
+        } else {
+            cameraDir = transform.forward;
+            cameraPos = transform.position;
+            if (transform.root.tag == "Ally")
+                transform.root.SendMessage("ShootAnimation");
+        }
+
+        RaycastHit results;
+        //TODO: this shouldn't be handled here. It should be handled in the enemy class
+        if (Physics.Raycast(cameraPos, cameraDir, out results)) {
+            ShotInformation info = new ShotInformation();
+            info.damage = damage;
+            info.tag = results.collider.tag;
+
+            //We send the shot to the root of the collider we shot. This might not be ideal if we want gun shots to appear where the "bullet" hits
+            results.collider.transform.root.SendMessage("Shot", info, SendMessageOptions.DontRequireReceiver);
+        }
+
+        gunNoise.Play();
+
+        if (!infiniteAmmo) {
+            if (--loadedAmmo == 0) {
+                CancelInvoke("FireBullet");
+            }
+        }
+    }
+
+    //Returns true if we actually shot or not.
+    public bool Shoot() {
+        if (loadedAmmo > 0 && !reloading) {
             if (Time.time - shotTime >= shootDelay) {
                 shotTime = Time.time;
 
-                Vector3 cameraDir;
-                Vector3 cameraPos;
-                if(transform.root.tag == "Player")
-                {
-                    cameraDir = mainCamera.transform.forward;
-                    cameraPos = mainCamera.transform.position;
+                switch (gunFireType) {
+                    case FireType.Automatic:
+                        FireBullet();
+                        break;
+                    case FireType.Burst:
+                        burstCount = 0;
+                        InvokeRepeating("FireBullet", 0, burstDelay);
+                        break;
+                    case FireType.Semi:
+                        if (triggerHeld)
+                            return false;
+                        else
+                            FireBullet();
+                        break;
                 }
-                else
-                {
-                    cameraDir = transform.forward;
-                    cameraPos = transform.position;
-                }
-                RaycastHit results;
-
-                gunNoise.Play();
-                if (Physics.Raycast(cameraPos, cameraDir, out results)) {
-                    if (results.collider.tag == "WeakPoint")
-                        results.rigidbody.SendMessage("CriticalHit", damage);
-
-                    else if (results.collider.tag == "Enemy")
-                        results.collider.SendMessage("Shot", damage);
-
-
-                }
-                loadedAmmo--;
             }
+            triggerHeld = true;
+            return true;
+
         } else {
-            reloadNoise.Play();
             reload();
+            return false;
         }
     }
+
+    public void SetShooting(bool flag) {
+        triggerHeld = flag;
+    }
 }
+

@@ -38,6 +38,11 @@ public class PlayerController : BaseAllyCharacter {
             HealthPack pack = other.GetComponent<HealthPack>();
             health.healArmor(pack.getArmorAmount());
         }
+
+        if (other.name == "AmmoPack")
+        {
+            gunController.addAmmo();
+        }
     }
 
     private void HandleInput() {
@@ -49,11 +54,21 @@ public class PlayerController : BaseAllyCharacter {
         }
 
         if(Input.GetKeyDown(KeyCode.Space)) {
+
+            //This should swap out everything but it's not
+            heldGun.SetActive(false);
+
             heldGun = playerInventory.swapGun();
+            heldGun.SetActive(true);
+
             gunController = heldGun.GetComponent<GunController>();
         }
         if(Input.GetKey(KeyCode.Mouse0)) {
-            gunController.fireBullet();
+            gunController.Shoot();
+        }
+
+        if(Input.GetKeyUp(KeyCode.Mouse0)) {
+            gunController.SetShooting(false);
         }
 
         keyboardInputs = Vector3.zero;

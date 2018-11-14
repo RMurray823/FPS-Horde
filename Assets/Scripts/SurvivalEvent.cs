@@ -8,14 +8,12 @@ public class SurvivalEvent : MonoBehaviour
     public Transform spawnCenter;
     public float spawnRate;
 
-    private Transform player;
     private float spawnRadius;
 
     // Use this for initialization
     void Start()
     {
         spawnRadius = GetComponent<SphereCollider>().radius;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void OnTriggerEnter(Collider other)
