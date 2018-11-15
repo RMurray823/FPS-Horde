@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 82855847816343454}
   m_Layer: 0
   m_Name: TestGun2
-  m_TagString: Untagged
+  m_TagString: Gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,11 +288,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df14eb947f54b1a488b0d8aa051116ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  held: 0
+  gunFireType: 0
   shootDelay: 0.3
+  burstDelay: 0
+  damage: 50
   maxAmmo: 90
   maxLoadedAmmo: 30
-  damage: 50
+  loadedAmmo: 30
+  unloadedAmmo: 90
+  infiniteAmmo: 0
   reloadTime: 1000
+  numOfBurstShots: 0
 --- !u!193 &193759942265703488
 Tree:
   m_ObjectHideFlags: 1

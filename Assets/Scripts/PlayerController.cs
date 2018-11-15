@@ -53,7 +53,7 @@ public class PlayerController : BaseAllyCharacter {
                 Cursor.lockState = CursorLockMode.None;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Tab)) {
 
             //This should swap out everything but it's not
             heldGun.SetActive(false);
@@ -64,11 +64,34 @@ public class PlayerController : BaseAllyCharacter {
             gunController = heldGun.GetComponent<GunController>();
         }
         if(Input.GetKey(KeyCode.Mouse0)) {
-            gunController.Shoot();
+            if (gunController)
+                gunController.Shoot();
         }
 
         if(Input.GetKeyUp(KeyCode.Mouse0)) {
-            gunController.SetShooting(false);
+            if(gunController)
+                gunController.SetShooting(false);
+        }
+
+        if(Input.GetKeyDown(KeyCode.E)) {
+            Camera temp = Camera.main;
+            RaycastHit results;
+            if(Physics.Raycast(temp.transform.position, temp.transform.forward, out results)) {
+                if (results.collider.gameObject.tag == "Gun") {
+                    playerInventory.PickUpGun(results.collider.gameObject);
+                    heldGun = playerInventory.getHeldGun();
+                    gunController = heldGun.GetComponent<GunController>();
+                } 
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.G)) {
+            heldGun = playerInventory.DropGun(true);
+            heldGun.SetActive(true);
+            if (heldGun)
+                gunController = heldGun.GetComponent<GunController>();
+            else
+                gunController = null;
         }
 
         keyboardInputs = Vector3.zero;
