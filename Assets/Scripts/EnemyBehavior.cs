@@ -8,12 +8,8 @@ public class EnemyBehavior : BaseEnemyCharacter
     private NavMeshAgent nav;
     private Animator anim;
     private bool panicked;
-    private bool is_dead;
 
-    //sound
-    private AudioSource deathAudio;
 
-    public AudioClip deathClip;
     public GameObject[] loot;
 
     public int minSpeed = 3;
@@ -24,9 +20,9 @@ public class EnemyBehavior : BaseEnemyCharacter
 	void Start ()
     {
         //sound
-        var audio = GetComponents<AudioSource>();
-        deathAudio = audio[2];
-        is_dead = false;
+        //var audio = GetComponents<AudioSource>();
+        //deathAudio = audio[2];
+        //is_dead = false;
         
         base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
@@ -47,11 +43,11 @@ public class EnemyBehavior : BaseEnemyCharacter
             anim.SetTrigger("isDead");
 
             //play death audio
-            if (!is_dead)
+            /*if (!is_dead)
             {
                 deathAudio.Play();
                 is_dead = true;
-            }
+            }*/
         }
         anim.SetFloat("Speed", nav.velocity.magnitude);
 
