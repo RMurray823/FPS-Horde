@@ -2,37 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZombieSound : MonoBehaviour {
+public class ZombieSound : MonoBehaviour
+{
 
-    private AudioSource deathAudio;
+    public AudioSource deathAudio;
     private AudioClip deathClip;
     private bool is_dead;
+    private int health;
 
-    
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
 
         is_dead = false;
 
         var audio = GetComponents<AudioSource>();
         deathAudio = audio[2];
         deathClip = deathAudio.clip;
-        
     }
 
     // Update is called once per frame
-    void Update () {
-
-        var health = GetComponent<Health>().currentHealth;
+    void Update()
+    {
+        health = GetComponent<Health>().currentHealth;
 
         if (health <= 0)
         {
             //play death audio
             if (!is_dead)
             {
-                deathAudio.PlayOneShot(deathClip);
+                PlayDeath();
                 is_dead = true;
             }
         }
     }
+
+
+    private void PlayDeath()
+    {
+        deathAudio.PlayOneShot(deathClip);
+    }
+
+    private void PlayAttack()
+    { }
 }

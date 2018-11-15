@@ -19,11 +19,6 @@ public class EnemyBehavior : BaseEnemyCharacter
 	// Use this for initialization
 	void Start ()
     {
-        //sound
-        //var audio = GetComponents<AudioSource>();
-        //deathAudio = audio[2];
-        //is_dead = false;
-        
         base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         anim = GetComponent<Animator>();
@@ -37,17 +32,9 @@ public class EnemyBehavior : BaseEnemyCharacter
 	// Update is called once per frame
 	void Update ()
     {
-        
         if (health.currentHealth <= 0)
         {
             anim.SetTrigger("isDead");
-
-            //play death audio
-            /*if (!is_dead)
-            {
-                deathAudio.Play();
-                is_dead = true;
-            }*/
         }
         anim.SetFloat("Speed", nav.velocity.magnitude);
 
