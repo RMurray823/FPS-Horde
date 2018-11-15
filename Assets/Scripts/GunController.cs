@@ -11,6 +11,8 @@ public class GunController : MonoBehaviour {
         Burst
     }
 
+    public bool canDrop = true;
+
     public bool held = false;
     private bool triggerHeld = false;
 
@@ -96,6 +98,21 @@ public class GunController : MonoBehaviour {
 
     public int getAmmoNotInClip() {
         return unloadedAmmo;
+    }
+
+    public void SetHeld(bool flag) {
+        if(canDrop) {
+            held = flag;
+            GetComponent<Rigidbody>().isKinematic = flag;
+            GetComponent<BoxCollider>().isTrigger = flag;
+
+            if (flag) {
+                transform.parent = Camera.main.transform;
+            } else {
+                transform.parent = null;
+            }
+        }
+
     }
 
     private void FireBullet() {
