@@ -100,19 +100,22 @@ public class GunController : MonoBehaviour {
         return unloadedAmmo;
     }
 
-    public void SetHeld(bool flag) {
-        if(canDrop) {
+
+    //TODO: Really don't like having to pass the parent
+    public void SetHeld(bool flag, Transform parent) {
+        if (canDrop) {
+
             held = flag;
             GetComponent<Rigidbody>().isKinematic = flag;
             GetComponent<BoxCollider>().isTrigger = flag;
 
             if (flag) {
-                transform.parent = Camera.main.transform;
+                if (parent.gameObject.tag == "Player")
+                    transform.parent = Camera.main.transform;
             } else {
                 transform.parent = null;
             }
         }
-
     }
 
     private void FireBullet() {

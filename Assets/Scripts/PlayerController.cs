@@ -86,8 +86,8 @@ public class PlayerController : BaseAllyCharacter {
         }
 
         if(Input.GetKeyDown(KeyCode.G)) {
-            heldGun = playerInventory.DropGun();
-
+            heldGun = playerInventory.DropGun(true);
+            heldGun.SetActive(true);
             if (heldGun)
                 gunController = heldGun.GetComponent<GunController>();
             else
