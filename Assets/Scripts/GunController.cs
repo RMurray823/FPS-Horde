@@ -56,34 +56,35 @@ public class GunController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (reloading) {
+
+        if (!reloading) {
+            if (loadedAmmo == 0) {
+                reloading = true;
+                reloadStart = Time.time;
+                reloadNoise.Play();
+            }
+        } else {
             if (Time.time - reloadStart >= reloadTime) {
+                reload();
                 reloading = false;
             }
         }
     }
 
-    //TODO:Reloading isn't delaying like I want it too can fix this later
     public void reload() {
-        if (!reloading) {
-            int neededShots = maxLoadedAmmo - loadedAmmo;
+        int neededShots = maxLoadedAmmo - loadedAmmo;
 
-            if (unloadedAmmo >= neededShots) {
-                loadedAmmo += neededShots;
-                unloadedAmmo -= neededShots;
+        if (unloadedAmmo >= neededShots) {
+            loadedAmmo += neededShots;
+            unloadedAmmo -= neededShots;
+        } else {
+            if (unloadedAmmo > 0) {
+                loadedAmmo += unloadedAmmo;
+                unloadedAmmo = 0;
             } else {
-                if (unloadedAmmo > 0) {
-                    loadedAmmo += unloadedAmmo;
-                    unloadedAmmo = 0;
-                } else {
 
-                    return;
-                }
+                return;
             }
-            reloadNoise.Play();
-
-            reloading = true;
-            reloadStart = Time.time;
         }
     }
 
@@ -185,7 +186,6 @@ public class GunController : MonoBehaviour {
             return true;
 
         } else {
-            reload();
             return false;
         }
     }
