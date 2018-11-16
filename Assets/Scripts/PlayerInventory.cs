@@ -7,8 +7,6 @@ public class PlayerInventory : MonoBehaviour {
     private int currentWeapon = 0;
 
     private void Start() {
-
-
         guns[0].SetActive(true);
         guns[0].GetComponent<GunController>().SetHeld(true, transform);
         for (int i = 1; i < guns.Length; i++) {
@@ -45,7 +43,7 @@ public class PlayerInventory : MonoBehaviour {
     public void PickUpGun(GameObject gun) {
 
         //Already held by another NPC/player so we early quit
-        if (gun.GetComponent<GunController>().held)
+        if (gun.GetComponent<GunController>().IsHeld())
             return;
 
         bool emptySpot = false;
@@ -78,11 +76,11 @@ public class PlayerInventory : MonoBehaviour {
         }
     }
 
-    public GameObject getHeldGun() {
+    public GameObject GetHeldGun() {
         return guns[currentWeapon];
     }
 
-    public GameObject swapGun() {
+    public GameObject SwapGun() {
         currentWeapon = (currentWeapon + 1) % guns.Length;
         if (guns[currentWeapon] == null) {
             currentWeapon = 0;

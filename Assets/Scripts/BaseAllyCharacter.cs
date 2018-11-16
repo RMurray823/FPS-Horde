@@ -13,11 +13,11 @@ public class BaseAllyCharacter : BaseCharacter {
     public void Init() {
         base.Init();
         playerInventory = GetComponent<PlayerInventory>();
-        heldGun = playerInventory.getHeldGun();
+        heldGun = playerInventory.GetHeldGun();
         gunController = heldGun.GetComponent<GunController>();
     }
 
-    public GameObject getHeldGun() {
+    public GameObject GetHeldGun() {
         return heldGun;
     }
 }
