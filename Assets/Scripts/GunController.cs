@@ -50,14 +50,15 @@ public class GunController : MonoBehaviour {
 
     void Update() {
         if (!reloading) {
-            if (loadedAmmo == 0) {
+            if (loadedAmmo == 0 && unloadedAmmo != 0) {
                 reloading = true;
                 reloadStart = Time.time;
-                reloadNoise.Play();
+                
             }
         } else {
             if (Time.time - reloadStart >= reloadTime) {
                 Reload();
+                reloadNoise.Play();
                 reloading = false;
             }
         }
