@@ -43,7 +43,7 @@ public class PlayerInventory : MonoBehaviour {
     public void PickUpGun(GameObject gun) {
 
         //Already held by another NPC/player so we early quit
-        if (gun.GetComponent<GunController>().held)
+        if (gun.GetComponent<GunController>().IsHeld())
             return;
 
         bool emptySpot = false;

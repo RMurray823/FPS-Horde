@@ -1,19 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
+public enum FireType {
+    Automatic,
+    Semi,
+    Burst
+}
 
 public class GunController : MonoBehaviour {
 
-    public enum FireType {
-        Automatic,
-        Semi,
-        Burst
-    }
-
     public bool canDrop = true;
 
-    public bool held = false;
+    private bool held = false;
     private bool triggerHeld = false;
 
     public FireType gunFireType;
@@ -21,31 +20,26 @@ public class GunController : MonoBehaviour {
     private AudioSource gunNoise;
     private AudioSource reloadNoise;
 
-    private float shotTime;
+    //Shooting information
+    public int damage = 50;
     public float shootDelay;
     public float burstDelay;
-    public int damage = 50;
+    public int numOfBurstShots;
+    private int burstCount;
+    private float shotTime;
 
+    //Ammo information
     public int maxAmmo = 90;
     public int maxLoadedAmmo = 30;
-
     public int loadedAmmo = 30;
     public int unloadedAmmo = 90;
-
     public bool infiniteAmmo = false;
 
-    private float reloadStart = 0.0f;
-    //1 second reload time by default
+    //Reload information
     public float reloadTime = 1.0f;
     private bool reloading = false;
+    private float reloadStart = 0.0f;
 
-
-    public int numOfBurstShots;
-
-    //Tracks when to stop invokerepeat
-    private int burstCount;
-
-    // Use this for initialization
     void Start() {
         mainCamera = Camera.main;
         var audio = GetComponents<AudioSource>();
@@ -54,7 +48,6 @@ public class GunController : MonoBehaviour {
         burstCount = 0;
     }
 
-    // Update is called once per frame
     void Update() {
         if (!reloading) {
             if (loadedAmmo == 0) {
@@ -70,6 +63,9 @@ public class GunController : MonoBehaviour {
         }
     }
 
+    public bool IsHeld() {
+        return held;
+    }
     public void Reload() {
         int neededShots = maxLoadedAmmo - loadedAmmo;
 
@@ -102,7 +98,6 @@ public class GunController : MonoBehaviour {
         return unloadedAmmo;
     }
 
-
     //TODO: Really don't like having to pass the parent
     public void SetHeld(bool flag, Transform parent) {
         if (canDrop) {
@@ -121,8 +116,6 @@ public class GunController : MonoBehaviour {
     }
 
     private void FireBullet() {
-
-        //Cancel the repeating invoke
         if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
 
         Vector3 cameraDir;
