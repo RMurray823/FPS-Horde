@@ -1127,6 +1127,16 @@ Prefab:
       propertyPath: loadedAmmo
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 114700787010359998, guid: 0b251aec0cd2e1e42990c846a5e5f09d,
+        type: 2}
+      propertyPath: reloadTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114700787010359998, guid: 0b251aec0cd2e1e42990c846a5e5f09d,
+        type: 2}
+      propertyPath: shootDelay
+      value: 0.15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b251aec0cd2e1e42990c846a5e5f09d, type: 2}
   m_IsPrefabAsset: 0
