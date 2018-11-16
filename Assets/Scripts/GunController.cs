@@ -56,7 +56,6 @@ public class GunController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
         if (!reloading) {
             if (loadedAmmo == 0) {
                 reloading = true;
@@ -65,13 +64,13 @@ public class GunController : MonoBehaviour {
             }
         } else {
             if (Time.time - reloadStart >= reloadTime) {
-                reload();
+                Reload();
                 reloading = false;
             }
         }
     }
 
-    public void reload() {
+    public void Reload() {
         int neededShots = maxLoadedAmmo - loadedAmmo;
 
         if (unloadedAmmo >= neededShots) {
@@ -88,18 +87,18 @@ public class GunController : MonoBehaviour {
         }
     }
 
-    public void addAmmo() {
+    public void AddAmmo() {
         if (unloadedAmmo + maxLoadedAmmo >= maxAmmo)
             unloadedAmmo = maxAmmo;
         else
             unloadedAmmo += maxLoadedAmmo;
     }
 
-    public int getAmmoInClip() {
+    public int GetAmmoInClip() {
         return loadedAmmo;
     }
 
-    public int getAmmoNotInClip() {
+    public int GetAmmoNotInClip() {
         return unloadedAmmo;
     }
 
@@ -141,7 +140,6 @@ public class GunController : MonoBehaviour {
         }
 
         RaycastHit results;
-        //TODO: this shouldn't be handled here. It should be handled in the enemy class
         if (Physics.Raycast(cameraPos, cameraDir, out results)) {
             ShotInformation info = new ShotInformation();
             info.damage = damage;

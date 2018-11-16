@@ -41,7 +41,7 @@ public class PlayerController : BaseAllyCharacter {
 
         if (other.name == "AmmoPack")
         {
-            gunController.addAmmo();
+            gunController.AddAmmo();
         }
     }
 
@@ -58,7 +58,7 @@ public class PlayerController : BaseAllyCharacter {
             //This should swap out everything but it's not
             heldGun.SetActive(false);
 
-            heldGun = playerInventory.swapGun();
+            heldGun = playerInventory.SwapGun();
             heldGun.SetActive(true);
 
             gunController = heldGun.GetComponent<GunController>();
@@ -79,7 +79,7 @@ public class PlayerController : BaseAllyCharacter {
             if(Physics.Raycast(temp.transform.position, temp.transform.forward, out results)) {
                 if (results.collider.gameObject.tag == "Gun") {
                     playerInventory.PickUpGun(results.collider.gameObject);
-                    heldGun = playerInventory.getHeldGun();
+                    heldGun = playerInventory.GetHeldGun();
                     gunController = heldGun.GetComponent<GunController>();
                 } 
             }

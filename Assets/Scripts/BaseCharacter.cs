@@ -24,7 +24,7 @@ public class BaseCharacter : MonoBehaviour {
         return body;
     }
 
-    public Health getHealth() {
+    public Health GetHealth() {
         return health;
     }
 
