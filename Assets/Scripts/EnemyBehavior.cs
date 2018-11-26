@@ -6,48 +6,78 @@ using UnityEngine.AI;
 public class EnemyBehavior : BaseEnemyCharacter
 {
     private NavMeshAgent nav;
-
     private Animator anim;
+    private bool panicked;
+
+    public GameObject[] loot;
 
     public int minSpeed = 3;
     public int maxSpeed = 5;
-    public GameObject loot;
+    public float threatRadius = 10f;
 
 	// Use this for initialization
 	void Start ()
     {
-
         base.Init();
         nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
         anim = GetComponent<Animator>();
 
+        panicked = false;
         nav.speed = Random.Range(minSpeed, maxSpeed);
-        target = GetClosestEnemy(allies);
-        InvokeRepeating("GetClosestEnemy", 0, .25f);
+        InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
+        target = player;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-
         if (health.currentHealth <= 0)
             anim.SetTrigger("isDead");
 
-        allies = GameObject.FindGameObjectsWithTag("Ally");
-        target = GetClosestEnemy(allies);
-
-
         anim.SetFloat("Speed", nav.velocity.magnitude);
-        //control movement amimations.
-    
-        if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
-            nav.SetDestination(target.transform.position); //move to target's position.
 
-        else if (target != null)
+        if(target != null)
         {
-            if(Time.time >= attackTime + attackSpeed)
-            anim.SetTrigger("attack");
+            if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
+                nav.SetDestination(target.transform.position); //move to target's position.
+            else
+            {
+                if (Time.time >= attackTime + attackSpeed)
+                    anim.SetTrigger("attack");
+            }
+            //set rotation to face target.
+            var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
         }
+
+    }
+
+    override
+    protected void Shot(ShotInformation info)
+    {
+
+        if(info.tag == "WeakPoint") {
+            health.takeDamage(info.damage*2);
+        } else {
+            health.takeDamage(info.damage);
+        }
+        
+        //if currentHealth is below panic threshold.
+        if (health.currentHealth <= health.maxHealth /5)
+        {
+            if(Random.Range(1, 10) == 1)
+            {
+                panicked = true;
+                target = null;
+            }
+            InvokeRepeating("Decay", 0f, 0.5f);
+        }
+    }
+
+    //Used to kill a panicking enemy.
+    private void Decay()
+    {
+        health.takeDamage(1);
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -62,35 +92,88 @@ public class EnemyBehavior : BaseEnemyCharacter
         }
     }
 
-
-
     private void Destroy()
     {
-        if(Random.Range(0, 10) == 0)
-        {
-            Instantiate(loot, transform.position, transform.rotation);
-        }
-
+        dropLoot();
         Destroy(gameObject);
     }
 
-    private GameObject GetClosestEnemy(GameObject[] enemies)
+    private void dropLoot()
     {
-        Vector3 position = transform.position; //get invoking obj position.
-        GameObject closest = player; //default to player.
-        //calculate difference between player and obj pos.
-        Vector3 playerDiff = player.transform.position - position;
-        float distance = playerDiff.sqrMagnitude;
-        foreach (GameObject go in allies)
+        int i = Random.Range(1, 50);
+        Vector3 dropPosition = transform.position;
+        dropPosition.y = transform.position.y + 0.5f;
+        Quaternion dropRotation = transform.rotation;
+
+        switch (i)
         {
-            Vector3 diff = go.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                Instantiate(loot[0], dropPosition, dropRotation);
+                break;
+            case 5:
+                Instantiate(loot[0], dropPosition, dropRotation);
+                dropLoot();
+                break;
+            case 6:
+            case 7:
+                Instantiate(loot[1], dropPosition, dropRotation);
+                break;
+            case 8:
+                Instantiate(loot[1], dropPosition, dropRotation);
+                dropLoot();
+                break;
+            case 9:
+                Instantiate(loot[2], dropPosition, dropRotation);
+                break;
+            case 10:
+                Instantiate(loot[2], dropPosition, dropRotation);
+                dropLoot();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void TargetClosestEnemy()
+    {
+        target = null;
+        //get a list of all colliders in radius
+        Collider[] objectsInRange = Physics.OverlapSphere(transform.position, threatRadius);
+        Vector3 position = transform.position; //position of invoking obj.
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        foreach (Collider col in objectsInRange)
+        {
+            if (!panicked) //if not panicked, attack player or allies.
             {
-                closest = go;
-                distance = curDistance;
+                if (col.tag == "Player" || col.tag == "Ally")
+                {
+                    Vector3 diff = col.transform.position - position;
+                    float curDistance = diff.sqrMagnitude;
+                    if (curDistance < distance)
+                    {
+                        closest = col.gameObject;
+                        distance = curDistance;
+                    }
+                }
+            }
+            else //else if panicked, target anything.
+            {
+                if (col.tag == "Enemy" || col.tag == "Player"|| col.tag == "Ally")
+                {
+                    Vector3 diff = col.transform.position - position;
+                    float curDistance = diff.sqrMagnitude;
+                    if (curDistance < distance && curDistance != 0)
+                    {
+                        closest = col.gameObject;
+                        distance = curDistance;
+                    }
+                }
             }
         }
-        return closest;
+        target = closest;
     }
 }

@@ -145,7 +145,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4639753295002576}
   - component: {fileID: 137402160637028088}
-  - component: {fileID: 135408360257039746}
   m_Layer: 0
   m_Name: ' Head'
   m_TagString: Enemy
@@ -779,7 +778,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1596632398661518}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.5803128, y: 6.47444e-17, z: 30}
+  m_LocalPosition: {x: -1.6072235, y: -5.09935e-17, z: 22.96543}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4639753295002576}
@@ -1519,9 +1518,13 @@ MonoBehaviour:
   movementSpeed: 5
   damage: 5
   attackSpeed: 1
+  loot:
+  - {fileID: 1275096893054290, guid: 0d5bd098e12e4074d974a4145b04878a, type: 2}
+  - {fileID: 1275096893054290, guid: 7fb69e1ce612c984ca4564ce7d2a83e9, type: 2}
+  - {fileID: 1422181936426420, guid: b95a7084f64423a4285dfb5b397bdf41, type: 2}
   minSpeed: 3
   maxSpeed: 10
-  loot: {fileID: 1275096893054290, guid: 0d5bd098e12e4074d974a4145b04878a, type: 2}
+  threatRadius: 50
 --- !u!114 &114172527843582016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1717,18 +1720,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.13
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &135408360257039746
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1149954677004158}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.14
-  m_Center: {x: -0.0000010965546, y: -0.015505895, z: 1.6402467}
 --- !u!136 &136282469173077356
 CapsuleCollider:
   m_ObjectHideFlags: 1

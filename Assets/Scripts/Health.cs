@@ -5,9 +5,9 @@ using UnityEngine;
 public class Health : MonoBehaviour{
 
     public int currentHealth;
-    public int currentArmor;
-
     public int maxHealth;
+
+    public int currentArmor;
     public int maxArmor;
 
     public int startingHealthMin;

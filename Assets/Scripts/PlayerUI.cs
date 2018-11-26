@@ -22,7 +22,7 @@ public class PlayerUI : MonoBehaviour {
 
     void Start () {
         health = player.GetComponent<Health>();
-        heldGun = player.GetComponent<PlayerController>().getHeldGun();
+        heldGun = player.GetComponent<PlayerController>().GetHeldGun();
 
         uiHealth.text = health.currentHealth.ToString();
         uiArmor.text = health.currentArmor.ToString();
@@ -30,8 +30,10 @@ public class PlayerUI : MonoBehaviour {
 	
 	
 	void Update () {
-        heldGun = player.GetComponent<PlayerController>().getHeldGun();
-        gunInfo = heldGun.GetComponent<GunController>();
+        heldGun = player.GetComponent<PlayerController>().GetHeldGun();
+
+        if(heldGun)
+            gunInfo = heldGun.GetComponent<GunController>();
 
         UpdateUI();
     }
@@ -40,7 +42,13 @@ public class PlayerUI : MonoBehaviour {
         uiHealth.text = health.currentHealth.ToString();
         uiArmor.text = health.currentArmor.ToString();
 
-        uiClipAmmo.text = gunInfo.getAmmoInClip().ToString();
-        uiRemainingAmmo.text = gunInfo.getAmmoNotInClip().ToString();
+        if(heldGun) {
+            uiClipAmmo.text = gunInfo.GetAmmoInClip().ToString();
+            uiRemainingAmmo.text = gunInfo.GetAmmoNotInClip().ToString();
+        } else {
+            uiClipAmmo.text = "0";
+            uiRemainingAmmo.text = "0";
+        }
+
     }
 }

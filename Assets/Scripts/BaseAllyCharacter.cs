@@ -13,21 +13,11 @@ public class BaseAllyCharacter : BaseCharacter {
     public void Init() {
         base.Init();
         playerInventory = GetComponent<PlayerInventory>();
-        heldGun = playerInventory.getHeldGun();
+        heldGun = playerInventory.GetHeldGun();
         gunController = heldGun.GetComponent<GunController>();
     }
 
-    public Health getHealth() {
-        return health;
-    }
-
-    public GameObject getHeldGun() {
+    public GameObject GetHeldGun() {
         return heldGun;
-    }
-
-    public void Hit(int damage) {
-        if (health.takeDamage(damage) <= 0) {
-            Debug.Log("dead");
-        }
     }
 }

@@ -10,24 +10,27 @@ public class BaseEnemyCharacter : BaseCharacter {
 
     protected GameObject player;
     protected GameObject target;
-    protected GameObject[] allies;
+    protected GameObject[] targets;
      
     override
     public void Init() {
         base.Init();
         player = GameObject.FindGameObjectWithTag("Player"); //find a player
-        allies = GameObject.FindGameObjectsWithTag("Ally"); //make an array of all ally NPC's
+        targets = GameObject.FindGameObjectsWithTag("Ally"); //make an array of all ally NPC's
     }
     protected void Attack() {
         attackTime = Time.time;
         target.SendMessage("Hit", damage);
     }
 
-    protected void Shot(int damage) {
+    override
+    protected void Shot(ShotInformation info) {
         health.takeDamage(damage);
     }
 
-    protected void CriticalHit(int damage) {
-        health.takeDamage(damage * 2);
+    override
+    public void Hit(int damage)
+    {
+        health.takeDamage(damage);
     }
 }
