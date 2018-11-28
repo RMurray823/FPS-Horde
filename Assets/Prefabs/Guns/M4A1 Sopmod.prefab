@@ -493,15 +493,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canDrop: 0
-  held: 1
   gunFireType: 0
-  shootDelay: 0.3
+  damage: 30
+  shootDelay: 0.15
   burstDelay: 0
-  damage: 50
+  numOfBurstShots: 0
   maxAmmo: 90
   maxLoadedAmmo: 30
   loadedAmmo: 30
   unloadedAmmo: 90
   infiniteAmmo: 0
   reloadTime: 1
-  numOfBurstShots: 0
