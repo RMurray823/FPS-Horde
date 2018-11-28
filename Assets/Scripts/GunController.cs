@@ -38,7 +38,6 @@ public class GunController : MonoBehaviour {
     //Reload information
     public float reloadTime = 1.0f;
     private bool reloading = false;
-    private float reloadStart = 0.0f;
 
     void Start() {
         mainCamera = Camera.main;
