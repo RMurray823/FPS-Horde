@@ -38,9 +38,10 @@ public class PlayerController : BaseAllyCharacter {
             health.healArmor(pack.getArmorAmount());
         }
 
-        if (other.name == "AmmoPack")
+        if (other.tag == "AmmoPack")
         {
-            gunController.AddAmmo(10);
+            HealthPack pack = other.GetComponent<HealthPack>();
+            gunController.AddAmmo(pack.getAmmoAmount());
         }
     }
 

@@ -82,7 +82,10 @@ public class GunController : MonoBehaviour {
 
     public void AddAmmo(int amount) {
         if(unloadedAmmo < maxAmmo) {
-            unloadedAmmo += amount;
+            if (unloadedAmmo + amount > maxAmmo)
+                unloadedAmmo = maxAmmo;
+            else
+                unloadedAmmo += amount;
         }
     }
 
