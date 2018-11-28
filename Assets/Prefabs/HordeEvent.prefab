@@ -286,15 +286,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTypes:
   - {fileID: 1596632398661518, guid: f1b0d5d65a94a974bbc90a7ea5cec98c, type: 2}
-  spawnPoints:
-  - {fileID: 4912173197830160}
-  - {fileID: 4092709763470808}
-  - {fileID: 4929996331013782}
-  - {fileID: 4702798639711766}
-  - {fileID: 4706103802924598}
-  - {fileID: 4029788364902230}
-  - {fileID: 4373913722816888}
-  - {fileID: 4784502503843236}
+  spawnCenter: {fileID: 4967378010134710}
+  spawnRate: 5
+  spawnLimit: 0
 --- !u!135 &135186572870789146
 SphereCollider:
   m_ObjectHideFlags: 1

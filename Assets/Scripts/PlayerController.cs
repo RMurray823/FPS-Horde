@@ -40,7 +40,7 @@ public class PlayerController : BaseAllyCharacter {
 
         if (other.name == "AmmoPack")
         {
-            gunController.AddAmmo();
+            gunController.AddAmmo(10);
         }
     }
 
@@ -70,6 +70,10 @@ public class PlayerController : BaseAllyCharacter {
         if(Input.GetKeyUp(KeyCode.Mouse0)) {
             if(gunController)
                 gunController.SetShooting(false);
+        }
+        
+        if(Input.GetKeyDown(KeyCode.R)) {
+            gunController.Reload();
         }
 
         if(Input.GetKeyDown(KeyCode.E)) {
