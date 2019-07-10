@@ -9,6 +9,7 @@ public class EnemyBehavior : BaseEnemyCharacter
     private Animator anim;
     private bool panicked;
 
+
     public GameObject[] loot;
 
     public int minSpeed = 3;
@@ -32,8 +33,9 @@ public class EnemyBehavior : BaseEnemyCharacter
 	void Update ()
     {
         if (health.currentHealth <= 0)
+        {
             anim.SetTrigger("isDead");
-
+        }
         anim.SetFloat("Speed", nav.velocity.magnitude);
 
         if(target != null)

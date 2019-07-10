@@ -252,10 +252,11 @@ MonoBehaviour:
   damage: 0
   attackSpeed: 0
   enemyTypes:
-  - {fileID: 1596632398661518, guid: f1b0d5d65a94a974bbc90a7ea5cec98c, type: 2}
-  - {fileID: 1972785281850204, guid: 96bc461b8edd5054c84eff7befbe778d, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   spawnTime: 3
-  spawnRadius: 200
+  spawnRadius: 0
+  spawnPoints: []
 --- !u!114 &114289972326945464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -402,6 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 500
+  currentArmor: 200
   maxHealth: 500
   currentArmor: 200
   maxArmor: 200
