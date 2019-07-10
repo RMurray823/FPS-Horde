@@ -38,9 +38,10 @@ public class PlayerController : BaseAllyCharacter {
             health.healArmor(pack.getArmorAmount());
         }
 
-        if (other.name == "AmmoPack")
+        if (other.tag == "AmmoPack")
         {
-            gunController.AddAmmo();
+            HealthPack pack = other.GetComponent<HealthPack>();
+            gunController.AddAmmo(pack.getAmmoAmount());
         }
     }
 
@@ -70,6 +71,10 @@ public class PlayerController : BaseAllyCharacter {
         if(Input.GetKeyUp(KeyCode.Mouse0)) {
             if(gunController)
                 gunController.SetShooting(false);
+        }
+        
+        if(Input.GetKeyDown(KeyCode.R)) {
+            gunController.Reload();
         }
 
         if(Input.GetKeyDown(KeyCode.E)) {

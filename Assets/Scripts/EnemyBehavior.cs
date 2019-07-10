@@ -47,9 +47,12 @@ public class EnemyBehavior : BaseEnemyCharacter
                 if (Time.time >= attackTime + attackSpeed)
                     anim.SetTrigger("attack");
             }
+
+
             //set rotation to face target.
             var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f);
+            targetRotation.y = 180;
+            //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f);
         }
 
     }
