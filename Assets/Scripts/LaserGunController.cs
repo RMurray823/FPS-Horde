@@ -27,8 +27,7 @@ public class LaserGunController : MonoBehaviour {
 
 
     // Use this for initialization
-	void Start ()
-    {
+	void Start() {
         mainCamera = Camera.main;
         var audio = GetComponents<AudioSource>();
         gunNoise    = audio[0];
@@ -36,7 +35,7 @@ public class LaserGunController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
         if (reloading) {
             if (Time.time - reloadStart <= reloadTime) {
                 reloading = false;
@@ -47,17 +46,18 @@ public class LaserGunController : MonoBehaviour {
 
     //TODO:Reloading isn't delaying like I want it too can fix this later
     public void reload() {
-
         int neededShots = maxClip - clip;
 
-        if(reserve >= neededShots) {
+        if (reserve >= neededShots) {
             clip += neededShots;
             reserve -= neededShots;
-        } else{
+        }
+        else {
             if (reserve > 0) {
                 clip += reserve;
                 reserve = 0;
-            } else {
+            }
+            else {
                 return;
             }
         }
@@ -66,8 +66,7 @@ public class LaserGunController : MonoBehaviour {
         reloadStart = Time.time;
     }
 
-    public void addAmmo()
-    {
+    public void addAmmo() {
         reserve += maxReserve;
     }
 
@@ -78,38 +77,45 @@ public class LaserGunController : MonoBehaviour {
     public int getAmmoNotInClip() {
         return reserve;
     }
+
     public void fireBullet() {
-        if(clip > 0 && !reloading) {
+        if (clip > 0 && !reloading) {
             if (Time.time - shotTime >= shootDelay) {
                 shotTime = Time.time;
 
                 Vector3 cameraDir;
                 Vector3 cameraPos;
-                if(transform.root.tag == "Player")
-                {
+
+                if (transform.root.tag == "Player") {
                     cameraDir = mainCamera.transform.forward;
                     cameraPos = mainCamera.transform.position;
                 }
-                else
-                {
+                else {
                     cameraDir = transform.forward;
                     cameraPos = transform.position;
                 }
-                RaycastHit results;
+
 
                 gunNoise.Play();
+
+                RaycastHit results;
+
                 if (Physics.Raycast(cameraPos, cameraDir, out results)) {
-                    if (results.collider.tag == "WeakPoint")
+                    if (results.collider.tag == "WeakPoint") {
                         results.rigidbody.SendMessage("CriticalHit", damage);
+                    }
 
-                    else if (results.collider.tag == "Enemy")
+                    else if (results.collider.tag == "Enemy") {
                         results.collider.SendMessage("Shot", damage);
-
+                    }
 
                 }
+
                 clip--;
+
             }
-        } else {
+        }
+        else {
             reloadNoise.Play();
             reload();
         }
