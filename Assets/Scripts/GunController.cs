@@ -140,9 +140,6 @@ public class GunController : MonoBehaviour {
             results.collider.transform.root.SendMessage("Shot", info, SendMessageOptions.DontRequireReceiver);
         }
 
-        //mainCamera.transform.eulerAngles = Vector3.Lerp(mainCamera.transform.eulerAngles, new Vector3(1, 0, 0), Time.deltaTime * 100);
-        //mainCamera.transform.Rotate(new Vector3(-90, 0, 0), Time.deltaTime * 1);
-
         gunNoise.Play();
 
         if (!infiniteAmmo) {
