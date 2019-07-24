@@ -87,7 +87,7 @@ public class BossBehavior : BaseEnemyCharacter
         {
             //do patrol stuff here
             //Move between two gameObjects
-
+            nav.SetDestination(target.transform.position);
         }
         else //Detects player, sets bossState to chase
         {
