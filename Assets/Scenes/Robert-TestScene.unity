@@ -843,7 +843,7 @@ Prefab:
     - target: {fileID: 224507770174784668, guid: 4b36ae2ddcea3274e880b8f5bae72241,
         type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 224695850525630802, guid: 4b36ae2ddcea3274e880b8f5bae72241,
         type: 2}
@@ -853,7 +853,7 @@ Prefab:
     - target: {fileID: 224141862870951154, guid: 4b36ae2ddcea3274e880b8f5bae72241,
         type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 224912208778316082, guid: 4b36ae2ddcea3274e880b8f5bae72241,
         type: 2}
@@ -1153,6 +1153,16 @@ Prefab:
     - target: {fileID: 114286337211747812, guid: 4b36ae2ddcea3274e880b8f5bae72241,
         type: 2}
       propertyPath: m_FontData.m_MinSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114231443614166542, guid: 4b36ae2ddcea3274e880b8f5bae72241,
+        type: 2}
+      propertyPath: gunFired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114231443614166542, guid: 4b36ae2ddcea3274e880b8f5bae72241,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
