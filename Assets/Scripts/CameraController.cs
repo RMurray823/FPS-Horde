@@ -13,31 +13,48 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-            HandleInput();
+		StartCoroutine(HandleInput());
       
     }
 
-    private void HandleInput() {
+	 IEnumerator HandleInput() {
 
         Cursor.visible = false;
 
         mouseInput = Vector3.zero;
         mouseInput.y = -Input.GetAxis("Mouse Y");
-        mouseInput.x = Input.GetAxis("Mouse X");
+        //mouseInput.x = Input.GetAxis("Mouse X");
 
         rotationY += mouseInput.y * 100f * Time.deltaTime;
-        rotationX += mouseInput.x * 100f * Time.deltaTime;
+        //rotationX += mouseInput.x * 100f * Time.deltaTime;
 
         rotationY = Mathf.Clamp (rotationY, -90, 90);
 
-        if (gunFiring == true) {
-            rotationY -= 2 ;
-            gunFiring = false;
-        }
+		if (gunFiring == true)
+		{
+			int waiting = 5;
 
-        Quaternion localRotation = Quaternion.Euler(rotationY, rotationX, 0);
+            while (waiting > 0) {
+				yield return new WaitForSeconds(1f);
+				rotationY -= 1;
+				Quaternion localRotation = Quaternion.Euler(rotationY, 0, 0);
+				transform.localRotation = localRotation;
+				waiting = waiting - 1;
+                
+			}
 
-        transform.localRotation = localRotation;
+			//rotationY -= 2;
+
+			
+			gunFiring = false;
+		}
+
+		else {
+
+			Quaternion localRotation = Quaternion.Euler(rotationY, rotationX, 0);
+
+			transform.localRotation = localRotation;
+		}
     }
 
     public void Firing(bool currentlyFiring) {
