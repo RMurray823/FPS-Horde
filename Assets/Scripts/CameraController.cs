@@ -13,11 +13,11 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-		StartCoroutine(HandleInput());
+		HandleInput();
       
     }
 
-	 IEnumerator HandleInput() {
+	 private void HandleInput() {
 
         Cursor.visible = false;
 
@@ -32,17 +32,17 @@ public class CameraController : MonoBehaviour {
 
 		if (gunFiring == true)
 		{
-			int waiting = 5;
+			/*int waiting = 5;
 
             while (waiting > 0) {
-				yield return new WaitForSeconds(1f);
-				rotationY -= 1;
+				//yield return new WaitForSeconds(1f);
+				rotationY -= .5f;
 				Quaternion localRotation = Quaternion.Euler(rotationY, 0, 0);
 				transform.localRotation = localRotation;
 				waiting = waiting - 1;
                 
-			}
-
+			}*/
+            
 			//rotationY -= 2;
 
 			
