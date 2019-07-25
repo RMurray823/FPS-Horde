@@ -87,6 +87,7 @@ public class BossBehavior : BaseEnemyCharacter
         {
             //do patrol stuff here
             //Move between two gameObjects
+
             nav.SetDestination(target.transform.position);
         }
         else //Detects player, sets bossState to chase
@@ -120,8 +121,9 @@ public class BossBehavior : BaseEnemyCharacter
         if (Time.time >= attackTime + attackSpeed)
         {
             //Trying this method out.
-            Attack();
-            anim.SetTrigger("attack");
+            Attack(); //This causes damage to the player
+            //anim.SetTrigger("attack"); //This causes damage to the player
+            anim.SetTrigger("isDead");
         }
         else //Player moves out of attack range, so sent boss state back to chase.
         {
