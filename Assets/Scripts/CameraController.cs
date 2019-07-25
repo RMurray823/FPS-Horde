@@ -13,6 +13,9 @@ public class CameraController : MonoBehaviour {
     }
 
     private void HandleInput() {
+
+        Cursor.visible = false;
+
         mouseInput = Vector3.zero;
         mouseInput.y = -Input.GetAxis("Mouse Y");
 
