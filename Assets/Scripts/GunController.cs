@@ -114,6 +114,11 @@ public class GunController : MonoBehaviour {
     }
 
     private void FireBullet() {
+
+        GameObject playerCamera = GameObject.Find("PlayerCamera");
+        CameraController playerScript = playerCamera.GetComponent<CameraController>();
+        playerScript.Firing(true);
+
         if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
 
         Vector3 cameraDir;
@@ -143,6 +148,8 @@ public class GunController : MonoBehaviour {
         //mainCamera.transform.eulerAngles = Vector3.Lerp(mainCamera.transform.eulerAngles, new Vector3(1, 0, 0), Time.deltaTime * 100);
         //mainCamera.transform.Rotate(new Vector3(-90, 0, 0), Time.deltaTime * 1);
 
+        //transform.Rotate(new Vector3(-2, 0, 0), Time.deltaTime*100);
+
         gunNoise.Play();
 
         if (!infiniteAmmo) {
@@ -153,6 +160,8 @@ public class GunController : MonoBehaviour {
                 }
             }
         }
+
+        //playerScript.Firing(false);
     }
 
     //Returns true if we actually shot or not.
