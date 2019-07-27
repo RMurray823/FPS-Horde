@@ -17,6 +17,13 @@ public class BossBehavior : BaseEnemyCharacter
     public int maxSpeed = 5;
     public float threatRadius = 10f;
 
+    private float pointA;
+    private float pointB;
+    private float pointC;
+    public GameObject position1;
+    public GameObject position2;
+
+
     // Use this for initialization
     void Start()
     {
@@ -34,6 +41,7 @@ public class BossBehavior : BaseEnemyCharacter
     // Update is called once per frame
     void Update()
     {
+
         if (health.currentHealth <= 0)
         {
             anim.SetTrigger("isDead");
@@ -45,14 +53,18 @@ public class BossBehavior : BaseEnemyCharacter
         {
             case "Patrolling":
                 //
+                // Debug.Log("Changing to Patrol mode.");
+
                 Patrolling();
                 break;
             case "Chasing":
                 //
+                //Debug.Log("Changing to Chase mode.");
                 Chasing();
                 break;
             case "Attacking":
                 //
+                //Debug.Log("Changing to Attack mode.");
                 Attacking();
                 break;
             default:
@@ -60,35 +72,30 @@ public class BossBehavior : BaseEnemyCharacter
                 break;
 
         }
-
-        //if (target != null)
-        //{
-        //    if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
-        //        nav.SetDestination(target.transform.position); //move to target's position.
-        //    else
-        //    {
-        //        if (Time.time >= attackTime + attackSpeed)
-        //        {
-        //            anim.SetTrigger("attack");
-        //        }
-                    
-        //    }
-
-        //    //set rotation to face target.
-        //    var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-        //    targetRotation.y = 180;
-        //    //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f);
-        //}
-}
+    }
 
     private void Patrolling()
     {
+        private bool flag1;
+        private bool flag2;
+        //Debug.Log("YYY Patrolling");
         if (target == null) //Runs if the player isn't in range of the boss
         {
             //do patrol stuff here
             //Move between two gameObjects
 
-            nav.SetDestination(target.transform.position);
+            //transform.position = position1.transform.position - Vector3.forward * 10f;
+            if (Vector3.Distance(transform.position, position1.transform.position) > 0.001f) //if not close, move towards position1
+            {
+                transform.position = Vector3.MoveTowards(transform.position, position1.transform.position, (.5f));
+            }
+            else
+            {
+
+            }
+            
+
+            //nav.SetDestination(target.transform.position);
         }
         else //Detects player, sets bossState to chase
         {
@@ -99,8 +106,9 @@ public class BossBehavior : BaseEnemyCharacter
 
     private void Chasing()
     {
+        //Debug.Log("YYY Chasing");
         //Add if a collision happens, have boss dodge somewhere...
-        if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
+        if (Vector3.Distance(nav.transform.position, target.transform.position) > nav.stoppingDistance)
             nav.SetDestination(target.transform.position); //move to target's position.
         else
         {
@@ -120,10 +128,11 @@ public class BossBehavior : BaseEnemyCharacter
     {
         if (Time.time >= attackTime + attackSpeed)
         {
+            //Debug.Log("YYY Attacking");
             //Trying this method out.
             Attack(); //This causes damage to the player
             //anim.SetTrigger("attack"); //This causes damage to the player
-            anim.SetTrigger("isDead");
+            //anim.SetTrigger("isDead");
         }
         else //Player moves out of attack range, so sent boss state back to chase.
         {
