@@ -71,45 +71,39 @@ public class BossBehavior : BaseEnemyCharacter
             default:
                 Debug.Log("No boss state selected! Debug as to why...");
                 break;
-
         }
     }
 
     private void Patrolling()
     {
-        //Debug.Log("YYY Patrolling");
         if (target == null) //Boss patrols if the player isn't in range
         {
-            //do patrol stuff here
-            //Move between two gameObjects
-
-            //transform.position = position1.transform.position - Vector3.forward * 10f;
+            anim.SetFloat("Speed", nav.velocity.magnitude);
             if (flag1 == true) //Moving towards position1.
             {
-                if (Vector3.Distance(transform.position, position1.transform.position) > 1f) //0.001 //if not close, move towards position1
+                if (Vector3.Distance(transform.position, position1.transform.position) > 1.5f) //0.001 //if not close, move towards position1
                 {
+                    //ADD rotate boss towards object.
                     transform.position = Vector3.MoveTowards(transform.position, position1.transform.position, (.1f));
                 }
                 else
                 {
-                    Debug.Log("Changing flag1 to false");
+                    transform.RotateAround(transform.position, transform.up, 180f); //rotate boss 180 degrees instantly.
                     flag1 = false;
                 }
             }
             else //flag1 == false
             {
-                if (Vector3.Distance(transform.position, position2.transform.position) > 1f) //0.001 //if not close, move towards position1
+                if (Vector3.Distance(transform.position, position2.transform.position) > 1.5f) //0.001 //if not close, move towards position1
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, position1.transform.position, (.1f));
+                    transform.position = Vector3.MoveTowards(transform.position, position2.transform.position, (.1f));
                 }
                 else
                 {
-                    Debug.Log("Changing flag1 to true");
+                    transform.RotateAround(transform.position, transform.up, 180f); //rotate boss 180 degrees instantly.
                     flag1 = true;
                 }
             }
-            
-            //nav.SetDestination(target.transform.position);
         }
         else //Detects player, sets bossState to chase
         {
@@ -120,35 +114,31 @@ public class BossBehavior : BaseEnemyCharacter
 
     private void Chasing()
     {
-        //Debug.Log("YYY Chasing");
-        //Add if a collision happens, have boss dodge somewhere...
+        //ADD a collision check here, if it happens have boss dodge somewhere...
+        threatRadius = 100f; //So the boss can always tell where the player is located.
+
         if (Vector3.Distance(nav.transform.position, target.transform.position) > nav.stoppingDistance)
             nav.SetDestination(target.transform.position); //move to target's position.
         else
         {
-            //if (Time.time >= attackTime + attackSpeed)
-            //    anim.SetTrigger("attack");
-            bossState = "Attacking";
-            Attacking(); //Switches boss state
+            bossState = "Attacking"; //Switches boss state
+            Attacking(); 
         }
-
         //set rotation to face target.
         var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
         targetRotation.y = 180;
-        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f);
     }
 
     private void Attacking()
     {
         if (Time.time >= attackTime + attackSpeed)
         {
-            //Debug.Log("YYY Attacking");
-            //Trying this method out.
-            //Attack(); //This causes damage to the player
+            Debug.Log("Attacking!!!");
             anim.SetTrigger("attack"); //This causes damage to the player
         }
         else //Player moves out of attack range, so sent boss state back to chase.
         {
+            Debug.Log("Chasing!!!");
             bossState = "Chasing";
         }
 
