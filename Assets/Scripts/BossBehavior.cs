@@ -22,7 +22,7 @@ public class BossBehavior : BaseEnemyCharacter
     private float pointC;
     public GameObject position1;
     public GameObject position2;
-
+    private bool flag1;
 
     // Use this for initialization
     void Start()
@@ -36,6 +36,7 @@ public class BossBehavior : BaseEnemyCharacter
         InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
         target = player;
         bossState = "Patrolling";
+        flag1 = true;
     }
 
     // Update is called once per frame
@@ -76,25 +77,38 @@ public class BossBehavior : BaseEnemyCharacter
 
     private void Patrolling()
     {
-        private bool flag1;
-        private bool flag2;
         //Debug.Log("YYY Patrolling");
-        if (target == null) //Runs if the player isn't in range of the boss
+        if (target == null) //Boss patrols if the player isn't in range
         {
             //do patrol stuff here
             //Move between two gameObjects
 
             //transform.position = position1.transform.position - Vector3.forward * 10f;
-            if (Vector3.Distance(transform.position, position1.transform.position) > 0.001f) //if not close, move towards position1
+            if (flag1 == true) //Moving towards position1.
             {
-                transform.position = Vector3.MoveTowards(transform.position, position1.transform.position, (.5f));
+                if (Vector3.Distance(transform.position, position1.transform.position) > 1f) //0.001 //if not close, move towards position1
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, position1.transform.position, (.1f));
+                }
+                else
+                {
+                    Debug.Log("Changing flag1 to false");
+                    flag1 = false;
+                }
             }
-            else
+            else //flag1 == false
             {
-
+                if (Vector3.Distance(transform.position, position2.transform.position) > 1f) //0.001 //if not close, move towards position1
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, position1.transform.position, (.1f));
+                }
+                else
+                {
+                    Debug.Log("Changing flag1 to true");
+                    flag1 = true;
+                }
             }
             
-
             //nav.SetDestination(target.transform.position);
         }
         else //Detects player, sets bossState to chase
@@ -115,7 +129,7 @@ public class BossBehavior : BaseEnemyCharacter
             //if (Time.time >= attackTime + attackSpeed)
             //    anim.SetTrigger("attack");
             bossState = "Attacking";
-            Attacking();
+            Attacking(); //Switches boss state
         }
 
         //set rotation to face target.
@@ -130,9 +144,8 @@ public class BossBehavior : BaseEnemyCharacter
         {
             //Debug.Log("YYY Attacking");
             //Trying this method out.
-            Attack(); //This causes damage to the player
-            //anim.SetTrigger("attack"); //This causes damage to the player
-            //anim.SetTrigger("isDead");
+            //Attack(); //This causes damage to the player
+            anim.SetTrigger("attack"); //This causes damage to the player
         }
         else //Player moves out of attack range, so sent boss state back to chase.
         {
