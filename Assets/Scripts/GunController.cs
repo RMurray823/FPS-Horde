@@ -8,7 +8,8 @@ public enum FireType {
     Burst
 }
 
-public class GunController : MonoBehaviour {
+public class GunController : MonoBehaviour
+{
 
     public bool canDrop = true;
 
@@ -39,7 +40,10 @@ public class GunController : MonoBehaviour {
     public float reloadTime = 1.0f;
     private bool reloading = false;
 
-    void Start() {
+    
+
+    void Start()
+    {
         mainCamera = Camera.main;
         var audio = GetComponents<AudioSource>();
         gunNoise = audio[0];
@@ -47,30 +51,40 @@ public class GunController : MonoBehaviour {
         burstCount = 0;
     }
 
-    void Update() {
+    void Update()
+    {
     }
 
-    public bool IsHeld() {
+    public bool IsHeld()
+    {
         return held;
     }
 
-    public void Reload() {
-        if (!reloading) {
-            if (unloadedAmmo > 0) {
+    public void Reload()
+    {
+        if (!reloading)
+        {
+            if (unloadedAmmo > 0)
+            {
                 reloading = true;
                 reloadNoise.Play();
                 Invoke("DoReload", reloadTime);
             }
         }
     }
-    private void DoReload() {
+    private void DoReload()
+    {
         int neededShots = maxLoadedAmmo - loadedAmmo;
 
-        if (unloadedAmmo >= neededShots) {
+        if (unloadedAmmo >= neededShots)
+        {
             loadedAmmo += neededShots;
             unloadedAmmo -= neededShots;
-        } else {
-            if (unloadedAmmo > 0) {
+        }
+        else
+        {
+            if (unloadedAmmo > 0)
+            {
                 loadedAmmo += unloadedAmmo;
                 unloadedAmmo = 0;
             }
@@ -79,8 +93,10 @@ public class GunController : MonoBehaviour {
         reloading = false;
     }
 
-    public void AddAmmo(int amount) {
-        if(unloadedAmmo < maxAmmo) {
+    public void AddAmmo(int amount)
+    {
+        if (unloadedAmmo < maxAmmo)
+        {
             if (unloadedAmmo + amount > maxAmmo)
                 unloadedAmmo = maxAmmo;
             else
@@ -88,36 +104,40 @@ public class GunController : MonoBehaviour {
         }
     }
 
-    public int GetAmmoInClip() {
+    public int GetAmmoInClip()
+    {
         return loadedAmmo;
     }
 
-    public int GetAmmoNotInClip() {
+    public int GetAmmoNotInClip()
+    {
         return unloadedAmmo;
     }
 
     //TODO: Really don't like having to pass the parent
-    public void SetHeld(bool flag, Transform parent) {
-        if (canDrop) {
+    public void SetHeld(bool flag, Transform parent)
+    {
+        if (canDrop)
+        {
 
             held = flag;
             GetComponent<Rigidbody>().isKinematic = flag;
             GetComponent<BoxCollider>().isTrigger = flag;
 
-            if (flag) {
+            if (flag)
+            {
                 if (parent.gameObject.tag == "Player")
                     transform.parent = Camera.main.transform;
-            } else {
+            }
+            else
+            {
                 transform.parent = null;
             }
         }
     }
 
-    private void FireBullet() {
-
-        GameObject playerCamera = GameObject.Find("PlayerCamera");
-        CameraController playerScript = playerCamera.GetComponent<CameraController>();
-        playerScript.Firing(true);
+    private void FireBullet()
+    {
 
         if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
 
@@ -125,10 +145,13 @@ public class GunController : MonoBehaviour {
         Vector3 cameraPos;
 
         //TODO: I don't think we should have to do these checks. Maybe we should pass to the guncontroller where the bullet should exit
-        if (transform.root.tag == "Player") {
+        if (transform.root.tag == "Player")
+        {
             cameraDir = mainCamera.transform.forward;
             cameraPos = mainCamera.transform.position;
-        } else {
+        }
+        else
+        {
             cameraDir = transform.forward;
             cameraPos = transform.position;
             if (transform.root.tag == "Ally")
@@ -136,7 +159,8 @@ public class GunController : MonoBehaviour {
         }
 
         RaycastHit results;
-        if (Physics.Raycast(cameraPos, cameraDir, out results)) {
+        if (Physics.Raycast(cameraPos, cameraDir, out results))
+        {
             ShotInformation info = new ShotInformation();
             info.damage = damage;
             info.tag = results.collider.tag;
@@ -145,32 +169,38 @@ public class GunController : MonoBehaviour {
             results.collider.transform.root.SendMessage("Shot", info, SendMessageOptions.DontRequireReceiver);
         }
 
-        //mainCamera.transform.eulerAngles = Vector3.Lerp(mainCamera.transform.eulerAngles, new Vector3(1, 0, 0), Time.deltaTime * 100);
-        //mainCamera.transform.Rotate(new Vector3(-90, 0, 0), Time.deltaTime * 1);
 
-        //transform.Rotate(new Vector3(-2, 0, 0), Time.deltaTime*100);
 
         gunNoise.Play();
 
-        if (!infiniteAmmo) {
-            if (--loadedAmmo == 0) {
+        if (!infiniteAmmo)
+        {
+            if (--loadedAmmo == 0)
+            {
                 CancelInvoke("FireBullet");
-                if(!reloading) {
+                if (!reloading)
+                {
                     Reload();
                 }
             }
         }
 
+        StartCoroutine(Recoil());
+
         //playerScript.Firing(false);
     }
 
     //Returns true if we actually shot or not.
-    public bool Shoot() {
-        if (loadedAmmo > 0 && !reloading) {
-            if (Time.time - shotTime >= shootDelay) {
+    public bool Shoot()
+    {
+        if (loadedAmmo > 0 && !reloading)
+        {
+            if (Time.time - shotTime >= shootDelay)
+            {
                 shotTime = Time.time;
 
-                switch (gunFireType) {
+                switch (gunFireType)
+                {
                     case FireType.Automatic:
                         FireBullet();
                         break;
@@ -189,13 +219,24 @@ public class GunController : MonoBehaviour {
             triggerHeld = true;
             return true;
 
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
 
-    public void SetShooting(bool flag) {
+    public void SetShooting(bool flag)
+    {
         triggerHeld = flag;
     }
-}
 
+    public IEnumerator Recoil()
+    {
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(transform.localRotation.x - 2, transform.localRotation.y, transform.localRotation.z), 200F * Time.deltaTime);
+        yield return new WaitForSecondsRealtime(.05F);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z), 200F * Time.deltaTime);
+
+    }
+
+}

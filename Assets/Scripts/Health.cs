@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Health : MonoBehaviour{
 
@@ -18,6 +19,8 @@ public class Health : MonoBehaviour{
     public RectTransform healthBar;
     public RectTransform armorBar;
 
+    
+
     void Start ()
     {
         if(tag != "Player") {
@@ -28,6 +31,11 @@ public class Health : MonoBehaviour{
 
     //Apply the amount of damage defined and return the new health value
     public int takeDamage(int damage) {
+
+        if (tag == "Player") {
+            adjustDamageIndicator();
+        }
+
         //Armor absorbs half of incoming damage
         int armorDamage = Mathf.CeilToInt((float)damage * .5f);
         int healthDamage = damage;
@@ -45,6 +53,10 @@ public class Health : MonoBehaviour{
             currentHealth = maxHealth;
 
         updateBars();
+
+        
+        
+
         return currentHealth;
     }
 
@@ -76,5 +88,16 @@ public class Health : MonoBehaviour{
         if (armorBar!= null) {
             armorBar.sizeDelta = new Vector2((float)currentArmor / (float)maxArmor, armorBar.sizeDelta.y);
         }
+    }
+
+    public void adjustDamageIndicator() {
+
+        GameObject damageIndicator = GameObject.Find("DamageIndicator");
+
+        DamageHUD damageScript = damageIndicator.GetComponent<DamageHUD>();
+
+        damageScript.damaged = true;
+
+
     }
 }
