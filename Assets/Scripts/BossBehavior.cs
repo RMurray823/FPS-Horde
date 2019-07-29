@@ -42,7 +42,6 @@ public class BossBehavior : BaseEnemyCharacter
     // Update is called once per frame
     void Update()
     {
-
         if (health.currentHealth <= 0)
         {
             anim.SetTrigger("isDead");
@@ -116,6 +115,8 @@ public class BossBehavior : BaseEnemyCharacter
     {
         //ADD a collision check here, if it happens have boss dodge somewhere...
         threatRadius = 100f; //So the boss can always tell where the player is located.
+
+
 
         if (Vector3.Distance(nav.transform.position, target.transform.position) > nav.stoppingDistance)
             nav.SetDestination(target.transform.position); //move to target's position.
