@@ -32,14 +32,14 @@ public class DodgeTrigger : MonoBehaviour {
 
     //2
     //Collide with an object
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.transform.tag == "Boss") //If the boss hits the object, do the if statment.
         {
-            Debug.Log(collision.transform.name + " BOSS has collided");
-            //collision.transform
+            collision.gameObject.SendMessage("Dodge");
+            //Debug.Log(collision.transform.name + " BOSS has collided");
+            //collision.gameObject.
         }
-        
     }
 
     /*private void OnCollisionExit(Collision collision)

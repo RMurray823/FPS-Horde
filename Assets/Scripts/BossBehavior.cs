@@ -46,6 +46,14 @@ public class BossBehavior : BaseEnemyCharacter
         {
             anim.SetTrigger("isDead");
         }
+        else if (health.currentHealth < 75)
+        {
+            //Spawn enemies
+        }
+        else if (health.currentHealth < 50)
+        {
+            //Seek health, spawn enemies
+        }
         anim.SetFloat("Speed", nav.velocity.magnitude);
 
         //boss state: 1 = Patrolling, 2 = Chasing, 3 = Attacking
@@ -147,6 +155,12 @@ public class BossBehavior : BaseEnemyCharacter
         var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
         targetRotation.y = 180;
         //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f);
+    }
+
+    private void Dodge()
+    {
+        //Debug.Log("Dodging!!!");
+        transform.position += Vector3.right * 1.0f;
     }
 
     override
