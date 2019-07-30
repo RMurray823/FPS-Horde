@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum FireType {
 	Automatic,
@@ -41,6 +42,11 @@ public class GunController:MonoBehaviour {
 
 	public Quaternion currentPosition;
 	public Quaternion finalPosition;
+
+	public Vector3 originalScale = new Vector3 (1, 1, 1);
+	public Vector3 finalScale;
+
+	public Vector3 originalRotation = new Vector3(0, 0, 0);
 
 	public bool fired = false;
 
@@ -124,7 +130,15 @@ public class GunController:MonoBehaviour {
 		if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
 
 		currentPosition = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
-		finalPosition = Quaternion.Euler(transform.localRotation.x - 5, transform.localRotation.y, transform.localRotation.z);
+		finalPosition = Quaternion.Euler(transform.localRotation.x - 10, transform.localRotation.y, transform.localRotation.z);
+
+		GameObject crosshair = GameObject.Find("Crosshair");
+		Image crosshairSprite = crosshair.GetComponent<Image>();
+
+		//	originalScale = crosshair.transform.localScale;
+		finalScale = new Vector3(crosshair.transform.localScale.x*1.3F, crosshair.transform.localScale.y*1.3F, crosshair.transform.localScale.z); 
+
+		//DamageHUD damageScript = damageIndicator.GetComponent<DamageHUD>();
 
 		fired = true;
 
@@ -165,9 +179,6 @@ public class GunController:MonoBehaviour {
 			}
 		}
 
-		//StartCoroutine(Recoil());
-
-		//playerScript.Firing(false);
 	}
 
 	//Returns true if we actually shot or not.
@@ -206,16 +217,24 @@ public class GunController:MonoBehaviour {
 
 	public void Recoil() {
 
+		GameObject crosshair = GameObject.Find("Crosshair");
+		Image crosshairSprite = crosshair.GetComponent<Image>();
+
 		if (fired) {
+			crosshairSprite.transform.localScale = Vector3.Lerp(crosshairSprite.transform.localScale, finalScale, 30 * Time.deltaTime);
 			transform.localRotation = Quaternion.Slerp(transform.localRotation, finalPosition, 30 * Time.deltaTime);
+
 
 			if (System.Math.Abs((transform.localRotation.x - finalPosition.x)) < 0.005) {
 				fired = false;
-				print("FUCK YEAH");
 			}
 		}
 
 		if (!fired) {
+			if ((crosshairSprite.transform.localScale.x > 1.0)) {
+				crosshairSprite.transform.localScale = Vector3.Lerp(crosshairSprite.transform.localScale, originalScale, 7 * Time.deltaTime);
+			}
+			
 			transform.localRotation = Quaternion.Slerp(transform.localRotation, currentPosition, 7 * Time.deltaTime);
 		}
 
