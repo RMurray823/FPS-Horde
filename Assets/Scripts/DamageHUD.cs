@@ -3,42 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DamageHUD : MonoBehaviour {
+public class DamageHUD:MonoBehaviour {
 
-    public bool damaged = false;
+	public bool damaged = false;
 
-    // Use this for initialization
-    void Start () {
-		
+	// Use this for initialization
+	void Start() {
+
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-        adjustDamageIndicator();
-    }
+	void Update() {
+		adjustDamageIndicator();
+	}
 
-    public void adjustDamageIndicator() {
+	public void adjustDamageIndicator() {
 
-        GameObject damageIndicator = GameObject.Find("DamageIndicator");
-        Image damageSprite = damageIndicator.GetComponent<Image>();
+		//  Find Damage Indicator and get Sprite
+		GameObject damageIndicator = GameObject.Find("DamageIndicator");
+		Image damageSprite = damageIndicator.GetComponent<Image>();
 
-        Color Opaque = new Color(1, 1, 1, 1);
-        Color Transparent = new Color(1, 1, 1, 0);
+		//  Define colors that only affect the alpha of the image 
+		Color FullyOpaque = new Color(1, 1, 1, 1);
+		Color FullyTransparent = new Color(1, 1, 1, 0);
 
-        if (damaged) {
+		//  If player takes damage, begin changing alpha of the image to Opaque until .75 alpha
+		if (damaged) {
 
-            damageSprite.color = Color.Lerp(damageSprite.color, Opaque, 10 * Time.deltaTime);
+			damageSprite.color = Color.Lerp(damageSprite.color, FullyOpaque, 10 * Time.deltaTime);
 
-            if (damageSprite.color.a >= .75) {
-                damaged = false;
-            }
+			//  Once at .75 alpha, begin changing back alpha to transparent
+			if (damageSprite.color.a >= .75) {
+				damaged = false;
+			}
 
-        }
+		}
 
-        if (!damaged) {
-            damageSprite.color = Color.Lerp(damageSprite.color, Transparent, 2 * Time.deltaTime);
-        }
+		//  Change back alpha to 0 unless it's close enough already
+		if (!damaged && (System.Math.Abs(damageSprite.color.a) > 0.001)) {
+			damageSprite.color = Color.Lerp(damageSprite.color, FullyTransparent, 2 * Time.deltaTime);
+		}
 
-    }
+	}
 
 }
