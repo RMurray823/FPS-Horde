@@ -22,7 +22,9 @@ public class BossBehavior : BaseEnemyCharacter
     private float pointC;
     public GameObject position1;
     public GameObject position2;
+    public GameObject BossHealthPack1;
     private bool flag1;
+    private bool flag2;
 
     // Use this for initialization
     void Start()
@@ -37,22 +39,34 @@ public class BossBehavior : BaseEnemyCharacter
         target = player;
         bossState = "Patrolling";
         flag1 = true;
+        flag2 = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (flag2 == true)
+        {
+            anim.SetTrigger("attack_02");
+            flag2 = false;
+        }
+
         if (health.currentHealth <= 0)
         {
             anim.SetTrigger("isDead");
         }
-        else if (health.currentHealth < 75)
+        else if (health.currentHealth <= 25)
         {
-            //Spawn enemies
+            //Rage Mode
         }
-        else if (health.currentHealth < 50)
+        else if (health.currentHealth <= 50)
         {
-            //Seek health, spawn enemies
+            //Seek health, then chase player/attack player
+            bossState = "SeekHealth";
+        }
+        else if (health.currentHealth <= 75)
+        {
+            //Spawn enemies //Only once? Once per minute?
         }
         anim.SetFloat("Speed", nav.velocity.magnitude);
 
@@ -74,6 +88,10 @@ public class BossBehavior : BaseEnemyCharacter
                 //
                 //Debug.Log("Changing to Attack mode.");
                 Attacking();
+                break;
+            case "SeekHealth":
+                //Boss will seek out a health pack
+                SeekHealth();
                 break;
             default:
                 Debug.Log("No boss state selected! Debug as to why...");
@@ -143,7 +161,7 @@ public class BossBehavior : BaseEnemyCharacter
         if (Time.time >= attackTime + attackSpeed)
         {
             Debug.Log("Attacking!!!");
-            anim.SetTrigger("attack"); //This causes damage to the player
+            anim.SetTrigger("attack_01"); //This causes damage to the player
         }
         else //Player moves out of attack range, so sent boss state back to chase.
         {
@@ -155,6 +173,14 @@ public class BossBehavior : BaseEnemyCharacter
         var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
         targetRotation.y = 180;
         //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f);
+    }
+
+    private void SeekHealth()
+    {
+        //Stay in this state until a health pack is picked up, or health < 50
+        //nav.SetDestination(BossHealthPack1.transform.position); //Points the boss as the object it is targeting.
+        //transform.position = Vector3.MoveTowards(transform.position, BossHealthPack1.transform.position, (.1f)); //Just moves the object, does not point at it.
+        nav.SetDestination(BossHealthPack1.transform.position);
     }
 
     private void Dodge()
