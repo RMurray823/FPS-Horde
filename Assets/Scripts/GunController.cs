@@ -43,12 +43,11 @@ public class GunController:MonoBehaviour {
 	public Quaternion currentPosition;
 	public Quaternion finalPosition;
 
-	public Vector3 originalScale = new Vector3 (1, 1, 1);
+	public Vector3 originalScale = new Vector3(1, 1, 1);
 	public Vector3 finalScale;
 
-	public Vector3 originalRotation = new Vector3(0, 0, 0);
-
 	public bool fired = false;
+	public int recoilDistance;
 
 	void Start() {
 		mainCamera = Camera.main;
@@ -129,14 +128,19 @@ public class GunController:MonoBehaviour {
 
 		if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
 
+		if ((gunFireType == FireType.Automatic) || (gunFireType == FireType.Semi)) {
+			recoilDistance = 5;
+		} else {
+			recoilDistance = 10;
+		}
+
 		currentPosition = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
-		finalPosition = Quaternion.Euler(transform.localRotation.x - 10, transform.localRotation.y, transform.localRotation.z);
+		finalPosition = Quaternion.Euler(transform.localRotation.x - recoilDistance, transform.localRotation.y, transform.localRotation.z);
 
 		GameObject crosshair = GameObject.Find("Crosshair");
-		Image crosshairSprite = crosshair.GetComponent<Image>();
 
 		//	originalScale = crosshair.transform.localScale;
-		finalScale = new Vector3(crosshair.transform.localScale.x*1.3F, crosshair.transform.localScale.y*1.3F, crosshair.transform.localScale.z); 
+		finalScale = new Vector3(crosshair.transform.localScale.x * 1.3F, crosshair.transform.localScale.y * 1.3F, crosshair.transform.localScale.z);
 
 		//DamageHUD damageScript = damageIndicator.GetComponent<DamageHUD>();
 
@@ -165,8 +169,6 @@ public class GunController:MonoBehaviour {
 			//We send the shot to the root of the collider we shot. This might not be ideal if we want gun shots to appear where the "bullet" hits
 			results.collider.transform.root.SendMessage("Shot", info, SendMessageOptions.DontRequireReceiver);
 		}
-
-
 
 		gunNoise.Play();
 
@@ -224,7 +226,6 @@ public class GunController:MonoBehaviour {
 			crosshairSprite.transform.localScale = Vector3.Lerp(crosshairSprite.transform.localScale, finalScale, 30 * Time.deltaTime);
 			transform.localRotation = Quaternion.Slerp(transform.localRotation, finalPosition, 30 * Time.deltaTime);
 
-
 			if (System.Math.Abs((transform.localRotation.x - finalPosition.x)) < 0.005) {
 				fired = false;
 			}
@@ -233,8 +234,9 @@ public class GunController:MonoBehaviour {
 		if (!fired) {
 			if ((crosshairSprite.transform.localScale.x > 1.0)) {
 				crosshairSprite.transform.localScale = Vector3.Lerp(crosshairSprite.transform.localScale, originalScale, 7 * Time.deltaTime);
+
 			}
-			
+
 			transform.localRotation = Quaternion.Slerp(transform.localRotation, currentPosition, 7 * Time.deltaTime);
 		}
 

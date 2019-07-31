@@ -10,6 +10,11 @@ public class CameraController:MonoBehaviour {
 
 	public Vector3 relativePosition;
 
+	private void Start() {
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+	}
+
 	// Update is called once per frame
 	void Update() {
 
@@ -18,9 +23,6 @@ public class CameraController:MonoBehaviour {
 	}
 
 	private void HandleInput() {
-
-		Cursor.visible = false;
-
 		mouseInput = Vector3.zero;
 		mouseInput.y = -Input.GetAxis("Mouse Y");
 
@@ -30,7 +32,6 @@ public class CameraController:MonoBehaviour {
 		Quaternion localRotation = Quaternion.Euler(rotationY, rotationX, 0);
 
 		transform.localRotation = localRotation;
-		//}
 	}
 
 
