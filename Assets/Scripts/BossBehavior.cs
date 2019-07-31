@@ -17,14 +17,13 @@ public class BossBehavior : BaseEnemyCharacter
     public int maxSpeed = 5;
     public float threatRadius = 10f;
 
-    private float pointA;
-    private float pointB;
-    private float pointC;
     public GameObject position1;
     public GameObject position2;
+    public GameObject position3;
     public GameObject BossHealthPack1;
     private bool flag1;
     private bool flag2;
+    private bool flag3;
 
     // Use this for initialization
     void Start()
@@ -34,22 +33,18 @@ public class BossBehavior : BaseEnemyCharacter
         anim = GetComponent<Animator>();
 
         panicked = false;
-        nav.speed = Random.Range(minSpeed, maxSpeed);
+        //nav.speed = Random.Range(minSpeed, maxSpeed);
         InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
         target = player;
         bossState = "Patrolling";
         flag1 = true;
-        flag2 = true;
+        flag2 = false;
+        flag3 = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (flag2 == true)
-        {
-            anim.SetTrigger("attack_02");
-            flag2 = false;
-        }
 
         if (health.currentHealth <= 0)
         {
@@ -68,7 +63,7 @@ public class BossBehavior : BaseEnemyCharacter
         {
             //Spawn enemies //Only once? Once per minute?
         }
-        anim.SetFloat("Speed", nav.velocity.magnitude);
+        //anim.SetFloat("Speed", nav.velocity.magnitude);
 
         //boss state: 1 = Patrolling, 2 = Chasing, 3 = Attacking
         switch (bossState)
@@ -101,31 +96,44 @@ public class BossBehavior : BaseEnemyCharacter
 
     private void Patrolling()
     {
-        if (target == null) //Boss patrols if the player isn't in range
+        anim.SetTrigger("Attack_01");
+        /*if (target == null) //Boss patrols if the player isn't in range
         {
-            anim.SetFloat("Speed", nav.velocity.magnitude);
+            //anim.SetFloat("Speed", nav.velocity.magnitude);
+
             if (flag1 == true) //Moving towards position1.
             {
-                if (Vector3.Distance(transform.position, position1.transform.position) > 1.5f) //0.001 //if not close, move towards position1
+                if (Vector3.Distance(transform.position, position1.transform.position) > 4f) //0.001 //if not close, move towards position1
                 {
-                    //ADD rotate boss towards object.
-                    transform.position = Vector3.MoveTowards(transform.position, position1.transform.position, (.1f));
+                    nav.SetDestination(position1.transform.position);
                 }
                 else
                 {
-                    transform.RotateAround(transform.position, transform.up, 180f); //rotate boss 180 degrees instantly.
                     flag1 = false;
+                    flag2 = true;
                 }
             }
-            else //flag1 == false
+            else if (flag2 == true)
             {
-                if (Vector3.Distance(transform.position, position2.transform.position) > 1.5f) //0.001 //if not close, move towards position1
+                if (Vector3.Distance(transform.position, position2.transform.position) > 3.5f) //0.001 //if not close, move towards position1
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, position2.transform.position, (.1f));
+                    nav.SetDestination(position2.transform.position);
                 }
                 else
                 {
-                    transform.RotateAround(transform.position, transform.up, 180f); //rotate boss 180 degrees instantly.
+                    flag2 = false;
+                    flag3 = true;
+                }
+            }
+            else if (flag3 == true)
+            {
+                if (Vector3.Distance(transform.position, position3.transform.position) > 3.5f) //0.001 //if not close, move towards position1
+                {
+                    nav.SetDestination(position3.transform.position);
+                }
+                else
+                {
+                    flag3 = false;
                     flag1 = true;
                 }
             }
@@ -134,7 +142,7 @@ public class BossBehavior : BaseEnemyCharacter
         {
             bossState = "Chasing";
             Chasing();
-        }
+        }*/
     }
 
     private void Chasing()
@@ -181,6 +189,7 @@ public class BossBehavior : BaseEnemyCharacter
         //nav.SetDestination(BossHealthPack1.transform.position); //Points the boss as the object it is targeting.
         //transform.position = Vector3.MoveTowards(transform.position, BossHealthPack1.transform.position, (.1f)); //Just moves the object, does not point at it.
         nav.SetDestination(BossHealthPack1.transform.position);
+        //add some logic to switch back to chase/attack mode after picking up health.
     }
 
     private void Dodge()
