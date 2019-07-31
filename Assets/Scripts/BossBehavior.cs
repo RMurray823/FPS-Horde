@@ -186,7 +186,7 @@ public class BossBehavior : BaseEnemyCharacter
     private void Dodge()
     {
         //Debug.Log("Dodging!!!");
-        transform.position += Vector3.right * 1.0f;
+        transform.position += Vector3.right * .10f;
     }
 
     override
