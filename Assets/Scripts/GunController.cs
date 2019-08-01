@@ -43,6 +43,9 @@ public class GunController:MonoBehaviour {
 	public Quaternion currentPosition;
 	public Quaternion finalPosition;
 
+	public Quaternion originalRotation = Quaternion.Euler(0,0,0);
+	public Quaternion finalRotation;
+
 	public Vector3 originalScale = new Vector3(1, 1, 1);
 	public Vector3 finalScale;
 
@@ -137,6 +140,8 @@ public class GunController:MonoBehaviour {
 		currentPosition = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
 		finalPosition = Quaternion.Euler(transform.localRotation.x - recoilDistance, transform.localRotation.y, transform.localRotation.z);
 
+		
+
 		GameObject crosshair = GameObject.Find("Crosshair");
 
 		//	originalScale = crosshair.transform.localScale;
@@ -221,10 +226,15 @@ public class GunController:MonoBehaviour {
 
 		GameObject crosshair = GameObject.Find("Crosshair");
 		Image crosshairSprite = crosshair.GetComponent<Image>();
+		//finalRotation = Quaternion.Euler(0, 0, ((crosshairSprite.transform.localRotation.z - 180)));
+
+		
 
 		if (fired) {
 			crosshairSprite.transform.localScale = Vector3.Lerp(crosshairSprite.transform.localScale, finalScale, 30 * Time.deltaTime);
 			transform.localRotation = Quaternion.Slerp(transform.localRotation, finalPosition, 30 * Time.deltaTime);
+			crosshairSprite.transform.localRotation = Quaternion.Slerp(crosshairSprite.transform.localRotation, Quaternion.Euler(0, 0, -180), 30 * Time.deltaTime);
+			//crosshairSprite.transform.localRotation = Quaternion.Slerp(crosshairSprite.transform.localRotation, Quaternion.Euler(0, 0, 181), 15 * Time.deltaTime);
 
 			if (System.Math.Abs((transform.localRotation.x - finalPosition.x)) < 0.005) {
 				fired = false;
@@ -234,7 +244,7 @@ public class GunController:MonoBehaviour {
 		if (!fired) {
 			if ((crosshairSprite.transform.localScale.x > 1.0)) {
 				crosshairSprite.transform.localScale = Vector3.Lerp(crosshairSprite.transform.localScale, originalScale, 7 * Time.deltaTime);
-
+				crosshairSprite.transform.localRotation = Quaternion.Slerp(crosshairSprite.transform.localRotation, Quaternion.Euler(0, 0, 0), 12 * Time.deltaTime);
 			}
 
 			transform.localRotation = Quaternion.Slerp(transform.localRotation, currentPosition, 7 * Time.deltaTime);
