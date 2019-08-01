@@ -13,7 +13,7 @@ public class BossBehavior : BaseEnemyCharacter
 
     public GameObject[] loot;
 
-    public int minSpeed = 3;
+    //public int minSpeed = 3;
     public int maxSpeed = 5;
     public float threatRadius = 10f;
 
@@ -29,14 +29,16 @@ public class BossBehavior : BaseEnemyCharacter
     void Start()
     {
         base.Init();
-        nav = GetComponent<NavMeshAgent>(); //get NavMesh component.
+        nav = GetComponent<NavMeshAgent>(); //get NavMesh component. //Changing Stopping Distance from 0 to 10;
         anim = GetComponent<Animator>();
 
         panicked = false;
         //nav.speed = Random.Range(minSpeed, maxSpeed);
+        nav.speed = maxSpeed;
         InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
         target = player;
         bossState = "Patrolling";
+        anim.SetBool("walk", true);
         flag1 = true;
         flag2 = false;
         flag3 = false;
@@ -45,10 +47,10 @@ public class BossBehavior : BaseEnemyCharacter
     // Update is called once per frame
     void Update()
     {
-
         if (health.currentHealth <= 0)
         {
-            anim.SetTrigger("isDead");
+            //This just keeps running.
+            anim.SetBool("die",true);
         }
         else if (health.currentHealth <= 25)
         {
@@ -93,11 +95,25 @@ public class BossBehavior : BaseEnemyCharacter
                 break;
         }
     }
-
+    private void ClearAllBool()
+    {
+        anim.SetBool("defy", false);
+        anim.SetBool("idle", false);
+        anim.SetBool("dizzy", false);
+        anim.SetBool("walk", false);
+        anim.SetBool("run", false);
+        anim.SetBool("jump", false);
+        anim.SetBool("die", false);
+        anim.SetBool("jump_left", false);
+        anim.SetBool("jump_right", false);
+        anim.SetBool("attack_01", false);
+        anim.SetBool("attack_03", false);
+        anim.SetBool("attack_02", false);
+        anim.SetBool("damage", false);
+    }
     private void Patrolling()
     {
-        anim.SetTrigger("Attack_01");
-        /*if (target == null) //Boss patrols if the player isn't in range
+        if (target == null) //Boss patrols if the player isn't in range
         {
             //anim.SetFloat("Speed", nav.velocity.magnitude);
 
@@ -115,7 +131,7 @@ public class BossBehavior : BaseEnemyCharacter
             }
             else if (flag2 == true)
             {
-                if (Vector3.Distance(transform.position, position2.transform.position) > 3.5f) //0.001 //if not close, move towards position1
+                if (Vector3.Distance(transform.position, position2.transform.position) > 4f) //0.001 //if not close, move towards position1
                 {
                     nav.SetDestination(position2.transform.position);
                 }
@@ -127,7 +143,7 @@ public class BossBehavior : BaseEnemyCharacter
             }
             else if (flag3 == true)
             {
-                if (Vector3.Distance(transform.position, position3.transform.position) > 3.5f) //0.001 //if not close, move towards position1
+                if (Vector3.Distance(transform.position, position3.transform.position) > 4f) //0.001 //if not close, move towards position1
                 {
                     nav.SetDestination(position3.transform.position);
                 }
@@ -141,8 +157,11 @@ public class BossBehavior : BaseEnemyCharacter
         else //Detects player, sets bossState to chase
         {
             bossState = "Chasing";
+            maxSpeed = 15;
             Chasing();
-        }*/
+            ClearAllBool();
+            anim.SetBool("run", true);
+        }
     }
 
     private void Chasing()
@@ -150,12 +169,12 @@ public class BossBehavior : BaseEnemyCharacter
         //ADD a collision check here, if it happens have boss dodge somewhere...
         threatRadius = 100f; //So the boss can always tell where the player is located.
 
-
-
         if (Vector3.Distance(nav.transform.position, target.transform.position) > nav.stoppingDistance)
             nav.SetDestination(target.transform.position); //move to target's position.
         else
         {
+            ClearAllBool();
+            anim.SetBool("attack_01", true);
             bossState = "Attacking"; //Switches boss state
             Attacking(); 
         }
@@ -169,7 +188,7 @@ public class BossBehavior : BaseEnemyCharacter
         if (Time.time >= attackTime + attackSpeed)
         {
             Debug.Log("Attacking!!!");
-            anim.SetTrigger("attack_01"); //This causes damage to the player
+            //anim.SetTrigger("attack_01"); //This causes damage to the player
         }
         else //Player moves out of attack range, so sent boss state back to chase.
         {

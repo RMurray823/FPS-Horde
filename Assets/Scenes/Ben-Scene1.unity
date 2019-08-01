@@ -2286,7 +2286,6 @@ MonoBehaviour:
   damage: 5
   attackSpeed: 1
   loot: []
-  minSpeed: 3
   maxSpeed: 5
   threatRadius: 1
   position1: {fileID: 1613332656}
@@ -4296,7 +4295,7 @@ Prefab:
     - target: {fileID: 114856915697381314, guid: 7fc7b42af74fc854888e80adffe27f09,
         type: 2}
       propertyPath: threatRadius
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114856915697381314, guid: 7fc7b42af74fc854888e80adffe27f09,
         type: 2}
@@ -4316,7 +4315,7 @@ Prefab:
     - target: {fileID: 114856915697381314, guid: 7fc7b42af74fc854888e80adffe27f09,
         type: 2}
       propertyPath: maxSpeed
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114856915697381314, guid: 7fc7b42af74fc854888e80adffe27f09,
         type: 2}
@@ -4326,6 +4325,16 @@ Prefab:
     - target: {fileID: 1955466257288606, guid: 7fc7b42af74fc854888e80adffe27f09, type: 2}
       propertyPath: m_TagString
       value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856915697381314, guid: 7fc7b42af74fc854888e80adffe27f09,
+        type: 2}
+      propertyPath: minSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 195763308618012714, guid: 7fc7b42af74fc854888e80adffe27f09,
+        type: 2}
+      propertyPath: m_StoppingDistance
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fc7b42af74fc854888e80adffe27f09, type: 2}
@@ -4752,6 +4761,25 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.56144977, y: -0.035665564, z: -0.17178778}
     m_Extent: {x: 0.31089664, y: 0.15442342, z: 0.12632255}
   m_DirtyAABB: 0
+--- !u!1 &1896114761 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1955466257288606, guid: 7fc7b42af74fc854888e80adffe27f09,
+    type: 2}
+  m_PrefabInternal: {fileID: 1644090199}
+--- !u!114 &1896114769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1896114761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd3da1876b2b47c45be577cfe250bd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Obj1: {fileID: 1896114761}
+  Obj2: {fileID: 808373504}
+  Distance_: 0
 --- !u!1 &1900228383
 GameObject:
   m_ObjectHideFlags: 0
