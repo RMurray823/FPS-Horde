@@ -24,6 +24,7 @@ public class BossBehavior : BaseEnemyCharacter
     private bool flag1;
     private bool flag2;
     private bool flag3;
+    private bool animFlag1;
 
     // Use this for initialization
     void Start()
@@ -38,10 +39,11 @@ public class BossBehavior : BaseEnemyCharacter
         InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
         target = player;
         bossState = "Patrolling";
-        anim.SetBool("walk", true);
+        Pressed_walk();//anim.SetBool("walk", true);
         flag1 = true;
         flag2 = false;
         flag3 = false;
+        animFlag1 = true;
     }
 
     // Update is called once per frame
@@ -51,6 +53,7 @@ public class BossBehavior : BaseEnemyCharacter
         {
             //This just keeps running.
             anim.SetBool("die",true);
+            //DestroyObject()
         }
         else if (health.currentHealth <= 25)
         {
@@ -65,7 +68,6 @@ public class BossBehavior : BaseEnemyCharacter
         {
             //Spawn enemies //Only once? Once per minute?
         }
-        //anim.SetFloat("Speed", nav.velocity.magnitude);
 
         //boss state: 1 = Patrolling, 2 = Chasing, 3 = Attacking
         switch (bossState)
@@ -88,6 +90,8 @@ public class BossBehavior : BaseEnemyCharacter
                 break;
             case "SeekHealth":
                 //Boss will seek out a health pack
+                ClearAllBool();
+                anim.SetBool("run", true);
                 SeekHealth();
                 break;
             default:
@@ -173,10 +177,9 @@ public class BossBehavior : BaseEnemyCharacter
             nav.SetDestination(target.transform.position); //move to target's position.
         else
         {
-            ClearAllBool();
-            anim.SetBool("attack_01", true);
+            Pressed_attack_01();
             bossState = "Attacking"; //Switches boss state
-            Attacking(); 
+            //Attacking(); 
         }
         //set rotation to face target.
         var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
@@ -187,12 +190,13 @@ public class BossBehavior : BaseEnemyCharacter
     {
         if (Time.time >= attackTime + attackSpeed)
         {
-            Debug.Log("Attacking!!!");
-            //anim.SetTrigger("attack_01"); //This causes damage to the player
+            //Keep attacking? Need it to time out.
+            
         }
         else //Player moves out of attack range, so sent boss state back to chase.
         {
-            Debug.Log("Chasing!!!");
+            //Debug.Log("Chasing!!!");
+            Pressed_run();
             bossState = "Chasing";
         }
 
@@ -346,5 +350,55 @@ public class BossBehavior : BaseEnemyCharacter
             }
         }
         target = closest;
+    }
+    public void Pressed_damage()
+    {
+        ClearAllBool();
+        anim.SetBool("damage", true);
+    }
+    public void Pressed_idle()
+    {
+        ClearAllBool();
+        anim.SetBool("idle", true);
+    }
+    public void Pressed_defy()
+    {
+        ClearAllBool();
+        anim.SetBool("defy", true);
+    }
+    public void Pressed_dizzy()
+    {
+        ClearAllBool();
+        anim.SetBool("dizzy", true);
+    }
+    public void Pressed_run()
+    {
+        ClearAllBool();
+        anim.SetBool("run", true);
+    }
+    public void Pressed_walk()
+    {
+        ClearAllBool();
+        anim.SetBool("walk", true);
+    }
+    public void Pressed_die()
+    {
+        ClearAllBool();
+        anim.SetBool("die", true);
+    }
+    public void Pressed_attack_01()
+    {
+        ClearAllBool();
+        anim.SetBool("attack_01", true);
+    }
+    public void Pressed_attack_02()
+    {
+        ClearAllBool();
+        anim.SetBool("attack_02", true);
+    }
+    public void Pressed_attack_03()
+    {
+        ClearAllBool();
+        anim.SetBool("attack_03", true);
     }
 }

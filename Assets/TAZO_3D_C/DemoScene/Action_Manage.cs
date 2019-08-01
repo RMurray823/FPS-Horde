@@ -7,8 +7,6 @@ public class Action_Manage : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myAnimator = Target.GetComponent<Animator> ();
-        myAnimator.SetBool("die", true);
-        //ClearAllBool();
 	}
 	
 	// Update is called once per frame
@@ -32,7 +30,7 @@ public class Action_Manage : MonoBehaviour {
 	}
 	public void Pressed_damage(){
 		ClearAllBool();
-		myAnimator.SetBool ("damage", true);
+        myAnimator.SetBool("damage", true);      
 	}
 	public void Pressed_idle(){
 		ClearAllBool();
