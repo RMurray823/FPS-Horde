@@ -11,7 +11,7 @@ public class PlayerController : BaseAllyCharacter {
 
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
     private float rotationX = 0f;
-    private float rotationY = 0f;
+    //private float rotationY = 0f;
 
     // Use this for initialization
     void Start () {
