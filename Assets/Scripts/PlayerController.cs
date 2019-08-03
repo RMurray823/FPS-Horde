@@ -47,12 +47,12 @@ public class PlayerController : BaseAllyCharacter {
     }
 
     private void HandleInput() {
-        if (Input.GetKeyUp(KeyCode.Escape)) {
+        /*if (Input.GetKeyUp(KeyCode.Escape)) {
             if (Cursor.lockState != CursorLockMode.Locked)
                 Cursor.lockState = CursorLockMode.Locked;
             else
                 Cursor.lockState = CursorLockMode.None;
-        }
+        }*/
 
         if(Input.GetKeyDown(KeyCode.Tab)) {
 
