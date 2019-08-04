@@ -199,16 +199,13 @@ public class BossBehavior : BaseEnemyCharacter
     private void Attacking()
     {
         //Logic: If boss is still within range, attack again, else move closer.
+        if (Vector3.Distance(nav.transform.position, target.transform.position) < (nav.stoppingDistance + 3)) //In range, so attacking
+        {
+            //attack, else switch to chase state
 
-        if (Time.time >= attackTime + attackSpeed)
-        {
-            Debug.Log("Stuck here...");
-            //Keep attacking? Need it to time out.
-            
         }
-        else //Player moves out of attack range, so sent boss state back to chase.
+        else //Move closer
         {
-            //Debug.Log("Chasing!!!");
             bossState = "Chasing";
             animAttack = true;
         }
