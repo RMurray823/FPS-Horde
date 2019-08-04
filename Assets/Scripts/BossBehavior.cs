@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+//*****************************************************
+//Things to add:
+// Change his movement speed.
+//
+//
+//
+//*****************************************************
 public class BossBehavior : BaseEnemyCharacter
 {
     private NavMeshAgent nav;
     private Animator anim;
     private bool panicked;
-    private string bossState;
+    public string bossState;
 
 
     public GameObject[] loot;
@@ -21,10 +29,13 @@ public class BossBehavior : BaseEnemyCharacter
     public GameObject position2;
     public GameObject position3;
     public GameObject BossHealthPack1;
-    private bool flag1;
-    private bool flag2;
-    private bool flag3;
-    private bool animFlag1;
+    private bool flag1 = true;
+    private bool flag2 = false;
+    private bool flag3 = false;
+    //Animation flags
+    public bool animWalk = true;
+    public bool animRun = true;
+    public bool animAttack = true;
 
     // Use this for initialization
     void Start()
@@ -39,11 +50,7 @@ public class BossBehavior : BaseEnemyCharacter
         InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
         target = player;
         bossState = "Patrolling";
-        Pressed_walk();//anim.SetBool("walk", true);
-        flag1 = true;
-        flag2 = false;
-        flag3 = false;
-        animFlag1 = true;
+        Pressed_walk();
     }
 
     // Update is called once per frame
@@ -73,19 +80,25 @@ public class BossBehavior : BaseEnemyCharacter
         switch (bossState)
         {
             case "Patrolling":
-                //
                 // Debug.Log("Changing to Patrol mode.");
-
                 Patrolling();
                 break;
             case "Chasing":
-                //
                 //Debug.Log("Changing to Chase mode.");
+                if (animRun)
+                {
+                    Pressed_run();
+                    animRun = false;
+                }
                 Chasing();
                 break;
             case "Attacking":
-                //
                 //Debug.Log("Changing to Attack mode.");
+                if (animAttack)
+                {
+                    Pressed_attack_01();
+                    animAttack = false;
+                }
                 Attacking();
                 break;
             case "SeekHealth":
@@ -119,8 +132,6 @@ public class BossBehavior : BaseEnemyCharacter
     {
         if (target == null) //Boss patrols if the player isn't in range
         {
-            //anim.SetFloat("Speed", nav.velocity.magnitude);
-
             if (flag1 == true) //Moving towards position1.
             {
                 if (Vector3.Distance(transform.position, position1.transform.position) > 4f) //0.001 //if not close, move towards position1
@@ -161,10 +172,8 @@ public class BossBehavior : BaseEnemyCharacter
         else //Detects player, sets bossState to chase
         {
             bossState = "Chasing";
-            maxSpeed = 15;
-            Chasing();
-            ClearAllBool();
-            anim.SetBool("run", true);
+            maxSpeed = 15; //This is NOT changing his speed...
+            animRun = true;
         }
     }
 
@@ -173,13 +182,14 @@ public class BossBehavior : BaseEnemyCharacter
         //ADD a collision check here, if it happens have boss dodge somewhere...
         threatRadius = 100f; //So the boss can always tell where the player is located.
 
-        if (Vector3.Distance(nav.transform.position, target.transform.position) > nav.stoppingDistance)
+        if (Vector3.Distance(nav.transform.position, target.transform.position) > (nav.stoppingDistance + 3))
+        {
             nav.SetDestination(target.transform.position); //move to target's position.
+        }
         else
         {
-            Pressed_attack_01();
             bossState = "Attacking"; //Switches boss state
-            //Attacking(); 
+            animRun = true; //to switch the run animation back on next time it switches states.
         }
         //set rotation to face target.
         var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
@@ -188,16 +198,19 @@ public class BossBehavior : BaseEnemyCharacter
 
     private void Attacking()
     {
+        //Logic: If boss is still within range, attack again, else move closer.
+
         if (Time.time >= attackTime + attackSpeed)
         {
+            Debug.Log("Stuck here...");
             //Keep attacking? Need it to time out.
             
         }
         else //Player moves out of attack range, so sent boss state back to chase.
         {
             //Debug.Log("Chasing!!!");
-            Pressed_run();
             bossState = "Chasing";
+            animAttack = true;
         }
 
         //set rotation to face target.
