@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
+//Boss Scale is 4.921592, 4.921593, 4.921593
 //*****************************************************
 //Things to add:
 // Change his movement speed.
-//
-//
-//
+// Better dodge
+// Not hit player away
+// Boss to stop moving when hitting
+// Boss health to work/health bar
+// Introduce elements that happen when health is triggered
 //*****************************************************
 public class BossBehavior : BaseEnemyCharacter
 {
@@ -25,9 +27,9 @@ public class BossBehavior : BaseEnemyCharacter
     public int maxSpeed = 5;
     public float threatRadius = 10f;
 
-    public GameObject position1;
-    public GameObject position2;
-    public GameObject position3;
+    public GameObject position1; //object one to patrol around
+    public GameObject position2; //object two to patrol around
+    public GameObject position3; //object three to patrol around
     public GameObject BossHealthPack1;
     private bool flag1 = true;
     private bool flag2 = false;
@@ -199,7 +201,7 @@ public class BossBehavior : BaseEnemyCharacter
     private void Attacking()
     {
         //Logic: If boss is still within range, attack again, else move closer.
-        if (Vector3.Distance(nav.transform.position, target.transform.position) < (nav.stoppingDistance + 3)) //In range, so attacking
+        if (Vector3.Distance(nav.transform.position, target.transform.position) < (nav.stoppingDistance + 10)) //In range, so attacking
         {
             //attack, else switch to chase state
 
@@ -213,7 +215,6 @@ public class BossBehavior : BaseEnemyCharacter
         //set rotation to face target.
         var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
         targetRotation.y = 180;
-        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f);
     }
 
     private void SeekHealth()
@@ -222,13 +223,17 @@ public class BossBehavior : BaseEnemyCharacter
         //nav.SetDestination(BossHealthPack1.transform.position); //Points the boss as the object it is targeting.
         //transform.position = Vector3.MoveTowards(transform.position, BossHealthPack1.transform.position, (.1f)); //Just moves the object, does not point at it.
         nav.SetDestination(BossHealthPack1.transform.position);
-        //add some logic to switch back to chase/attack mode after picking up health.
+        //add some logic to switch back to chase mode after picking up health.
     }
 
-    private void Dodge()
+    private void DodgeRight()
     {
         //Debug.Log("Dodging!!!");
         transform.position += Vector3.right * .10f;
+    }
+    private void DodgeLeft()
+    {
+        transform.position += Vector3.left * .10f;
     }
 
     override
