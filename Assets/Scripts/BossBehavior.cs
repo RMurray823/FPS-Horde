@@ -7,11 +7,13 @@ using UnityEngine.AI;
 //*****************************************************
 //Things to add:
 // Change his movement speed.
-// Better dodge
-// Not hit player away
+// Better dodge - no
+// Not hit player away 
 // Boss to stop moving when hitting
 // Boss health to work/health bar
 // Introduce elements that happen when health is triggered
+
+//
 //*****************************************************
 public class BossBehavior : BaseEnemyCharacter
 {
@@ -20,6 +22,9 @@ public class BossBehavior : BaseEnemyCharacter
     private bool panicked;
     public string bossState;
 
+    private int counter = 0;
+    public int i = 0;
+    private float currentTime;
 
     public GameObject[] loot;
 
@@ -31,13 +36,18 @@ public class BossBehavior : BaseEnemyCharacter
     public GameObject position2; //object two to patrol around
     public GameObject position3; //object three to patrol around
     public GameObject BossHealthPack1;
+    private bool canChangeStates = true;
     private bool flag1 = true;
     private bool flag2 = false;
     private bool flag3 = false;
+    public bool pickedUpHealth = false;
     //Animation flags
     public bool animWalk = true;
     public bool animRun = true;
     public bool animAttack = true;
+    public bool animDie = true;
+    public bool animJump = true;
+    public string currentHealthState;
 
     // Use this for initialization
     void Start()
@@ -60,59 +70,96 @@ public class BossBehavior : BaseEnemyCharacter
     {
         if (health.currentHealth <= 0)
         {
-            //This just keeps running.
-            anim.SetBool("die",true);
-            //DestroyObject()
+            Debug.Log("Dying");
+            currentHealthState = "Dying";
+            bossState = "Death";
+
+            
         }
-        else if (health.currentHealth <= 25)
+        else if (health.currentHealth > 0 && health.currentHealth <= 25)
         {
+            Debug.Log("Rage");
+            currentHealthState = "Rage";
             //Rage Mode
         }
-        else if (health.currentHealth <= 50)
+        else if (health.currentHealth > 25 && health.currentHealth <= 50)
         {
+            Debug.Log("Seeking health");
+            currentHealthState = "Seeking health";
             //Seek health, then chase player/attack player
             bossState = "SeekHealth";
         }
-        else if (health.currentHealth <= 75)
+        else if (health.currentHealth > 50 && health.currentHealth <= 75)
         {
+            Debug.Log("Health is fine");
+            currentHealthState = "fine";
             //Spawn enemies //Only once? Once per minute?
+        }
+        else if (health.currentArmor > 75)
+        {
+            Debug.Log("Full Boss Health");
+            currentHealthState = "Full";
         }
 
         //boss state: 1 = Patrolling, 2 = Chasing, 3 = Attacking
-        switch (bossState)
+        if (canChangeStates)
         {
-            case "Patrolling":
-                // Debug.Log("Changing to Patrol mode.");
-                Patrolling();
-                break;
-            case "Chasing":
-                //Debug.Log("Changing to Chase mode.");
-                if (animRun)
-                {
-                    Pressed_run();
-                    animRun = false;
-                }
-                Chasing();
-                break;
-            case "Attacking":
-                //Debug.Log("Changing to Attack mode.");
-                if (animAttack)
-                {
-                    Pressed_attack_01();
-                    animAttack = false;
-                }
-                Attacking();
-                break;
-            case "SeekHealth":
-                //Boss will seek out a health pack
-                ClearAllBool();
-                anim.SetBool("run", true);
-                SeekHealth();
-                break;
-            default:
-                Debug.Log("No boss state selected! Debug as to why...");
-                break;
+            switch (bossState)
+            {
+                case "Patrolling":
+                    // Debug.Log("Changing to Patrol mode.");
+                    Patrolling();
+                    break;
+                case "Chasing":
+                    //Debug.Log("Changing to Chase mode.");
+                    if (animRun)
+                    {
+                        Pressed_run();
+                        animRun = false;
+                    }
+                    Chasing();
+                    break;
+                case "Attacking":
+                    //Debug.Log("Changing to Attack mode.");
+                    if (animAttack)
+                    {
+                        Pressed_attack_01();
+                        animAttack = false;
+                    }
+                    Attacking();
+                    break;
+                case "SeekHealth":
+                    //Boss will seek out a health pack
+                    if (animRun)
+                    {
+                        Pressed_run();
+                        //anim.SetBool("run", true);
+                        animRun = false;
+                    }
+                    //ClearAllBool();
+                    SeekHealth();
+                    break;
+                case "Death":
+                    Debug.Log("Dying State activated.");
+                    if (animDie)
+                    {
+                        ClearAllBool();
+                        anim.SetBool("die", true);
+                        animDie = false;
+                    }
+
+
+                    break;
+                default:
+                    Debug.Log("No boss state selected! Debug as to why...");
+                    break;
+            }
         }
+        else
+        {
+            SeekHealth();
+        }
+
     }
     private void ClearAllBool()
     {
@@ -193,14 +240,6 @@ public class BossBehavior : BaseEnemyCharacter
             bossState = "Attacking"; //Switches boss state
             animRun = true; //to switch the run animation back on next time it switches states.
         }
-        //set rotation to face target.
-/*        var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-        targetRotation.y = 180;*/
-
-        Vector3 relativePos = target.transform.position - transform.position;
-        /*Quaternion rotation = Quaternion.LookRotation(relativePos);
-        transform.rotation = rotation;*/
-        transform.rotation = Quaternion.LookRotation(relativePos);
     }
 
     private void Attacking()
@@ -209,19 +248,17 @@ public class BossBehavior : BaseEnemyCharacter
         if (Vector3.Distance(nav.transform.position, target.transform.position) < (nav.stoppingDistance + 10)) //Will continue attacking until you move out of radius
         {
             //attack, else switch to chase state
+            if (Time.time >= attackTime + attackSpeed)
+            {
+                Attack();
+            }
+            //Attack();
         }
         else //Move closer
         {
             bossState = "Chasing";
             animAttack = true;
         }
-        //set rotation to face target.
-        /*        var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-                targetRotation.y = 180;*/
-
-        Vector3 relativePos = target.transform.position - transform.position;
-        Quaternion rotation = Quaternion.LookRotation(relativePos);
-        transform.rotation = rotation;
     }
 
     private void SeekHealth()
@@ -229,8 +266,43 @@ public class BossBehavior : BaseEnemyCharacter
         //Stay in this state until a health pack is picked up, or health < 50
         //nav.SetDestination(BossHealthPack1.transform.position); //Points the boss as the object it is targeting.
         //transform.position = Vector3.MoveTowards(transform.position, BossHealthPack1.transform.position, (.1f)); //Just moves the object, does not point at it.
+
         nav.SetDestination(BossHealthPack1.transform.position);
+
         //add some logic to switch back to chase mode after picking up health.
+        //Distance_ = Vector3.Distance(Obj1.transform.position, Obj2.transform.position);
+        
+
+        if (pickedUpHealth)
+        {
+            
+
+            if (animJump)
+            {
+                currentTime = Time.time;
+                Pressed_jump();
+                animJump = false;
+                canChangeStates = false;
+            }
+            else
+            {
+
+                //for loop here
+                if (Time.time <= currentTime + 1f)
+                {
+                    
+                    canChangeStates = true;
+                    bossState = "Chasing";
+                    animRun = true;
+
+                }
+
+            }
+            pickedUpHealth = false;
+            canChangeStates = true;
+            bossState = "Chasing";
+            animRun = true;
+        }
     }
 
     private void DodgeRight()
@@ -259,12 +331,12 @@ public class BossBehavior : BaseEnemyCharacter
         //if currentHealth is below panic threshold.
         if (health.currentHealth <= health.maxHealth / 5)
         {
-            if (Random.Range(1, 10) == 1)
-            {
-                panicked = true;
-                target = null;
-            }
-            InvokeRepeating("Decay", 0f, 0.5f);
+            //if (Random.Range(1, 10) == 1)
+            //{
+            //    panicked = true;
+            //    target = null;
+            //}
+            //InvokeRepeating("Decay", 0f, 0.5f);
         }
     }
 
@@ -280,6 +352,7 @@ public class BossBehavior : BaseEnemyCharacter
         {
             HealthPack pack = other.GetComponent<HealthPack>();
             health.heal(pack.getHealAmount());
+            pickedUpHealth = true;
         }
 
         if (other.tag == "ArmorPack")
@@ -287,6 +360,7 @@ public class BossBehavior : BaseEnemyCharacter
             HealthPack pack = other.GetComponent<HealthPack>();
             health.healArmor(pack.getArmorAmount());
         }
+        
     }
 
     private void Destroy()
@@ -423,4 +497,21 @@ public class BossBehavior : BaseEnemyCharacter
         ClearAllBool();
         anim.SetBool("attack_03", true);
     }
+    public void Pressed_jump()
+    {
+        ClearAllBool();
+        anim.SetBool("jump", true);
+    }
 }
+
+//********************************************
+//Code I don't want to lose yet:
+
+//set rotation to face target.
+//var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
+//targetRotation.y = 180;
+
+//I also liked this way below
+//Vector3 relativePos = target.transform.position - transform.position;
+//transform.rotation = Quaternion.LookRotation(relativePos);
+//********************************************
