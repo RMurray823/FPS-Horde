@@ -2285,6 +2285,7 @@ MonoBehaviour:
   movementSpeed: 5
   damage: 5
   attackSpeed: 1
+  bossState: 
   loot: []
   maxSpeed: 5
   threatRadius: 1
@@ -2292,6 +2293,9 @@ MonoBehaviour:
   position2: {fileID: 1007218857}
   position3: {fileID: 0}
   BossHealthPack1: {fileID: 514816374}
+  animWalk: 1
+  animRun: 1
+  animAttack: 1
 --- !u!1 &808373504
 GameObject:
   m_ObjectHideFlags: 0
@@ -4341,6 +4345,18 @@ Prefab:
         type: 2}
       propertyPath: movementSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212059821439662, guid: 7fc7b42af74fc854888e80adffe27f09, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 4.921592
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212059821439662, guid: 7fc7b42af74fc854888e80adffe27f09, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 4.921593
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212059821439662, guid: 7fc7b42af74fc854888e80adffe27f09, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 4.921593
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fc7b42af74fc854888e80adffe27f09, type: 2}

@@ -194,27 +194,34 @@ public class BossBehavior : BaseEnemyCharacter
             animRun = true; //to switch the run animation back on next time it switches states.
         }
         //set rotation to face target.
-        var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-        targetRotation.y = 180;
+/*        var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
+        targetRotation.y = 180;*/
+
+        Vector3 relativePos = target.transform.position - transform.position;
+        /*Quaternion rotation = Quaternion.LookRotation(relativePos);
+        transform.rotation = rotation;*/
+        transform.rotation = Quaternion.LookRotation(relativePos);
     }
 
     private void Attacking()
     {
         //Logic: If boss is still within range, attack again, else move closer.
-        if (Vector3.Distance(nav.transform.position, target.transform.position) < (nav.stoppingDistance + 10)) //In range, so attacking
+        if (Vector3.Distance(nav.transform.position, target.transform.position) < (nav.stoppingDistance + 10)) //Will continue attacking until you move out of radius
         {
             //attack, else switch to chase state
-
         }
         else //Move closer
         {
             bossState = "Chasing";
             animAttack = true;
         }
-
         //set rotation to face target.
-        var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-        targetRotation.y = 180;
+        /*        var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
+                targetRotation.y = 180;*/
+
+        Vector3 relativePos = target.transform.position - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(relativePos);
+        transform.rotation = rotation;
     }
 
     private void SeekHealth()
