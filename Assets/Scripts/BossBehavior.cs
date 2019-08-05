@@ -5,15 +5,13 @@ using UnityEngine.AI;
 
 //Boss Scale is 4.921592, 4.921593, 4.921593
 //*****************************************************
-//Things to add:
-// Change his movement speed.
-// Better dodge - no
-// Not hit player away 
-// Boss to stop moving when hitting
-// Boss health to work/health bar
-// Introduce elements that happen when health is triggered
+//Get jump animation to work correctly.
 
-//
+//DONE:
+//Only go after health once
+//Put checkHealth method together
+//Spawn enemies just once
+//Stop moving when die anim is played.
 //*****************************************************
 public class BossBehavior : BaseEnemyCharacter
 {
@@ -27,8 +25,9 @@ public class BossBehavior : BaseEnemyCharacter
     private float currentTime;
 
     public GameObject[] loot;
+    public GameObject spawnEvent1;
+    public GameObject spawnEvent2;
 
-    //public int minSpeed = 3;
     public int maxSpeed = 5;
     public float threatRadius = 10f;
 
@@ -36,18 +35,21 @@ public class BossBehavior : BaseEnemyCharacter
     public GameObject position2; //object two to patrol around
     public GameObject position3; //object three to patrol around
     public GameObject BossHealthPack1;
-    private bool canChangeStates = true;
+
     private bool flag1 = true;
     private bool flag2 = false;
     private bool flag3 = false;
     public bool pickedUpHealth = false;
+    private bool grabHealth = true;
+    private bool spawnEnemies = true;
     //Animation flags
     public bool animWalk = true;
     public bool animRun = true;
     public bool animAttack = true;
     public bool animDie = true;
     public bool animJump = true;
-    public string currentHealthState;
+
+    private Vector3 myPosition;
 
     // Use this for initialization
     void Start()
@@ -68,42 +70,8 @@ public class BossBehavior : BaseEnemyCharacter
     // Update is called once per frame
     void Update()
     {
-        if (health.currentHealth <= 0)
-        {
-            Debug.Log("Dying");
-            currentHealthState = "Dying";
-            bossState = "Death";
-
-            
-        }
-        else if (health.currentHealth > 0 && health.currentHealth <= 25)
-        {
-            Debug.Log("Rage");
-            currentHealthState = "Rage";
-            //Rage Mode
-        }
-        else if (health.currentHealth > 25 && health.currentHealth <= 50)
-        {
-            Debug.Log("Seeking health");
-            currentHealthState = "Seeking health";
-            //Seek health, then chase player/attack player
-            bossState = "SeekHealth";
-        }
-        else if (health.currentHealth > 50 && health.currentHealth <= 75)
-        {
-            Debug.Log("Health is fine");
-            currentHealthState = "fine";
-            //Spawn enemies //Only once? Once per minute?
-        }
-        else if (health.currentArmor > 75)
-        {
-            Debug.Log("Full Boss Health");
-            currentHealthState = "Full";
-        }
-
-        //boss state: 1 = Patrolling, 2 = Chasing, 3 = Attacking
-        if (canChangeStates)
-        {
+        CheckHealth(); //Checks the health to see if any events should play. Spawn enemies, grab health, die.
+        
             switch (bossState)
             {
                 case "Patrolling":
@@ -146,21 +114,77 @@ public class BossBehavior : BaseEnemyCharacter
                         ClearAllBool();
                         anim.SetBool("die", true);
                         animDie = false;
+                        myPosition = transform.position;
+                        nav.SetDestination(myPosition);
+                        //Stop bosses movement
                     }
-
-
                     break;
                 default:
                     Debug.Log("No boss state selected! Debug as to why...");
                     break;
             }
-        }
-        else
-        {
-            SeekHealth();
-        }
-
     }
+    private void CheckHealth()
+    {
+
+        if (health.currentHealth <= 0)
+        {
+            Debug.Log("Dying");
+            bossState = "Death";
+        }
+        //else if (health.currentHealth > 0 && health.currentHealth <= 25)
+        //{
+        //    Debug.Log("Spawn enemies in 2 locations");
+        //    //Rage Mode
+        //}
+        else if (health.currentHealth > 26 && health.currentHealth <= 50)
+        {
+            if (grabHealth) //grabHealth == true boss can grab health, == false boss cannot grab health.
+            {
+                Debug.Log("Seeking health");
+                bossState = "SeekHealth";
+                grabHealth = false;
+                SpawnEnemiesEvent2();
+            }
+        }
+        else if (health.currentHealth > 50 && health.currentHealth <= 75)
+        {
+            if (spawnEnemies)
+            {
+                Debug.Log("Spawning Enemies");
+                SpawnEnemiesEvent();
+                spawnEnemies = false;
+            }
+        }
+        else // if (health.currentHealth > 75)
+        {
+            Debug.Log("Full Boss Health");
+        }
+    }
+
+    private void SpawnEnemiesEvent()
+    {
+        //int temp = Random.Range(0, enemyTypes.Length);
+        //Instantiate(enemyTypes[temp], spawnCenter.position + (Random.insideUnitSphere * spawnRadius), spawnCenter.rotation);
+        int i;
+        for (i = 0; i < 2; i++)
+        {
+            spawnEvent1.SendMessage("Spawn");
+        }
+    }
+    private void SpawnEnemiesEvent2()
+    {
+        int i;
+        for (i = 0; i < 2; i++)
+        {
+            spawnEvent1.SendMessage("Spawn");
+        }
+        for (i = 0; i < 2; i++)
+        {
+            spawnEvent2.SendMessage("Spawn");
+        }
+    }
+
     private void ClearAllBool()
     {
         anim.SetBool("defy", false);
@@ -269,37 +293,24 @@ public class BossBehavior : BaseEnemyCharacter
 
         nav.SetDestination(BossHealthPack1.transform.position);
 
-        //add some logic to switch back to chase mode after picking up health.
-        //Distance_ = Vector3.Distance(Obj1.transform.position, Obj2.transform.position);
-        
-
+        //logic to switch back to chase mode after picking up health.
         if (pickedUpHealth)
         {
-            
-
             if (animJump)
             {
                 currentTime = Time.time;
                 Pressed_jump();
                 animJump = false;
-                canChangeStates = false;
             }
             else
             {
-
-                //for loop here
-                if (Time.time <= currentTime + 1f)
-                {
-                    
-                    canChangeStates = true;
-                    bossState = "Chasing";
-                    animRun = true;
-
-                }
-
+                //if (Time.time <= currentTime + 1f)
+                //{
+                //    bossState = "Chasing";
+                //    animRun = true;
+                //}
             }
             pickedUpHealth = false;
-            canChangeStates = true;
             bossState = "Chasing";
             animRun = true;
         }

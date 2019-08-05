@@ -22,7 +22,7 @@ public class HealthPack : MonoBehaviour {
     }
     private void OnTriggerEnter(Collider collision) {
   
-        if (collision.tag == "Player" || collision.tag == "Enemy" )
+        if (collision.tag == "Player" || collision.tag == "Enemy" || collision.tag == "Boss" )
         {
             gameObject.GetComponent<Renderer>().enabled = false;
             gameObject.GetComponent<Collider>().enabled = false;

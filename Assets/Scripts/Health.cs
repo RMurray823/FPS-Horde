@@ -26,6 +26,10 @@ public class Health:MonoBehaviour {
             currentHealth = Random.Range(startingHealthMin, startingHealthMax);
             currentArmor = Random.Range(startingArmorMin, startingArmorMax);
         }
+        if (tag == "Boss")
+        {
+            currentHealth = 100;
+        }
     }
 
     //Apply the amount of damage defined and return the new health value
