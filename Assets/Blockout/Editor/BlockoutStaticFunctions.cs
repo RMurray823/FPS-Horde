@@ -607,7 +607,7 @@ namespace RadicalForge.Blockout
             {
                 var asset = (GameObject) AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(res[0]),
                     typeof(GameObject));
-                if (PrefabUtility.GetPrefabParent(asset) == null && PrefabUtility.GetPrefabObject(asset) != null)
+                if (PrefabUtility.GetCorrespondingObjectFromSource(asset) == null && PrefabUtility.GetPrefabObject(asset) != null)
                     EditorGUIUtility.PingObject(asset);
             }
         }

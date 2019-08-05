@@ -22,10 +22,13 @@ public class HealthPack : MonoBehaviour {
     }
     private void OnTriggerEnter(Collider collision) {
   
-        if (collision.tag == "Player")
+        if (collision.tag == "Player" || collision.tag == "Enemy" )
         {
+            gameObject.GetComponent<Renderer>().enabled = false;
+            gameObject.GetComponent<Collider>().enabled = false;
             Instantiate(soundPlayer, null);
             Destroy(gameObject);
         }
+        
     }
 }

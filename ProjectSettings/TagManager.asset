@@ -18,6 +18,7 @@ TagManager:
   - AmmoPack
   - Gun
   - Boss
+  - BossStateUI
   layers:
   - Default
   - TransparentFX

@@ -8,6 +8,7 @@ public class DodgeTrigger : MonoBehaviour {
     public GameObject Obj2;
     public float Distance_;
 
+
     // Use this for initialization
     void Start () {
 		
@@ -16,11 +17,6 @@ public class DodgeTrigger : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Distance_ = Vector3.Distance(Obj1.transform.position, Obj2.transform.position);
-
-        if (Distance_ < 4)
-        {
-            
-        }
     }
 
     //1
@@ -36,9 +32,10 @@ public class DodgeTrigger : MonoBehaviour {
     {
         if (collision.transform.tag == "Boss") //If the boss hits the object, do the if statment.
         {
-            collision.gameObject.SendMessage("Dodge");
-            Debug.Log(collision.transform.name + " BOSS has collided");
-            //collision.gameObject.
+            //Debug.Log(collision.transform.name + " BOSS has collided");
+            collision.gameObject.SendMessage("DodgeRight");
+            //if distance between boss and object doesn't change, dodge other way
+
         }
     }
 
