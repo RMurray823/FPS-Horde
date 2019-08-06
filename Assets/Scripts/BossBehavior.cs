@@ -175,11 +175,11 @@ public class BossBehavior : BaseEnemyCharacter
     private void SpawnEnemiesEvent2()
     {
         int i;
-        for (i = 0; i < 2; i++)
+        for (i = 0; i < 10; i++)
         {
             spawnEvent1.SendMessage("Spawn");
         }
-        for (i = 0; i < 2; i++)
+        for (i = 0; i < 10; i++)
         {
             spawnEvent2.SendMessage("Spawn");
         }
