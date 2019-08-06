@@ -1,201 +1,256 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum FireType {
-    Automatic,
-    Semi,
-    Burst
+	Automatic,
+	Semi,
+	Burst
 }
 
-public class GunController : MonoBehaviour {
+public class GunController:MonoBehaviour {
 
-    public bool canDrop = true;
+	public bool canDrop = true;
 
-    private bool held = false;
-    private bool triggerHeld = false;
+	private bool held = false;
+	private bool triggerHeld = false;
 
-    public FireType gunFireType;
-    private Camera mainCamera;
-    private AudioSource gunNoise;
-    private AudioSource reloadNoise;
+	public FireType gunFireType;
+	private Camera mainCamera;
+	private AudioSource gunNoise;
+	private AudioSource reloadNoise;
 
-    //Shooting information
-    public int damage = 50;
-    public float shootDelay;
-    public float burstDelay;
-    public int numOfBurstShots;
-    private int burstCount;
-    private float shotTime;
+	//Shooting information
+	public int damage = 50;
+	public float shootDelay;
+	public float burstDelay;
+	public int numOfBurstShots;
+	private int burstCount;
+	private float shotTime;
 
-    //Ammo information
-    public int maxAmmo = 90;
-    public int maxLoadedAmmo = 30;
-    public int loadedAmmo = 30;
-    public int unloadedAmmo = 90;
-    public bool infiniteAmmo = false;
+	//Ammo information
+	public int maxAmmo = 90;
+	public int maxLoadedAmmo = 30;
+	public int loadedAmmo = 30;
+	public int unloadedAmmo = 90;
+	public bool infiniteAmmo = false;
 
-    //Reload information
-    public float reloadTime = 1.0f;
-    private bool reloading = false;
+	//Reload information
+	public float reloadTime = 1.0f;
+	private bool reloading = false;
 
-    void Start() {
-        mainCamera = Camera.main;
-        var audio = GetComponents<AudioSource>();
-        gunNoise = audio[0];
-        reloadNoise = audio[1];
-        burstCount = 0;
-    }
+	public Quaternion currentPosition;
+	public Quaternion finalPosition;
 
-    void Update() {
-    }
+	public Quaternion originalRotation = Quaternion.Euler(0,0,0);
+	public Quaternion finalRotation;
 
-    public bool IsHeld() {
-        return held;
-    }
+	public Vector3 originalScale = new Vector3(1, 1, 1);
+	public Vector3 finalScale;
 
-    public void Reload() {
-        if (!reloading) {
-            if (unloadedAmmo > 0) {
-                reloading = true;
-                reloadNoise.Play();
-                Invoke("DoReload", reloadTime);
-            }
-        }
-    }
-    private void DoReload() {
-        int neededShots = maxLoadedAmmo - loadedAmmo;
+	public bool fired = false;
+	public int recoilDistance;
 
-        if (unloadedAmmo >= neededShots) {
-            loadedAmmo += neededShots;
-            unloadedAmmo -= neededShots;
-        } else {
-            if (unloadedAmmo > 0) {
-                loadedAmmo += unloadedAmmo;
-                unloadedAmmo = 0;
-            }
-        }
+	void Start() {
+		mainCamera = Camera.main;
+		var audio = GetComponents<AudioSource>();
+		gunNoise = audio[0];
+		reloadNoise = audio[1];
+		burstCount = 0;
+	}
 
-        reloading = false;
-    }
+	void Update() {
+		Recoil();
+	}
 
-    public void AddAmmo(int amount) {
-        if(unloadedAmmo < maxAmmo) {
-            if (unloadedAmmo + amount > maxAmmo)
-                unloadedAmmo = maxAmmo;
-            else
-                unloadedAmmo += amount;
-        }
-    }
+	public bool IsHeld() {
+		return held;
+	}
 
-    public int GetAmmoInClip() {
-        return loadedAmmo;
-    }
+	public void Reload() {
+		if (!reloading) {
+			if (unloadedAmmo > 0) {
+				reloading = true;
+				reloadNoise.Play();
+				Invoke("DoReload", reloadTime);
+			}
+		}
+	}
+	private void DoReload() {
+		int neededShots = maxLoadedAmmo - loadedAmmo;
 
-    public int GetAmmoNotInClip() {
-        return unloadedAmmo;
-    }
+		if (unloadedAmmo >= neededShots) {
+			loadedAmmo += neededShots;
+			unloadedAmmo -= neededShots;
+		} else {
+			if (unloadedAmmo > 0) {
+				loadedAmmo += unloadedAmmo;
+				unloadedAmmo = 0;
+			}
+		}
 
-    //TODO: Really don't like having to pass the parent
-    public void SetHeld(bool flag, Transform parent) {
-        if (canDrop) {
+		reloading = false;
+	}
 
-            held = flag;
-            GetComponent<Rigidbody>().isKinematic = flag;
-            GetComponent<BoxCollider>().isTrigger = flag;
+	public void AddAmmo(int amount) {
+		if (unloadedAmmo < maxAmmo) {
+			if (unloadedAmmo + amount > maxAmmo)
+				unloadedAmmo = maxAmmo;
+			else
+				unloadedAmmo += amount;
+		}
+	}
 
-            if (flag) {
-                if (parent.gameObject.tag == "Player")
-                    transform.parent = Camera.main.transform;
-            } else {
-                transform.parent = null;
-            }
-        }
-    }
+	public int GetAmmoInClip() {
+		return loadedAmmo;
+	}
 
-    private void FireBullet() {
+	public int GetAmmoNotInClip() {
+		return unloadedAmmo;
+	}
 
-        GameObject playerCamera = GameObject.Find("PlayerCamera");
-        CameraController playerScript = playerCamera.GetComponent<CameraController>();
-        playerScript.Firing(true);
+	//TODO: Really don't like having to pass the parent
+	public void SetHeld(bool flag, Transform parent) {
+		if (canDrop) {
 
-        if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
+			held = flag;
+			GetComponent<Rigidbody>().isKinematic = flag;
+			GetComponent<BoxCollider>().isTrigger = flag;
 
-        Vector3 cameraDir;
-        Vector3 cameraPos;
+			if (flag) {
+				if (parent.gameObject.tag == "Player")
+					transform.parent = Camera.main.transform;
+			} else {
+				transform.parent = null;
+			}
+		}
+	}
 
-        //TODO: I don't think we should have to do these checks. Maybe we should pass to the guncontroller where the bullet should exit
-        if (transform.root.tag == "Player") {
-            cameraDir = mainCamera.transform.forward;
-            cameraPos = mainCamera.transform.position;
-        } else {
-            cameraDir = transform.forward;
-            cameraPos = transform.position;
-            if (transform.root.tag == "Ally")
-                transform.root.SendMessage("ShootAnimation");
-        }
+	private void FireBullet() {
 
-        RaycastHit results;
-        if (Physics.Raycast(cameraPos, cameraDir, out results)) {
-            ShotInformation info = new ShotInformation();
-            info.damage = damage;
-            info.tag = results.collider.tag;
+		if (++burstCount == numOfBurstShots) CancelInvoke("FireBullet");
 
-            //We send the shot to the root of the collider we shot. This might not be ideal if we want gun shots to appear where the "bullet" hits
-            results.collider.transform.root.SendMessage("Shot", info, SendMessageOptions.DontRequireReceiver);
-        }
+		if ((gunFireType == FireType.Automatic) || (gunFireType == FireType.Semi)) {
+			recoilDistance = 5;
+		} else {
+			recoilDistance = 10;
+		}
 
-        //mainCamera.transform.eulerAngles = Vector3.Lerp(mainCamera.transform.eulerAngles, new Vector3(1, 0, 0), Time.deltaTime * 100);
-        //mainCamera.transform.Rotate(new Vector3(-90, 0, 0), Time.deltaTime * 1);
+		currentPosition = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
+		finalPosition = Quaternion.Euler(transform.localRotation.x - recoilDistance, transform.localRotation.y, transform.localRotation.z);
 
-        //transform.Rotate(new Vector3(-2, 0, 0), Time.deltaTime*100);
+		
 
-        gunNoise.Play();
+		GameObject crosshair = GameObject.Find("Crosshair");
 
-        if (!infiniteAmmo) {
-            if (--loadedAmmo == 0) {
-                CancelInvoke("FireBullet");
-                if(!reloading) {
-                    Reload();
-                }
-            }
-        }
+		//	originalScale = crosshair.transform.localScale;
+		finalScale = new Vector3(crosshair.transform.localScale.x * 1.3F, crosshair.transform.localScale.y * 1.3F, crosshair.transform.localScale.z);
 
-        //playerScript.Firing(false);
-    }
+		//DamageHUD damageScript = damageIndicator.GetComponent<DamageHUD>();
 
-    //Returns true if we actually shot or not.
-    public bool Shoot() {
-        if (loadedAmmo > 0 && !reloading) {
-            if (Time.time - shotTime >= shootDelay) {
-                shotTime = Time.time;
+		fired = true;
 
-                switch (gunFireType) {
-                    case FireType.Automatic:
-                        FireBullet();
-                        break;
-                    case FireType.Burst:
-                        burstCount = 0;
-                        InvokeRepeating("FireBullet", 0, burstDelay);
-                        break;
-                    case FireType.Semi:
-                        if (triggerHeld)
-                            return false;
-                        else
-                            FireBullet();
-                        break;
-                }
-            }
-            triggerHeld = true;
-            return true;
+		Vector3 cameraDir;
+		Vector3 cameraPos;
 
-        } else {
-            return false;
-        }
-    }
+		//TODO: I don't think we should have to do these checks. Maybe we should pass to the guncontroller where the bullet should exit
+		if (transform.root.tag == "Player") {
+			cameraDir = mainCamera.transform.forward;
+			cameraPos = mainCamera.transform.position;
+		} else {
+			cameraDir = transform.forward;
+			cameraPos = transform.position;
+			if (transform.root.tag == "Ally")
+				transform.root.SendMessage("ShootAnimation");
+		}
 
-    public void SetShooting(bool flag) {
-        triggerHeld = flag;
-    }
+		RaycastHit results;
+		if (Physics.Raycast(cameraPos, cameraDir, out results)) {
+			ShotInformation info = new ShotInformation();
+			info.damage = damage;
+			info.tag = results.collider.tag;
+
+			//We send the shot to the root of the collider we shot. This might not be ideal if we want gun shots to appear where the "bullet" hits
+			results.collider.transform.root.SendMessage("Shot", info, SendMessageOptions.DontRequireReceiver);
+		}
+
+		gunNoise.Play();
+
+		if (!infiniteAmmo) {
+			if (--loadedAmmo == 0) {
+				CancelInvoke("FireBullet");
+				if (!reloading) {
+					Reload();
+				}
+			}
+		}
+
+	}
+
+	//Returns true if we actually shot or not.
+	public bool Shoot() {
+		if (loadedAmmo > 0 && !reloading) {
+			if (Time.time - shotTime >= shootDelay) {
+				shotTime = Time.time;
+
+				switch (gunFireType) {
+					case FireType.Automatic:
+						FireBullet();
+						break;
+					case FireType.Burst:
+						burstCount = 0;
+						InvokeRepeating("FireBullet", 0, burstDelay);
+						break;
+					case FireType.Semi:
+						if (triggerHeld)
+							return false;
+						else
+							FireBullet();
+						break;
+				}
+			}
+			triggerHeld = true;
+			return true;
+
+		} else {
+			return false;
+		}
+	}
+
+	public void SetShooting(bool flag) {
+		triggerHeld = flag;
+	}
+
+	public void Recoil() {
+
+		GameObject crosshair = GameObject.Find("Crosshair");
+		Image crosshairSprite = crosshair.GetComponent<Image>();
+		//finalRotation = Quaternion.Euler(0, 0, ((crosshairSprite.transform.localRotation.z - 180)));
+
+		
+
+		if (fired) {
+			crosshairSprite.transform.localScale = Vector3.Lerp(crosshairSprite.transform.localScale, finalScale, 30 * Time.deltaTime);
+			transform.localRotation = Quaternion.Slerp(transform.localRotation, finalPosition, 30 * Time.deltaTime);
+			crosshairSprite.transform.localRotation = Quaternion.Slerp(crosshairSprite.transform.localRotation, Quaternion.Euler(0, 0, -180), 30 * Time.deltaTime);
+			//crosshairSprite.transform.localRotation = Quaternion.Slerp(crosshairSprite.transform.localRotation, Quaternion.Euler(0, 0, 181), 15 * Time.deltaTime);
+
+			if (System.Math.Abs((transform.localRotation.x - finalPosition.x)) < 0.005) {
+				fired = false;
+			}
+		}
+
+		if (!fired) {
+			if ((crosshairSprite.transform.localScale.x > 1.0)) {
+				crosshairSprite.transform.localScale = Vector3.Lerp(crosshairSprite.transform.localScale, originalScale, 7 * Time.deltaTime);
+				crosshairSprite.transform.localRotation = Quaternion.Slerp(crosshairSprite.transform.localRotation, Quaternion.Euler(0, 0, 0), 12 * Time.deltaTime);
+			}
+
+			transform.localRotation = Quaternion.Slerp(transform.localRotation, currentPosition, 7 * Time.deltaTime);
+		}
+
+
+	}
+
 }
-

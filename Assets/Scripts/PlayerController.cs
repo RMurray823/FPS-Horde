@@ -11,7 +11,7 @@ public class PlayerController : BaseAllyCharacter {
 
     //TODO: Player rotation seems sketchy still. Might want to look into cleaning it up.
     private float rotationX = 0f;
-    private float rotationY = 0f;
+    //private float rotationY = 0f;
 
     // Use this for initialization
     void Start () {
@@ -47,12 +47,12 @@ public class PlayerController : BaseAllyCharacter {
     }
 
     private void HandleInput() {
-        if (Input.GetKeyUp(KeyCode.Escape)) {
+        /*if (Input.GetKeyUp(KeyCode.Escape)) {
             if (Cursor.lockState != CursorLockMode.Locked)
                 Cursor.lockState = CursorLockMode.Locked;
             else
                 Cursor.lockState = CursorLockMode.None;
-        }
+        }*/
 
         if(Input.GetKeyDown(KeyCode.Tab)) {
 
@@ -106,15 +106,15 @@ public class PlayerController : BaseAllyCharacter {
         keyboardInputs = transform.TransformDirection(keyboardInputs);
 
         //mouseInput = Vector3.zero;
-        //mouseInput.x = Input.GetAxis("Mouse X");
+        mouseInput.x = Input.GetAxis("Mouse X");
         //mouseInput.y = -Input.GetAxis("Mouse Y");
 
         
-        //rotationX += mouseInput.x * 100f * Time.fixedDeltaTime;
+        rotationX += mouseInput.x * 100f * Time.fixedDeltaTime;
         //rotationY += mouseInput.y * 100f * Time.deltaTime;
         //rotationY = Mathf.Clamp(rotationY, -90, 90);
 
-        //localRotation = Quaternion.Euler(0, rotationX, 0);
+        localRotation = Quaternion.Euler(0, rotationX, 0);
     }
 
     override
