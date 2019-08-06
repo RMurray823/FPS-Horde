@@ -6,6 +6,7 @@ using UnityEngine.AI;
 //Boss Scale is 4.921592, 4.921593, 4.921593
 //*****************************************************
 //Get jump animation to work correctly.
+//Figure out how to damage without shooting in the belt.
 
 //DONE:
 //Only go after health once
@@ -24,8 +25,8 @@ public class BossBehavior : BaseEnemyCharacter
     public int i = 0;
     private float currentTime;
 
-    public GameObject[] loot;
-    public GameObject spawnEvent1;
+    //public GameObject[] loot;
+    public GameObject spawnEvent1; //Location of where zombies spawn at trigger events.
     public GameObject spawnEvent2;
 
     public int maxSpeed = 5;
@@ -34,7 +35,7 @@ public class BossBehavior : BaseEnemyCharacter
     public GameObject position1; //object one to patrol around
     public GameObject position2; //object two to patrol around
     public GameObject position3; //object three to patrol around
-    public GameObject BossHealthPack1;
+    public GameObject BossHealthPack1; //Hard coded health pack for boss to grab.
 
     private bool flag1 = true;
     private bool flag2 = false;
@@ -124,84 +125,8 @@ public class BossBehavior : BaseEnemyCharacter
                     break;
             }
     }
-    private void CheckHealth()
-    {
 
-        if (health.currentHealth <= 0)
-        {
-            Debug.Log("Dying");
-            bossState = "Death";
-        }
-        //else if (health.currentHealth > 0 && health.currentHealth <= 25)
-        //{
-        //    Debug.Log("Spawn enemies in 2 locations");
-        //    //Rage Mode
-        //}
-        else if (health.currentHealth > 26 && health.currentHealth <= 50)
-        {
-            if (grabHealth) //grabHealth == true boss can grab health, == false boss cannot grab health.
-            {
-                Debug.Log("Seeking health");
-                bossState = "SeekHealth";
-                grabHealth = false;
-                SpawnEnemiesEvent2();
-            }
-        }
-        else if (health.currentHealth > 50 && health.currentHealth <= 75)
-        {
-            if (spawnEnemies)
-            {
-                Debug.Log("Spawning Enemies");
-                SpawnEnemiesEvent();
-                spawnEnemies = false;
-            }
-        }
-        else // if (health.currentHealth > 75)
-        {
-            Debug.Log("Full Boss Health");
-        }
-    }
-
-    private void SpawnEnemiesEvent()
-    {
-        //int temp = Random.Range(0, enemyTypes.Length);
-        //Instantiate(enemyTypes[temp], spawnCenter.position + (Random.insideUnitSphere * spawnRadius), spawnCenter.rotation);
-        int i;
-        for (i = 0; i < 2; i++)
-        {
-            spawnEvent1.SendMessage("Spawn");
-        }
-    }
-    private void SpawnEnemiesEvent2()
-    {
-        int i;
-        for (i = 0; i < 10; i++)
-        {
-            spawnEvent1.SendMessage("Spawn");
-        }
-        for (i = 0; i < 10; i++)
-        {
-            spawnEvent2.SendMessage("Spawn");
-        }
-    }
-
-    private void ClearAllBool()
-    {
-        anim.SetBool("defy", false);
-        anim.SetBool("idle", false);
-        anim.SetBool("dizzy", false);
-        anim.SetBool("walk", false);
-        anim.SetBool("run", false);
-        anim.SetBool("jump", false);
-        anim.SetBool("die", false);
-        anim.SetBool("jump_left", false);
-        anim.SetBool("jump_right", false);
-        anim.SetBool("attack_01", false);
-        anim.SetBool("attack_03", false);
-        anim.SetBool("attack_02", false);
-        anim.SetBool("damage", false);
-    }
-    private void Patrolling()
+    private void Patrolling() //Boss is initialized in the patrolling state. Goes into Chasing state when player is within range.
     {
         if (target == null) //Boss patrols if the player isn't in range
         {
@@ -217,7 +142,7 @@ public class BossBehavior : BaseEnemyCharacter
                     flag2 = true;
                 }
             }
-            else if (flag2 == true)
+            else if (flag2 == true) //Moving towards position2.
             {
                 if (Vector3.Distance(transform.position, position2.transform.position) > 4f) //0.001 //if not close, move towards position1
                 {
@@ -229,7 +154,7 @@ public class BossBehavior : BaseEnemyCharacter
                     flag3 = true;
                 }
             }
-            else if (flag3 == true)
+            else if (flag3 == true) //Moving towards position3.
             {
                 if (Vector3.Distance(transform.position, position3.transform.position) > 4f) //0.001 //if not close, move towards position1
                 {
@@ -276,7 +201,6 @@ public class BossBehavior : BaseEnemyCharacter
             {
                 Attack();
             }
-            //Attack();
         }
         else //Move closer
         {
@@ -285,12 +209,8 @@ public class BossBehavior : BaseEnemyCharacter
         }
     }
 
-    private void SeekHealth()
+    private void SeekHealth() //State triggered when boss health falls below 50%.
     {
-        //Stay in this state until a health pack is picked up, or health < 50
-        //nav.SetDestination(BossHealthPack1.transform.position); //Points the boss as the object it is targeting.
-        //transform.position = Vector3.MoveTowards(transform.position, BossHealthPack1.transform.position, (.1f)); //Just moves the object, does not point at it.
-
         nav.SetDestination(BossHealthPack1.transform.position);
 
         //logic to switch back to chase mode after picking up health.
@@ -313,6 +233,68 @@ public class BossBehavior : BaseEnemyCharacter
             pickedUpHealth = false;
             bossState = "Chasing";
             animRun = true;
+        }
+    }
+    
+    private void CheckHealth()
+    {
+
+        if (health.currentHealth <= 0)
+        {
+            Debug.Log("Dying");
+            bossState = "Death";
+        }
+        //else if (health.currentHealth > 0 && health.currentHealth <= 25)
+        //{
+        //    Debug.Log("Spawn enemies in 2 locations");
+        //    //Rage Mode
+        //}
+        else if (health.currentHealth > 26 && health.currentHealth <= 50)
+        {
+            if (grabHealth) //grabHealth == true boss can grab health, == false boss cannot grab health.
+            {
+                Debug.Log("Seeking health");
+                bossState = "SeekHealth";
+                grabHealth = false;
+                SpawnEnemiesEvent2();
+            }
+        }
+        else if (health.currentHealth > 50 && health.currentHealth <= 75)
+        {
+            if (spawnEnemies)
+            {
+                Debug.Log("Spawning Enemies");
+                SpawnEnemiesEvent();
+                spawnEnemies = false;
+            }
+        }
+        else // if (health.currentHealth > 75)
+        {
+            Debug.Log("Full Boss Health");
+        }
+    }
+
+        private void SpawnEnemiesEvent()
+    {
+        //int temp = Random.Range(0, enemyTypes.Length);
+        //Instantiate(enemyTypes[temp], spawnCenter.position + (Random.insideUnitSphere * spawnRadius), spawnCenter.rotation);
+        int i;
+        for (i = 0; i < 2; i++)
+        {
+            spawnEvent1.SendMessage("Spawn");
+        }
+    }
+
+    private void SpawnEnemiesEvent2()
+    {
+        int i;
+        for (i = 0; i < 10; i++)
+        {
+            spawnEvent1.SendMessage("Spawn");
+        }
+        for (i = 0; i < 10; i++)
+        {
+            spawnEvent2.SendMessage("Spawn");
         }
     }
 
@@ -338,26 +320,9 @@ public class BossBehavior : BaseEnemyCharacter
         {
             health.takeDamage(info.damage);
         }
-
-        //if currentHealth is below panic threshold.
-        if (health.currentHealth <= health.maxHealth / 5)
-        {
-            //if (Random.Range(1, 10) == 1)
-            //{
-            //    panicked = true;
-            //    target = null;
-            //}
-            //InvokeRepeating("Decay", 0f, 0.5f);
-        }
     }
 
-    //Used to kill a panicking enemy.
-    private void Decay()
-    {
-        health.takeDamage(1);
-    }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) //Tracks if the boss collides with either a health or armor pack.
     {
         if (other.tag == "HealthPack")
         {
@@ -376,48 +341,47 @@ public class BossBehavior : BaseEnemyCharacter
 
     private void Destroy()
     {
-        dropLoot();
         Destroy(gameObject);
     }
 
-    private void dropLoot()
-    {
-        int i = Random.Range(1, 50);
-        Vector3 dropPosition = transform.position;
-        dropPosition.y = transform.position.y + 0.5f;
-        Quaternion dropRotation = transform.rotation;
+    // private void dropLoot()
+    // {
+    //     int i = Random.Range(1, 50);
+    //     Vector3 dropPosition = transform.position;
+    //     dropPosition.y = transform.position.y + 0.5f;
+    //     Quaternion dropRotation = transform.rotation;
 
-        switch (i)
-        {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-                Instantiate(loot[0], dropPosition, dropRotation);
-                break;
-            case 5:
-                Instantiate(loot[0], dropPosition, dropRotation);
-                dropLoot();
-                break;
-            case 6:
-            case 7:
-                Instantiate(loot[1], dropPosition, dropRotation);
-                break;
-            case 8:
-                Instantiate(loot[1], dropPosition, dropRotation);
-                dropLoot();
-                break;
-            case 9:
-                Instantiate(loot[2], dropPosition, dropRotation);
-                break;
-            case 10:
-                Instantiate(loot[2], dropPosition, dropRotation);
-                dropLoot();
-                break;
-            default:
-                break;
-        }
-    }
+    //     switch (i)
+    //     {
+    //         case 1:
+    //         case 2:
+    //         case 3:
+    //         case 4:
+    //             Instantiate(loot[0], dropPosition, dropRotation);
+    //             break;
+    //         case 5:
+    //             Instantiate(loot[0], dropPosition, dropRotation);
+    //             dropLoot();
+    //             break;
+    //         case 6:
+    //         case 7:
+    //             Instantiate(loot[1], dropPosition, dropRotation);
+    //             break;
+    //         case 8:
+    //             Instantiate(loot[1], dropPosition, dropRotation);
+    //             dropLoot();
+    //             break;
+    //         case 9:
+    //             Instantiate(loot[2], dropPosition, dropRotation);
+    //             break;
+    //         case 10:
+    //             Instantiate(loot[2], dropPosition, dropRotation);
+    //             dropLoot();
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
     private void TargetClosestEnemy()
     {
@@ -442,21 +406,37 @@ public class BossBehavior : BaseEnemyCharacter
                     }
                 }
             }
-            else //else if panicked, target anything.
-            {
-                if (col.tag == "Enemy" || col.tag == "Player" || col.tag == "Ally")
-                {
-                    Vector3 diff = col.transform.position - position;
-                    float curDistance = diff.sqrMagnitude;
-                    if (curDistance < distance && curDistance != 0)
-                    {
-                        closest = col.gameObject;
-                        distance = curDistance;
-                    }
-                }
-            }
+            // else //else if panicked, target anything.
+            // {
+            //     if (col.tag == "Enemy" || col.tag == "Player" || col.tag == "Ally")
+            //     {
+            //         Vector3 diff = col.transform.position - position;
+            //         float curDistance = diff.sqrMagnitude;
+            //         if (curDistance < distance && curDistance != 0)
+            //         {
+            //             closest = col.gameObject;
+            //             distance = curDistance;
+            //         }
+            //     }
+            // }
         }
         target = closest;
+    }
+    private void ClearAllBool()
+    {
+        anim.SetBool("defy", false);
+        anim.SetBool("idle", false);
+        anim.SetBool("dizzy", false);
+        anim.SetBool("walk", false);
+        anim.SetBool("run", false);
+        anim.SetBool("jump", false);
+        anim.SetBool("die", false);
+        anim.SetBool("jump_left", false);
+        anim.SetBool("jump_right", false);
+        anim.SetBool("attack_01", false);
+        anim.SetBool("attack_03", false);
+        anim.SetBool("attack_02", false);
+        anim.SetBool("damage", false);
     }
     public void Pressed_damage()
     {
