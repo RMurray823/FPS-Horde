@@ -7,12 +7,9 @@ using UnityEngine.AI;
 //*****************************************************
 //Get jump animation to work correctly.
 //Figure out how to damage without shooting in the belt.
-<<<<<<< Updated upstream
 //Change to chase state when hit
-=======
 //Change states if damage lessens
 //add better hit detection to bull body parts
->>>>>>> Stashed changes
 
 //DONE:
 //Only go after health once
@@ -46,6 +43,7 @@ public class BossBehavior : BaseEnemyCharacter
     private bool flag1 = true;
     private bool flag2 = false;
     private bool flag3 = false;
+    private bool patrolToChase = true;
     public bool pickedUpHealth = false;
     private bool grabHealth = true;
     private bool spawnEnemies = true;
@@ -244,6 +242,16 @@ public class BossBehavior : BaseEnemyCharacter
     
     private void CheckHealth()
     {
+        //If in patrol mode and takes damage, switch to chasing.
+        if (health.currentHealth < 100)
+        {
+            if (patrolToChase)
+            {
+                //Switch to chase mode
+                bossState = "Chasing";
+                patrolToChase = false;
+            }
+        }
 
         if (health.currentHealth <= 0)
         {
