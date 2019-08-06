@@ -41,7 +41,7 @@ public class EnemyBehavior : BaseEnemyCharacter
         if(target != null)
         {
 			if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance) {
-				//nav.SetDestination(target.transform.position); //move to target's position.
+				nav.SetDestination(target.transform.position); //move to target's position.
 			} else {
 				if (Time.time >= attackTime + attackSpeed)
 					anim.SetTrigger("attack");

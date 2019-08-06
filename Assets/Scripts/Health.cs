@@ -24,15 +24,29 @@ public class Health:MonoBehaviour {
 
 	GameObject boss;
 	GameObject bossHealthBarObject;
+	GameObject bossHealthBarSprite;
+
+	public bool firstChase;
 
 
 
 	void Start() {
+		firstChase = false;
 
-		boss = GameObject.Find("Boss");
-		bossHealthBarObject = GameObject.Find("BossHealthUIBackground");
-		bossHealthBar = bossHealthBarObject.GetComponent<RectTransform>();
-		maxHealthBarSize = bossHealthBar.rect.width;
+
+		if (tag == "Boss") {
+			boss = GameObject.Find("Boss");
+			bossHealthBarObject = GameObject.Find("BossHealthUIBackground");
+			bossHealthBarSprite = GameObject.Find("BossHealthUISprite");
+
+			bossHealthBar = bossHealthBarObject.GetComponent<RectTransform>();
+			maxHealthBarSize = bossHealthBar.rect.width;
+
+			bossHealthBarObject.SetActive(false);
+			bossHealthBarSprite.SetActive(false);
+		}
+		
+
 
 
 		if (tag != "Player") {
@@ -45,8 +59,21 @@ public class Health:MonoBehaviour {
         }
     }
 
-    //Apply the amount of damage defined and return the new health value
-    public int takeDamage(int damage) {
+	void Update() {
+
+		if (tag == "Boss") {
+			if ((boss.GetComponent<BossBehavior>().bossState == "Chasing") && firstChase == false) {
+				firstChase = true;
+				bossHealthBarObject.SetActive(true);
+				bossHealthBarSprite.SetActive(true);
+				
+			}
+		}
+
+	}
+
+	//Apply the amount of damage defined and return the new health value
+	public int takeDamage(int damage) {
 
         if (tag == "Player") {
             adjustDamageIndicator();
