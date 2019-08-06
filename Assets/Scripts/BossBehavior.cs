@@ -7,7 +7,12 @@ using UnityEngine.AI;
 //*****************************************************
 //Get jump animation to work correctly.
 //Figure out how to damage without shooting in the belt.
+<<<<<<< Updated upstream
 //Change to chase state when hit
+=======
+//Change states if damage lessens
+//add better hit detection to bull body parts
+>>>>>>> Stashed changes
 
 //DONE:
 //Only go after health once
@@ -289,11 +294,11 @@ public class BossBehavior : BaseEnemyCharacter
     private void SpawnEnemiesEvent2()
     {
         int i;
-        for (i = 0; i < 10; i++)
+        for (i = 0; i < 3; i++)
         {
             spawnEvent1.SendMessage("Spawn");
         }
-        for (i = 0; i < 10; i++)
+        for (i = 0; i < 3; i++)
         {
             spawnEvent2.SendMessage("Spawn");
         }
