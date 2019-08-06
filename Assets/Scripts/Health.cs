@@ -99,8 +99,9 @@ public class Health:MonoBehaviour {
 
     private void updateBars() {
 
-		bossHealthBar.sizeDelta = new Vector2(((float)boss.GetComponent<Health>().currentHealth / (float)boss.GetComponent<Health>().maxHealth) * maxHealthBarSize, bossHealthBar.sizeDelta.y);
-		
+		if (tag == "Boss") {
+			bossHealthBar.sizeDelta = new Vector2(((float)boss.GetComponent<Health>().currentHealth / (float)boss.GetComponent<Health>().maxHealth) * maxHealthBarSize, bossHealthBar.sizeDelta.y);
+		}
 		if (healthBar != null) {
             healthBar.sizeDelta = new Vector2((float)currentHealth / (float)maxHealth, healthBar.sizeDelta.y);
         }
