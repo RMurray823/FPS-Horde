@@ -19,10 +19,23 @@ public class Health:MonoBehaviour {
     public RectTransform healthBar;
     public RectTransform armorBar;
 
+	public RectTransform bossHealthBar;
+	public float maxHealthBarSize;
+
+	GameObject boss;
+	GameObject bossHealthBarObject;
 
 
-    void Start() {
-        if (tag != "Player") {
+
+	void Start() {
+
+		boss = GameObject.Find("Boss");
+		bossHealthBarObject = GameObject.Find("BossHealthUIBackground");
+		bossHealthBar = bossHealthBarObject.GetComponent<RectTransform>();
+		maxHealthBarSize = bossHealthBar.rect.width;
+
+
+		if (tag != "Player") {
             currentHealth = Random.Range(startingHealthMin, startingHealthMax);
             currentArmor = Random.Range(startingArmorMin, startingArmorMax);
         }
@@ -85,7 +98,10 @@ public class Health:MonoBehaviour {
     }
 
     private void updateBars() {
-        if (healthBar != null) {
+
+		bossHealthBar.sizeDelta = new Vector2(((float)boss.GetComponent<Health>().currentHealth / (float)boss.GetComponent<Health>().maxHealth) * maxHealthBarSize, bossHealthBar.sizeDelta.y);
+		
+		if (healthBar != null) {
             healthBar.sizeDelta = new Vector2((float)currentHealth / (float)maxHealth, healthBar.sizeDelta.y);
         }
         if (armorBar != null) {
