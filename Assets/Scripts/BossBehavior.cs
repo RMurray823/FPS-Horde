@@ -7,6 +7,7 @@ using UnityEngine.AI;
 //*****************************************************
 //Get jump animation to work correctly.
 //Figure out how to damage without shooting in the belt.
+//Change to chase state when hit
 
 //DONE:
 //Only go after health once
