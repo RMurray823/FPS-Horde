@@ -2,21 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-//Boss Scale is 4.921592, 4.921593, 4.921593
-//*****************************************************
-//Get jump animation to work correctly.
-//Figure out how to damage without shooting in the belt.
-//Change to chase state when hit
-//Change states if damage lessens
-//add better hit detection to bull body parts
-
-//DONE:
-//Only go after health once
-//Put checkHealth method together
-//Spawn enemies just once
-//Stop moving when die anim is played.
-//*****************************************************
 public class BossBehavior : BaseEnemyCharacter
 {
     private NavMeshAgent nav;
@@ -64,7 +49,6 @@ public class BossBehavior : BaseEnemyCharacter
         anim = GetComponent<Animator>();
 
         panicked = false;
-        //nav.speed = Random.Range(minSpeed, maxSpeed);
         nav.speed = maxSpeed;
         InvokeRepeating("TargetClosestEnemy", 0, 0.25f);
         target = player;
@@ -106,7 +90,6 @@ public class BossBehavior : BaseEnemyCharacter
                     if (animRun)
                     {
                         Pressed_run();
-                        //anim.SetBool("run", true);
                         animRun = false;
                     }
                     //ClearAllBool();
@@ -174,7 +157,6 @@ public class BossBehavior : BaseEnemyCharacter
         else //Detects player, sets bossState to chase
         {
             bossState = "Chasing";
-            maxSpeed = 15; //This is NOT changing his speed...
             animRun = true;
         }
     }
@@ -226,20 +208,12 @@ public class BossBehavior : BaseEnemyCharacter
                 Pressed_jump();
                 animJump = false;
             }
-            else
-            {
-                //if (Time.time <= currentTime + 1f)
-                //{
-                //    bossState = "Chasing";
-                //    animRun = true;
-                //}
-            }
             pickedUpHealth = false;
             bossState = "Chasing";
             animRun = true;
         }
     }
-    
+
     private void CheckHealth()
     {
         //If in patrol mode and takes damage, switch to chasing.
@@ -258,11 +232,7 @@ public class BossBehavior : BaseEnemyCharacter
             Debug.Log("Dying");
             bossState = "Death";
         }
-        //else if (health.currentHealth > 0 && health.currentHealth <= 25)
-        //{
-        //    Debug.Log("Spawn enemies in 2 locations");
-        //    //Rage Mode
-        //}
+        
         else if (health.currentHealth > 26 && health.currentHealth <= 50)
         {
             if (grabHealth) //grabHealth == true boss can grab health, == false boss cannot grab health.
@@ -287,18 +257,15 @@ public class BossBehavior : BaseEnemyCharacter
             Debug.Log("Full Boss Health");
         }
     }
-
+        //Controls when zombies are spawned by the boss.
         private void SpawnEnemiesEvent()
     {
-        //int temp = Random.Range(0, enemyTypes.Length);
-        //Instantiate(enemyTypes[temp], spawnCenter.position + (Random.insideUnitSphere * spawnRadius), spawnCenter.rotation);
         int i;
         for (i = 0; i < 2; i++)
         {
             spawnEvent1.SendMessage("Spawn");
         }
     }
-
     private void SpawnEnemiesEvent2()
     {
         int i;
@@ -312,6 +279,7 @@ public class BossBehavior : BaseEnemyCharacter
         }
     }
 
+    //Dodges left or right depending on the need. Choice is mad in the dodgeTrigger file.
     private void DodgeRight()
     {
         //Debug.Log("Dodging!!!");
@@ -322,6 +290,7 @@ public class BossBehavior : BaseEnemyCharacter
         transform.position += Vector3.left * .10f;
     }
 
+    //Assigns extra damage if the player shoots the boss in the head.
     override
     protected void Shot(ShotInformation info)
     {
@@ -336,7 +305,8 @@ public class BossBehavior : BaseEnemyCharacter
         }
     }
 
-    private void OnTriggerEnter(Collider other) //Tracks if the boss collides with either a health or armor pack.
+    //Tracks if the boss collides with either a health or armor pack.
+    private void OnTriggerEnter(Collider other) 
     {
         if (other.tag == "HealthPack")
         {
@@ -353,50 +323,12 @@ public class BossBehavior : BaseEnemyCharacter
         
     }
 
-    private void Destroy()
+    private void Destroy() //Removes the object passed through the parameter
     {
         Destroy(gameObject);
     }
 
-    // private void dropLoot()
-    // {
-    //     int i = Random.Range(1, 50);
-    //     Vector3 dropPosition = transform.position;
-    //     dropPosition.y = transform.position.y + 0.5f;
-    //     Quaternion dropRotation = transform.rotation;
-
-    //     switch (i)
-    //     {
-    //         case 1:
-    //         case 2:
-    //         case 3:
-    //         case 4:
-    //             Instantiate(loot[0], dropPosition, dropRotation);
-    //             break;
-    //         case 5:
-    //             Instantiate(loot[0], dropPosition, dropRotation);
-    //             dropLoot();
-    //             break;
-    //         case 6:
-    //         case 7:
-    //             Instantiate(loot[1], dropPosition, dropRotation);
-    //             break;
-    //         case 8:
-    //             Instantiate(loot[1], dropPosition, dropRotation);
-    //             dropLoot();
-    //             break;
-    //         case 9:
-    //             Instantiate(loot[2], dropPosition, dropRotation);
-    //             break;
-    //         case 10:
-    //             Instantiate(loot[2], dropPosition, dropRotation);
-    //             dropLoot();
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
+    //Gets an array of the player and any allies and targets the closest one.
     private void TargetClosestEnemy()
     {
         target = null;
@@ -420,23 +352,10 @@ public class BossBehavior : BaseEnemyCharacter
                     }
                 }
             }
-            // else //else if panicked, target anything.
-            // {
-            //     if (col.tag == "Enemy" || col.tag == "Player" || col.tag == "Ally")
-            //     {
-            //         Vector3 diff = col.transform.position - position;
-            //         float curDistance = diff.sqrMagnitude;
-            //         if (curDistance < distance && curDistance != 0)
-            //         {
-            //             closest = col.gameObject;
-            //             distance = curDistance;
-            //         }
-            //     }
-            // }
         }
         target = closest;
     }
-    private void ClearAllBool()
+    private void ClearAllBool() //Clears all the animations from playing
     {
         anim.SetBool("defy", false);
         anim.SetBool("idle", false);
@@ -452,6 +371,8 @@ public class BossBehavior : BaseEnemyCharacter
         anim.SetBool("attack_02", false);
         anim.SetBool("damage", false);
     }
+
+    //Below methods are used to play each animation.
     public void Pressed_damage()
     {
         ClearAllBool();
@@ -508,15 +429,3 @@ public class BossBehavior : BaseEnemyCharacter
         anim.SetBool("jump", true);
     }
 }
-
-//********************************************
-//Code I don't want to lose yet:
-
-//set rotation to face target.
-//var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position, Vector3.up);
-//targetRotation.y = 180;
-
-//I also liked this way below
-//Vector3 relativePos = target.transform.position - transform.position;
-//transform.rotation = Quaternion.LookRotation(relativePos);
-//********************************************
