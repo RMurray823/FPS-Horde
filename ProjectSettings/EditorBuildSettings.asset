@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenu copy.unity
+    path: Assets/Scenes/Main Menu.unity
     guid: 743198be75e57431a8adb401ecb63667
   - enabled: 1
-    path: Assets/Scenes/Robert_Demo_Level.unity
-    guid: 5bd1840e72d5bde4492f3b9bfd8c318e
+    path: Assets/Scenes/Demo Level.unity
+    guid: 1a13973ef0d904a779cf7e1dd23fc5d0
   - enabled: 1
-    path: Assets/Scenes/Ben-Scene1.unity
+    path: Assets/Scenes/Boss Testing Room.unity
     guid: be076e8da4e26b14fb5f0ea9190e8f28
   m_configObjects: {}

@@ -21,7 +21,10 @@ public class EnemySpawner : BaseEnemyCharacter
 
         if (Vector3.Distance(this.transform.position, player.transform.position) < spawnRadius)
         {
-            Instantiate(enemyTypes[temp], transform.position, transform.rotation);
+			if (enemyTypes[temp] != null) {
+				Instantiate(enemyTypes[temp], transform.position, transform.rotation);
+			}
+            
         }
     }
 
