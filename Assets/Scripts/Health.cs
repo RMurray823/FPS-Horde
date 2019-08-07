@@ -50,8 +50,10 @@ public class Health:MonoBehaviour {
 
 
 		if (tag != "Player") {
-            currentHealth = Random.Range(startingHealthMin, startingHealthMax);
-            currentArmor = Random.Range(startingArmorMin, startingArmorMax);
+            //currentHealth = Random.Range(startingHealthMin, startingHealthMax);
+            //currentArmor = Random.Range(startingArmorMin, startingArmorMax);
+            currentHealth = 100;
+            currentArmor = 25;
         }
         if (tag == "Boss")
         {

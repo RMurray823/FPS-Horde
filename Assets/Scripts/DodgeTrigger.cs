@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DodgeTrigger : MonoBehaviour {
 
-    public GameObject Obj1;
-    public GameObject Obj2;
+    //public GameObject Obj1;
+    //public GameObject Obj2;
     public float Distance_;
 
 
@@ -16,7 +16,7 @@ public class DodgeTrigger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Distance_ = Vector3.Distance(Obj1.transform.position, Obj2.transform.position);
+        //Distance_ = Vector3.Distance(Obj1.transform.position, Obj2.transform.position);
     }
 
     //1

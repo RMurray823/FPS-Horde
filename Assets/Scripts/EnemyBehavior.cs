@@ -61,6 +61,7 @@ public class EnemyBehavior : BaseEnemyCharacter
     {
 
         if(info.tag == "WeakPoint") {
+            print("HEADSHOT");
             health.takeDamage(info.damage*2);
         } else {
             health.takeDamage(info.damage);
