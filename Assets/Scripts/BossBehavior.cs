@@ -32,7 +32,7 @@ public class BossBehavior : BaseEnemyCharacter
     public GameObject spawnEvent1; //Location of where zombies spawn at trigger events.
     public GameObject spawnEvent2;
 
-    public int maxSpeed = 5;
+    public int maxSpeed = 50;
     public float threatRadius = 10f;
 
     public GameObject position1; //object one to patrol around
@@ -243,7 +243,7 @@ public class BossBehavior : BaseEnemyCharacter
     private void CheckHealth()
     {
         //If in patrol mode and takes damage, switch to chasing.
-        if (health.currentHealth < 100)
+        if (health.currentHealth < 1000)
         {
             if (patrolToChase)
             {
@@ -263,7 +263,7 @@ public class BossBehavior : BaseEnemyCharacter
         //    Debug.Log("Spawn enemies in 2 locations");
         //    //Rage Mode
         //}
-        else if (health.currentHealth > 26 && health.currentHealth <= 50)
+        else if (health.currentHealth > 260 && health.currentHealth <= 500)
         {
             if (grabHealth) //grabHealth == true boss can grab health, == false boss cannot grab health.
             {
@@ -273,7 +273,7 @@ public class BossBehavior : BaseEnemyCharacter
                 SpawnEnemiesEvent2();
             }
         }
-        else if (health.currentHealth > 50 && health.currentHealth <= 75)
+        else if (health.currentHealth > 500 && health.currentHealth <= 750)
         {
             if (spawnEnemies)
             {
@@ -293,7 +293,7 @@ public class BossBehavior : BaseEnemyCharacter
         //int temp = Random.Range(0, enemyTypes.Length);
         //Instantiate(enemyTypes[temp], spawnCenter.position + (Random.insideUnitSphere * spawnRadius), spawnCenter.rotation);
         int i;
-        for (i = 0; i < 2; i++)
+        for (i = 0; i < 4; i++)
         {
             spawnEvent1.SendMessage("Spawn");
         }
@@ -302,11 +302,11 @@ public class BossBehavior : BaseEnemyCharacter
     private void SpawnEnemiesEvent2()
     {
         int i;
-        for (i = 0; i < 3; i++)
+        for (i = 0; i < 10; i++)
         {
             spawnEvent1.SendMessage("Spawn");
         }
-        for (i = 0; i < 3; i++)
+        for (i = 0; i < 10; i++)
         {
             spawnEvent2.SendMessage("Spawn");
         }
@@ -315,11 +315,11 @@ public class BossBehavior : BaseEnemyCharacter
     private void DodgeRight()
     {
         //Debug.Log("Dodging!!!");
-        transform.position += Vector3.right * .10f;
+        transform.position += Vector3.right * 1f;
     }
     private void DodgeLeft()
     {
-        transform.position += Vector3.left * .10f;
+        transform.position += Vector3.left * 1f;
     }
 
     override

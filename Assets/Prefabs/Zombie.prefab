@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 137402160637028088}
   m_Layer: 0
   m_Name: ' Head'
-  m_TagString: Enemy
+  m_TagString: WeakPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1730,8 +1730,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 100
-  currentArmor: 0
   maxHealth: 100
+  currentArmor: 0
   maxArmor: 0
   startingHealthMin: 50
   startingHealthMax: 100
@@ -1739,6 +1739,9 @@ MonoBehaviour:
   startingArmorMax: 50
   healthBar: {fileID: 224652245188567526}
   armorBar: {fileID: 224455023597611804}
+  bossHealthBar: {fileID: 0}
+  maxHealthBarSize: 0
+  firstChase: 0
 --- !u!114 &114205123401200472
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1901,9 +1904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f92ee60591340d4f84a78715c9abdca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
-  damage: 0
-  attackSpeed: 0
+  deathAudio: {fileID: 0}
 --- !u!114 &114862153740695700
 MonoBehaviour:
   m_ObjectHideFlags: 1

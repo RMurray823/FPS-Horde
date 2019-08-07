@@ -55,7 +55,8 @@ public class Health:MonoBehaviour {
         }
         if (tag == "Boss")
         {
-            currentHealth = 100;
+            currentHealth = 1000;
+			maxHealth = 1000;
         }
     }
 
@@ -67,6 +68,11 @@ public class Health:MonoBehaviour {
 				bossHealthBarObject.SetActive(true);
 				bossHealthBarSprite.SetActive(true);
 				
+			}
+
+			if (boss.GetComponent<BossBehavior>().bossState == "Death") {
+				bossHealthBarObject.SetActive(false);
+				bossHealthBarSprite.SetActive(false);
 			}
 		}
 
