@@ -255,7 +255,7 @@ public class BossBehavior : BaseEnemyCharacter
 
         if (health.currentHealth <= 0)
         {
-            Debug.Log("Dying");
+            //Debug.Log("Dying");
             bossState = "Death";
         }
         //else if (health.currentHealth > 0 && health.currentHealth <= 25)
@@ -267,7 +267,7 @@ public class BossBehavior : BaseEnemyCharacter
         {
             if (grabHealth) //grabHealth == true boss can grab health, == false boss cannot grab health.
             {
-                Debug.Log("Seeking health");
+                //Debug.Log("Seeking health");
                 bossState = "SeekHealth";
                 grabHealth = false;
                 SpawnEnemiesEvent2();
@@ -277,14 +277,14 @@ public class BossBehavior : BaseEnemyCharacter
         {
             if (spawnEnemies)
             {
-                Debug.Log("Spawning Enemies");
+                //Debug.Log("Spawning Enemies");
                 SpawnEnemiesEvent();
                 spawnEnemies = false;
             }
         }
         else // if (health.currentHealth > 75)
         {
-            Debug.Log("Full Boss Health");
+            //Debug.Log("Full Boss Health");
         }
     }
 
