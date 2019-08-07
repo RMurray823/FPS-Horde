@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Robert_Demo_Level.unity
     guid: 5bd1840e72d5bde4492f3b9bfd8c318e
+  - enabled: 1
+    path: Assets/Scenes/Ben-Scene1.unity
+    guid: be076e8da4e26b14fb5f0ea9190e8f28
   m_configObjects: {}
