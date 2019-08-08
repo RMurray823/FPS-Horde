@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DodgeTrigger : MonoBehaviour {
 
-    public GameObject Obj1;
-    public GameObject Obj2;
-    public float Distance_;
+    //public GameObject Obj1;
+    //public GameObject Obj2;
+    //public float Distance_;
 
 
     // Use this for initialization
@@ -16,7 +16,7 @@ public class DodgeTrigger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Distance_ = Vector3.Distance(Obj1.transform.position, Obj2.transform.position);
+        //Distance_ = Vector3.Distance(Obj1.transform.position, Obj2.transform.position);
     }
 
     //1
@@ -32,6 +32,7 @@ public class DodgeTrigger : MonoBehaviour {
     {
         if (collision.transform.tag == "Boss") //If the boss hits the object, do the if statment.
         {
+			//print("Dodging!!!");
             //Debug.Log(collision.transform.name + " BOSS has collided");
             collision.gameObject.SendMessage("DodgeRight");
             //if distance between boss and object doesn't change, dodge other way

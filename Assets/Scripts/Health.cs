@@ -19,17 +19,67 @@ public class Health:MonoBehaviour {
     public RectTransform healthBar;
     public RectTransform armorBar;
 
+	public RectTransform bossHealthBar;
+	public float maxHealthBarSize;
+
+	GameObject boss;
+	GameObject bossHealthBarObject;
+	GameObject bossHealthBarSprite;
+
+	public bool firstChase;
 
 
-    void Start() {
-        if (tag != "Player") {
+
+	void Start() {
+		firstChase = false;
+
+
+		if (tag == "Boss") {
+			boss = GameObject.Find("Boss");
+			bossHealthBarObject = GameObject.Find("BossHealthUIBackground");
+			bossHealthBarSprite = GameObject.Find("BossHealthUISprite");
+
+			bossHealthBar = bossHealthBarObject.GetComponent<RectTransform>();
+			maxHealthBarSize = bossHealthBar.rect.width;
+
+			bossHealthBarObject.SetActive(false);
+			bossHealthBarSprite.SetActive(false);
+		}
+		
+
+
+
+		if (tag != "Player") {
             currentHealth = Random.Range(startingHealthMin, startingHealthMax);
             currentArmor = Random.Range(startingArmorMin, startingArmorMax);
         }
+        if (tag == "Boss")
+        {
+            currentHealth = 1000;
+			maxHealth = 1000;
+        }
     }
 
-    //Apply the amount of damage defined and return the new health value
-    public int takeDamage(int damage) {
+	void Update() {
+
+		if (tag == "Boss") {
+			if ((boss.GetComponent<BossBehavior>().bossState == "Chasing") && firstChase == false) {
+				firstChase = true;
+				bossHealthBarObject.SetActive(true);
+				bossHealthBarSprite.SetActive(true);
+				
+			}
+
+			if (boss.GetComponent<BossBehavior>().bossState == "Death") {
+				bossHealthBarObject.SetActive(false);
+				bossHealthBarSprite.SetActive(false);
+			}
+		}
+
+	}
+
+	//Apply the amount of damage defined and return the new health value
+	public int takeDamage(int damage) {
 
         if (tag == "Player") {
             adjustDamageIndicator();
@@ -81,7 +131,11 @@ public class Health:MonoBehaviour {
     }
 
     private void updateBars() {
-        if (healthBar != null) {
+
+		if (tag == "Boss") {
+			bossHealthBar.sizeDelta = new Vector2(((float)boss.GetComponent<Health>().currentHealth / (float)boss.GetComponent<Health>().maxHealth) * maxHealthBarSize, bossHealthBar.sizeDelta.y);
+		}
+		if (healthBar != null) {
             healthBar.sizeDelta = new Vector2((float)currentHealth / (float)maxHealth, healthBar.sizeDelta.y);
         }
         if (armorBar != null) {
