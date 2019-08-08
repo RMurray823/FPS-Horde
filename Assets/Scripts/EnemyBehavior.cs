@@ -40,13 +40,12 @@ public class EnemyBehavior : BaseEnemyCharacter
 
         if(target != null)
         {
-            if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance)
-                nav.SetDestination(target.transform.position); //move to target's position.
-            else
-            {
-                if (Time.time >= attackTime + attackSpeed)
-                    anim.SetTrigger("attack");
-            }
+			if (Vector3.Distance(transform.position, target.transform.position) > nav.stoppingDistance) {
+				nav.SetDestination(target.transform.position); //move to target's position.
+			} else {
+				if (Time.time >= attackTime + attackSpeed)
+					anim.SetTrigger("attack");
+			}
 
 
             //set rotation to face target.
@@ -62,6 +61,7 @@ public class EnemyBehavior : BaseEnemyCharacter
     {
 
         if(info.tag == "WeakPoint") {
+            print("HEADSHOT");
             health.takeDamage(info.damage*2);
         } else {
             health.takeDamage(info.damage);

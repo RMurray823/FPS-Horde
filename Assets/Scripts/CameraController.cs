@@ -19,7 +19,6 @@ public class CameraController:MonoBehaviour {
 	void Update() {
 
 		HandleInput();
-
 	}
 
 	private void HandleInput() {

@@ -26,7 +26,7 @@ public class PlayerUI : MonoBehaviour {
 
     void Start () {
         health = player.GetComponent<Health>();
-         boss = GameObject.Find("Boss");
+        boss = GameObject.Find("Boss");
         
         heldGun = player.GetComponent<PlayerController>().GetHeldGun();
 
