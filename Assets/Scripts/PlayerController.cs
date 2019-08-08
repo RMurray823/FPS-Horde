@@ -120,8 +120,9 @@ public class PlayerController : BaseAllyCharacter {
     override
     public void Hit(int damage) {
         if (health.takeDamage(damage) <= 0) {
-            Scene current = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(current.name);
+            //Scene current = SceneManager.GetActiveScene();
+            //SceneManager.LoadScene(current.name);
+            SceneManager.LoadScene(3);
         }    
     }
 
