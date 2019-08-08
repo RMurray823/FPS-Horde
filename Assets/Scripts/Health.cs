@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Health : MonoBehaviour{
+public class Health:MonoBehaviour {
 
     public int currentHealth;
     public int maxHealth;
@@ -18,9 +19,10 @@ public class Health : MonoBehaviour{
     public RectTransform healthBar;
     public RectTransform armorBar;
 
-    void Start ()
-    {
-        if(tag != "Player") {
+
+
+    void Start() {
+        if (tag != "Player") {
             currentHealth = Random.Range(startingHealthMin, startingHealthMax);
             currentArmor = Random.Range(startingArmorMin, startingArmorMax);
         }
@@ -28,10 +30,15 @@ public class Health : MonoBehaviour{
 
     //Apply the amount of damage defined and return the new health value
     public int takeDamage(int damage) {
+
+        if (tag == "Player") {
+            adjustDamageIndicator();
+        }
+
         //Armor absorbs half of incoming damage
         int armorDamage = Mathf.CeilToInt((float)damage * .5f);
         int healthDamage = damage;
-        if(currentArmor > 0) {
+        if (currentArmor > 0) {
             currentArmor -= armorDamage;
             if (currentArmor < 0)
                 currentArmor = 0;
@@ -45,13 +52,17 @@ public class Health : MonoBehaviour{
             currentHealth = maxHealth;
 
         updateBars();
+
+
+
+
         return currentHealth;
     }
 
     //Add the amount of health to restore and return the result
     public int heal(int amount) {
         currentHealth += amount;
-        
+
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
 
@@ -62,7 +73,7 @@ public class Health : MonoBehaviour{
     public int healArmor(int amount) {
         currentArmor += amount;
 
-        if(currentArmor > maxArmor) {
+        if (currentArmor > maxArmor) {
             currentArmor = maxArmor;
         }
         updateBars();
@@ -73,8 +84,19 @@ public class Health : MonoBehaviour{
         if (healthBar != null) {
             healthBar.sizeDelta = new Vector2((float)currentHealth / (float)maxHealth, healthBar.sizeDelta.y);
         }
-        if (armorBar!= null) {
+        if (armorBar != null) {
             armorBar.sizeDelta = new Vector2((float)currentArmor / (float)maxArmor, armorBar.sizeDelta.y);
         }
+    }
+
+    public void adjustDamageIndicator() {
+
+        GameObject damageIndicator = GameObject.Find("DamageIndicator");
+
+        DamageHUD damageScript = damageIndicator.GetComponent<DamageHUD>();
+
+        damageScript.damaged = true;
+
+
     }
 }

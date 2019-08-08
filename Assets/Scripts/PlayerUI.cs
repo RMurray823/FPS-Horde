@@ -9,6 +9,7 @@ public class PlayerUI : MonoBehaviour {
 
     public Text uiHealth;
     public Text uiArmor;
+    public Text bossStateUI;
 
     //Remaining ammo not loaded
     public Text uiRemainingAmmo;
@@ -16,12 +17,17 @@ public class PlayerUI : MonoBehaviour {
     public Text uiClipAmmo;
 
     private Health health;
+    public string bossState;
 
     private GameObject heldGun;
     private GunController gunInfo;
 
+    GameObject boss;
+
     void Start () {
         health = player.GetComponent<Health>();
+         boss = GameObject.Find("Boss");
+        
         heldGun = player.GetComponent<PlayerController>().GetHeldGun();
 
         uiHealth.text = health.currentHealth.ToString();
@@ -30,6 +36,8 @@ public class PlayerUI : MonoBehaviour {
 	
 	
 	void Update () {
+        bossState = boss.GetComponent<BossBehavior>().bossState;
+        
         heldGun = player.GetComponent<PlayerController>().GetHeldGun();
 
         if(heldGun)
@@ -39,7 +47,10 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void UpdateUI() {
+
+        bossStateUI.text = bossState;
         uiHealth.text = health.currentHealth.ToString();
+        //uiHealth.text = health.currentHealth.ToString();
         uiArmor.text = health.currentArmor.ToString();
 
         if(heldGun) {
